@@ -73,7 +73,7 @@ public class XMLParser {
                 float length = Float.parseFloat(element.getAttribute("length"));
                 String name = element.getAttribute("name");
 
-                Segment segment = new Segment(destination, length, name);
+                Segment segment = new Segment(origin,destination, length, name);
                 map.get(origin).addSegment(segment);
             }
 
