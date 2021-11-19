@@ -1,5 +1,6 @@
 package Util;
 
+import Model.Request;
 import Model.Segment;
 import Model.Intersection;
 
@@ -15,7 +16,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class XMLParser {
@@ -43,6 +46,7 @@ public class XMLParser {
         }
     }
 
+    // Read a map xml file composed of intersections and segments
     public Map<String, Intersection> readMap(String filePath) {
         Document doc = parseXMLFile(filePath);
         Map<String, Intersection> map = new HashMap<>();
@@ -81,4 +85,9 @@ public class XMLParser {
 
         return map;
     }
+
+    // Read a requests file
+
+
+
 }
