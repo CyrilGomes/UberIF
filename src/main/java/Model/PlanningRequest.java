@@ -17,4 +17,16 @@ public class PlanningRequest {
     public void addRequest(Request request){
         requests.add(request);
     }
+
+    public String getStartId() {
+        return startId;
+    }
+
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public List<Request> getRequests() {
+        return requests;
+    }
 }
