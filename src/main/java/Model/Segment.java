@@ -4,6 +4,7 @@ public class Segment {
     protected String origin;
     protected String destination;
     protected float length;
+    protected String name;
 
     public Segment(String origin,String destination, float length, String name) {
         this.origin = origin;
@@ -20,15 +21,23 @@ public class Segment {
         return destination;
     }
 
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
     public float getLength() {
         return length;
+    }
+
+    public void setLength(float length) {
+        this.length = length;
     }
 
     public String getName() {
         return name;
     }
 
-    protected String name;
-
-
+    public void setName(String name) {
+        this.name = name;
+    }
 }
