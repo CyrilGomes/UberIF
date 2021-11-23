@@ -1,5 +1,7 @@
 package Util;
 
+import Model.PlanningRequest;
+import Model.Request;
 import Model.Segment;
 import Model.Intersection;
 
@@ -15,7 +17,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class XMLParser {
@@ -43,6 +47,7 @@ public class XMLParser {
         }
     }
 
+    // Read a map xml file composed of intersections and segments
     public Map<String, Intersection> readMap(String filePath) {
         Document doc = parseXMLFile(filePath);
         Map<String, Intersection> map = new HashMap<>();
@@ -81,4 +86,37 @@ public class XMLParser {
 
         return map;
     }
+
+    // Read a requests file
+    public PlanningRequest readRequests (String filePath){
+        Document doc = parseXMLFile(filePath);
+
+        // Get depot
+        Element depot = (Element) doc.getElementsByTagName("depot").item(0);
+        String startId = depot.getAttribute("address");
+        String departureTime = depot.getAttribute("departureTime");
+
+        PlanningRequest planningRequest = new PlanningRequest(startId,departureTime);
+
+        // Get all requests
+        NodeList requests = doc.getElementsByTagName("request");
+        for (int i = 0; i < requests.getLength(); i++) {
+            Node node = requests.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element) node;
+                String pickupId = element.getAttribute("pickupAddress");
+                String deliveryId = element.getAttribute("deliveryAddress");
+                int pickupDuration = Integer.parseInt(element.getAttribute("pickupDuration"));
+                int deliveryDuration = Integer.parseInt(element.getAttribute("deliveryDuration"));
+
+                Request request = new Request(pickupId,deliveryId,pickupDuration,deliveryDuration);
+                planningRequest.addRequest(request);
+
+            }
+        }
+
+        return planningRequest;
+    }
+
+
 }
