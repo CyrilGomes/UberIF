@@ -37,7 +37,7 @@ public class PlanningRequest {
         int i = 0;
         for(Request req : requests){
             i++;
-            print +="   request "+i+": "+ req.toString()+",\n";
+            print +="   request "+i+": "+ req.toString()+"\n";
         }
         print +="]";
         return print;
