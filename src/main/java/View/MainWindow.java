@@ -6,11 +6,14 @@
 package View;
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-import controller.ControllerMainWindow;
+import observer.Observable;
+import observer.Observer;
 
-public class MainWindow extends javax.swing.JFrame {
+/**
+ *
+ * @author Thibaud Martin
+ */
+public class MainWindow extends javax.swing.JFrame implements Observer {
 
     /**
      * Creates new form MainWindow
@@ -151,6 +154,11 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemActionPerformed
 
 
+
+    @Override
+    public void update(Observable o, Object arg){
+        
+    }
 
     /**
      * @param args the command line arguments
