@@ -5,6 +5,9 @@ import model.Segment;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class Plan. It represents the plan currently opened by the user.
+ */
 public class Plan {
     java.util.Map<String, Intersection> intersectionMap;
     java.util.Map<String, List<String>> adjacentsMap;
@@ -12,6 +15,19 @@ public class Plan {
     List<String> deliveries;
     List<String> pickups;
 
+    /**
+     * the constructor of the class Plan.
+     * @param intersectionMap where the string is the id of the intersection object.
+     * @param adjacentsMap where the string is the id of an intersection object.
+     *                     the list<String> is the list of all the id of the adjacent intersections.
+     * @param segmentMap where the key is composed of the id of origin and the id of destination.
+     *                   the segment object is representing the line between the two intersections.
+     * @param deliveries the list of all the id of the deliveries point.
+     * @param pickups the list of all the id of the pickups point.
+     * @see Key
+     * @see Intersection
+     * @see Segment
+     */
     public Plan(java.util.Map<String, Intersection> intersectionMap, java.util.Map<String, List<String>> adjacentsMap, java.util.Map<Key, Segment> segmentMap, List<String> deliveries, List<String> pickups) {
         this.intersectionMap = intersectionMap;
         this.adjacentsMap = adjacentsMap;
@@ -21,8 +37,12 @@ public class Plan {
     }
 
 
-
-
+    /**
+     * Add an intersection to the map.
+     * @param id the id of the intersection.
+     * @param intersection the intersection object representing it.
+     * @see Intersection
+     */
     public void addIntersection(String id, Intersection intersection){
         intersectionMap.put(id, intersection);
     }
