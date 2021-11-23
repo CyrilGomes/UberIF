@@ -28,4 +28,11 @@ public class Request {
     public int getDeliveryDuration() {
         return deliveryDuration;
     }
+
+    public String toString(){
+        return "[id of the pickup: "+this.pickupId+
+                " pickup duration: "+this.pickupDuration+"\n"+
+                "id of the delivery: "+this.deliveryId+
+                " delivery duration: "+this.deliveryDuration+"]";
+    }
 }

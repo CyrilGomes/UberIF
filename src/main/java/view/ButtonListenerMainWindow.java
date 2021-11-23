@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import controller.ControllerMainWindow;
 
@@ -27,13 +27,12 @@ public class ButtonListenerMainWindow implements ActionListener {
                 chooser.addChoosableFileFilter(new FileNameExtensionFilter("xml files (.xml)", "xml"));
                 int returnVal = chooser.showOpenDialog(this.mainWindow);
                 if(returnVal == JFileChooser.APPROVE_OPTION){
-                    System.out.println("You chose to open this file: " +
-                            chooser.getSelectedFile());
+                    System.out.println("You chose to open this file: "+chooser.getSelectedFile());
                     controllerMainWindow.importTour(chooser.getSelectedFile());
                 }
 
                 break;
-            case "Ajouter livraison":System.out.println("Ajouter livraison");break;
+            case "Ajouter livraison":System.out.println("Ajouter livraison : not implemented");break;
             default : System.out.println("Not Implemented");break;
         }
     }
