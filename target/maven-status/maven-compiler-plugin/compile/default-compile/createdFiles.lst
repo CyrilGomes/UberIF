@@ -1,1 +1,5 @@
-View\Test.class
+Model\PlanningRequest.class
+Model\Intersection.class
+Model\Segment.class
+Util\XMLParser.class
+Model\Request.class
