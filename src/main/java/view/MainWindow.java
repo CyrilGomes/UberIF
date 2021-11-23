@@ -21,7 +21,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      * Creates new form MainWindow
      */
     public MainWindow() {
-        buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow(), this);
+        buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow(this), this);
         initComponents();
     }
 

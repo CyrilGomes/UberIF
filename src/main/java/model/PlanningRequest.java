@@ -29,4 +29,17 @@ public class PlanningRequest {
     public List<Request> getRequests() {
         return requests;
     }
+
+    public String toString(){
+        String print = "departure time: "+this.departureTime+"\n"+
+                "id of the deposit: "+this.startId+
+                "\nrequests : [\n";
+        int i = 0;
+        for(Request req : requests){
+            i++;
+            print +="   request "+i+": "+ req.toString()+",\n";
+        }
+        print +="]";
+        return print;
+    }
 }
