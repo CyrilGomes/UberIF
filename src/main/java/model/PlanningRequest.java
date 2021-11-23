@@ -1,12 +1,12 @@
-package Model;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlanningRequest {
-    protected String startId;
-    protected String departureTime;
-    protected List<Request> requests;
+    private String startId;
+    private String departureTime;
+    private List<Request> requests;
 
     public PlanningRequest(String startId, String departureTime) {
         this.startId = startId;

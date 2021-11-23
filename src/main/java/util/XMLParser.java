@@ -1,9 +1,9 @@
-package Util;
+package util;
 
-import Model.PlanningRequest;
-import Model.Request;
-import Model.Segment;
-import Model.Intersection;
+import model.PlanningRequest;
+import model.Request;
+import model.Segment;
+import model.Intersection;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -17,9 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class XMLParser {

@@ -1,10 +1,10 @@
-package Model;
+package model;
 
 public class Request {
-    protected String pickupId;
-    protected String deliveryId;
-    protected int pickupDuration;
-    protected int deliveryDuration;
+    private String pickupId;
+    private String deliveryId;
+    private int pickupDuration;
+    private int deliveryDuration;
 
     public Request(String pickupId, String deliveryId, int pickupDuration, int deliveryDuration) {
         this.pickupId = pickupId;
