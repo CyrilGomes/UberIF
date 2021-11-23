@@ -1,7 +1,7 @@
 package Util;
 
-import Model.Intersection;
-import Model.Segment;
+import model.Intersection;
+import model.Segment;
 import org.junit.Test;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ public class Intersection {
     protected float latitude;
     protected float longitude;
     protected List<Segment> segments;
+
 
 
     public Intersection(Intersection intersection){

@@ -1,7 +1,7 @@
 package Util;
 
-import Model.Segment;
-import Model.Intersection;
+import model.Segment;
+import model.Intersection;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

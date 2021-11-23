@@ -1,4 +1,4 @@
-package Model.Graphs;
+package model.graphs;
 
 import java.util.Objects;
 

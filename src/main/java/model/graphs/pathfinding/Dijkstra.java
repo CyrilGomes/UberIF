@@ -1,20 +1,19 @@
-package Model.Graphs.PathFinding;
+package model.graphs.pathfinding;
 
-import Model.Graphs.Graph;
-import Model.Graphs.Node;
+import model.graphs.Plan;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 
 public class Dijkstra {
 
-    Map<String, Float> poids;
-    Map<String, String> precedence;
+    java.util.Map poids;
+    java.util.Map precedence;
 
 
-    private String getLowestDistanceNode(Set<String> nodes){
+    public String getLowestDistanceNode(Set<String> nodes){
         String lowestNode = null;
         float lowestWeight = Float.MAX_VALUE;
         for (String node: nodes ) {
@@ -27,23 +26,28 @@ public class Dijkstra {
         return lowestNode;
     }
 
-    private void calculateMinimumDistance(String adjacentNode, float edgeWeight,String currentNode ){
-
+    public void calculateMinimumDistance(String adjacentNode, float edgeWeight,String currentNode ){
         if (!precedence.containsKey(currentNode) || poids.get(currentNode)+edgeWeight < poids.get(adjacentNode)){
             poids.put(adjacentNode,poids.get(currentNode)+edgeWeight);
             precedence.put(adjacentNode,currentNode);
 
         }
-
-
     }
-    public Graph executeAlgorithm(Graph graph, Node source){
-        source.setWeight(0);
+
+    public Dijkstra() {
+        poids = new HashMap<>();
+        precedence = new HashMap<>();
+    }
+
+    public Plan executeAlgorithm(Plan graph, String sourceNodeId){
+
 
         Set<String> settledNodes = new HashSet<>();
         Set<String> unsettledNodes = new HashSet<>();
 
-        unsettledNodes.add(source.getId());
+        unsettledNodes.add(sourceNodeId);
+        poids.put(sourceNodeId,0.0f);
+
 
         while (unsettledNodes.size() != 0) {
             String currentNodeId = getLowestDistanceNode(unsettledNodes);
