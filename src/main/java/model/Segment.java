@@ -1,9 +1,9 @@
-package Model;
+package model;
 
 public class Segment {
-    protected String origin;
-    protected String destination;
-    protected float length;
+    private String origin;
+    private String destination;
+    private float length;
 
     public Segment(String origin,String destination, float length, String name) {
         this.origin = origin;

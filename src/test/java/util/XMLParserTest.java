@@ -1,9 +1,9 @@
-package Util;
+package util;
 
-import Model.Intersection;
-import Model.PlanningRequest;
-import Model.Request;
-import Model.Segment;
+import model.Intersection;
+import model.PlanningRequest;
+import model.Request;
+import model.Segment;
 import org.junit.Test;
 
 import java.util.List;

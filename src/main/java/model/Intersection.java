@@ -1,13 +1,13 @@
-package Model;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Intersection {
-    protected String id;
-    protected float latitude;
-    protected float longitude;
-    protected List<Segment> segments;
+    private String id;
+    private float latitude;
+    private float longitude;
+    private List<Segment> segments;
 
     public Intersection(String id, float latitude, float longitude) {
         this.id = id;
