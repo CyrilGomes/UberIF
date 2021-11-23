@@ -4,6 +4,7 @@ import model.Intersection;
 import model.PlanningRequest;
 import model.Request;
 import model.Segment;
+import model.graphs.Graph;
 import org.junit.Test;
 
 import java.util.List;
@@ -17,14 +18,17 @@ public class XMLParserTest {
 
     @Test
     public void readMap() {
-        Map<String, Intersection> map = xmlParser.readMap("files/map.xml");
+        Graph graph = xmlParser.readMap("files/map.xml");
+
+        Map<String, Intersection> map = graph.getIntersectionMap();
         assertEquals(2,map.size());
         Intersection intersection = map.get("1");
         assertEquals("1",intersection.getId());
         assertEquals(45.7,intersection.getLatitude(),0.1);
         assertEquals(4.8,intersection.getLongitude(),0.1);
 
-        List<Segment> segments = intersection.getSegments();
+
+        List<Segment> segments = graph.getSegmentsFromIntersection("1");
         assertEquals(1,segments.size());
         Segment segment = segments.get(0);
         assertEquals("2",segment.getDestination());
@@ -48,5 +52,13 @@ public class XMLParserTest {
         assertEquals(180,request.getPickupDuration());
         assertEquals(240,request.getDeliveryDuration());
 
+    }
+
+    @Test
+    public void readLargeMap(){
+        Graph graph = xmlParser.readMap("files/largeMap.xml");
+        for (Map.Entry<String, Intersection> entry : graph.getIntersectionMap().entrySet()) {
+            System.out.println(graph.getSegmentsFromIntersection(entry.getKey()));
+        }
     }
 }

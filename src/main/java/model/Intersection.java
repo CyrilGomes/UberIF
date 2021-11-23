@@ -13,7 +13,6 @@ public class Intersection {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.segments = new ArrayList<>();
     }
 
     public void addSegment(Segment segment) {
@@ -32,7 +31,5 @@ public class Intersection {
         return longitude;
     }
 
-    public List<Segment> getSegments() {
-        return segments;
-    }
+
 }
