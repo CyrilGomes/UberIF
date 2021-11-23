@@ -8,11 +8,8 @@ package View;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import controller.ControllerMainWindow;
 
-/**
- *
- * @author Thibaud Martin
- */
 public class MainWindow extends javax.swing.JFrame {
 
     /**
@@ -45,6 +42,8 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+
+        buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(720, 576));
@@ -104,7 +103,7 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuItem4.setText("Exit");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jMenuItemActionPerformed(evt);
             }
         });
         jMenu3.add(jMenuItem4);
@@ -121,12 +120,18 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu2.setText("Delivery");
 
         jMenuItem1.setText("Import tour");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem1);
+
 
         jMenuItem2.setText("Ajouter livraison");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jMenuItemActionPerformed(evt);
             }
         });
         jMenu2.add(jMenuItem2);
@@ -138,14 +143,14 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+        System.out.println(evt.getActionCommand());
+        buttonListenerMainWindow.actionPerformed(evt);
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        setVisible(false);
-        System.exit(0);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_jMenuItemActionPerformed
+
+
 
     /**
      * @param args the command line arguments
@@ -177,7 +182,7 @@ public class MainWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FlatDarkLaf.setup();
+                FlatLightLaf.setup();
                 new MainWindow().setVisible(true);
                 System.out.println("Hello world");
             }
@@ -199,4 +204,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JTabbedPane jTabbedPane2;
     // End of variables declaration//GEN-END:variables
+
+    private ButtonListenerMainWindow buttonListenerMainWindow;
 }
