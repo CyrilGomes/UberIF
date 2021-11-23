@@ -2,6 +2,7 @@ package View;
 
 import controller.ControllerMainWindow;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,12 +10,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ButtonListenerMainWindow implements ActionListener {
     private ControllerMainWindow controllerMainWindow;
+    private MainWindow mainWindow;
 
-    public ButtonListenerMainWindow(ControllerMainWindow controllerMainWindow) {
+    public ButtonListenerMainWindow(ControllerMainWindow controllerMainWindow, MainWindow mainWindow) {
         this.controllerMainWindow = controllerMainWindow;
+        this.mainWindow = mainWindow;
     }
 
     @Override
@@ -22,17 +27,11 @@ public class ButtonListenerMainWindow implements ActionListener {
         switch(e.getActionCommand()){
             case "Import tour":
                 System.out.println("Importer un tour");
-                Desktop desktop = null;
-                File file = new File(System.getenv("programfiles"));
-                try {
-                    if (Desktop.isDesktopSupported()) {
-                        desktop = Desktop.getDesktop();
-                        desktop.open(file);
-                    } else {
-                        System.out.println("desktop is not supported");
-                    }
-                }catch (IOException error){
-
+                JFileChooser j = new JFileChooser();
+                int returnVal = j.showOpenDialog(this.mainWindow);
+                if(returnVal == JFileChooser.APPROVE_OPTION){
+                    System.out.println("You chose to open this file: " +
+                            j.getSelectedFile().getName());
                 }
 
                 break;

@@ -21,6 +21,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      * Creates new form MainWindow
      */
     public MainWindow() {
+        buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow(), this);
         initComponents();
     }
 
@@ -48,7 +49,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
 
-        buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(720, 576));
