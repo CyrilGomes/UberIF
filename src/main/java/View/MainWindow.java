@@ -48,8 +48,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
 
-        buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow());
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(720, 576));
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -118,6 +116,11 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         jMenu1.setText("Map");
 
         jMenuItem3.setText("Import map");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
@@ -131,7 +134,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             }
         });
         jMenu2.add(jMenuItem1);
-
 
         jMenuItem2.setText("Ajouter livraison");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
