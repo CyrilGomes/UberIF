@@ -4,13 +4,14 @@ import model.graphs.Plan;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 
 public class Dijkstra {
 
-    java.util.Map poids;
-    java.util.Map precedence;
+    Map<String, Float> poids;
+    Map<String, String> precedence;
 
 
     public String getLowestDistanceNode(Set<String> nodes){
