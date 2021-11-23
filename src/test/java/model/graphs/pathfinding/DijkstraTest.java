@@ -10,12 +10,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DijkstraTest {
     Dijkstra dijkstra;
 
-    java.util.Map adjacentsMap = new HashMap<>();
-    java.util.Map segmentMap = new HashMap<>();
+    Map<String, List<String>> adjacentsMap = new HashMap<>();
+    Map<Key, Segment> segmentMap = new HashMap<>();
     Plan graph;
 
     private void connectNodes(String i1, String i2, float length){
@@ -46,7 +47,7 @@ public class DijkstraTest {
         Intersection i7 = new Intersection("7",0,0);
 
 
-        java.util.Map intersectionMap = new HashMap<>();
+        Map<String, Intersection> intersectionMap = new HashMap<>();
         intersectionMap.put("1",i1);
         intersectionMap.put("2",i2);
         intersectionMap.put("3",i3);
@@ -110,5 +111,6 @@ public class DijkstraTest {
     @Test
     public void executeAlgorithm() {
         dijkstra.executeAlgorithm(graph,"1");
+
     }
 }
