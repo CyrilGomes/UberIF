@@ -1,11 +1,12 @@
 package model.graphs.pathfinding;
 
+import model.Intersection;
+import model.Segment;
+import model.graphs.Graph;
+import model.graphs.Key;
 import model.graphs.Plan;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class Dijkstra {
@@ -28,6 +29,10 @@ public class Dijkstra {
     }
 
     public void calculateMinimumDistance(String adjacentNode, float edgeWeight,String currentNode ){
+        //System.out.println(adjacentNode + " " +edgeWeight + " "+ currentNode);
+        if(!poids.containsKey(adjacentNode)){
+            poids.put(adjacentNode,Float.MAX_VALUE);
+        }
         if (!precedence.containsKey(currentNode) || poids.get(currentNode)+edgeWeight < poids.get(adjacentNode)){
             poids.put(adjacentNode,poids.get(currentNode)+edgeWeight);
             precedence.put(adjacentNode,currentNode);
@@ -35,13 +40,12 @@ public class Dijkstra {
         }
     }
 
-    public Dijkstra() {
+
+
+    public void executeAlgorithm(Plan graph, String sourceNodeId, Graph newGraph, List<String> pointsOfInterests ){
         poids = new HashMap<>();
         precedence = new HashMap<>();
-    }
-
-    public Plan executeAlgorithm(Plan graph, String sourceNodeId){
-
+        int globalSize = pointsOfInterests.size();
 
         Set<String> settledNodes = new HashSet<>();
         Set<String> unsettledNodes = new HashSet<>();
@@ -50,7 +54,7 @@ public class Dijkstra {
         poids.put(sourceNodeId,0.0f);
 
 
-        while (unsettledNodes.size() != 0) {
+        while (unsettledNodes.size() != 0 && globalSize != 0) {
             String currentNodeId = getLowestDistanceNode(unsettledNodes);
             unsettledNodes.remove(currentNodeId);
             for (String adjacent :  graph.getAdjacentsNodes(currentNodeId)) {
@@ -60,13 +64,27 @@ public class Dijkstra {
                     unsettledNodes.add(adjacent);
                 }
             }
+            if(pointsOfInterests.contains(currentNodeId)){
+                globalSize--;
+            }
             settledNodes.add(currentNodeId);
         }
-        return graph;
+        for (String poi: pointsOfInterests) {
+            if(poi.equals(sourceNodeId))
+                continue;
+            String currentPoint = poi;
+            if(precedence.containsKey(poi)){
+                List<Segment> segments = new ArrayList<>();
+                while(!currentPoint.equals(sourceNodeId)){
+                    String tempPoint = precedence.get(currentPoint);
+                    segments.add(0,graph.getSegment(tempPoint,currentPoint));
+                    currentPoint = tempPoint;
+                }
+                Edge edge = new Edge(sourceNodeId,poi,segments,poids.get(poi));
+                newGraph.addEdge(sourceNodeId, poi,edge);
+            }
+        }
+
     }
-
-
-
-
 
 }

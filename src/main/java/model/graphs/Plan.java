@@ -12,6 +12,19 @@ public class Plan {
     List<String> deliveries;
     List<String> pickups;
 
+    public Segment getSegment(String origin, String destination){
+        Key key = new Key(origin, destination);
+        return segmentMap.get(key);
+    }
+
+    public List<String> getDeliveries() {
+        return deliveries;
+    }
+
+    public List<String> getPickups() {
+        return pickups;
+    }
+
     public Plan(java.util.Map<String, Intersection> intersectionMap, java.util.Map<String, List<String>> adjacentsMap, java.util.Map<Key, Segment> segmentMap, List<String> deliveries, List<String> pickups) {
         this.intersectionMap = intersectionMap;
         this.adjacentsMap = adjacentsMap;
@@ -21,7 +34,14 @@ public class Plan {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "Plan{" +
+                "intersectionMap=" + intersectionMap +
+                ", adjacentsMap=" + adjacentsMap +
+                ", segmentMap=" + segmentMap +
+                '}';
+    }
 
     public void addIntersection(String id, Intersection intersection){
         intersectionMap.put(id, intersection);
