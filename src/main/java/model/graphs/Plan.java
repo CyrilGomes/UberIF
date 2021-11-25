@@ -4,35 +4,21 @@ import model.Intersection;
 import model.PlanningRequest;
 import model.Segment;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Plan {
-    Map<String, Intersection> intersectionMap;
-    Map<String, List<String>> adjacentsMap;
-    Map<Key, Segment> segmentMap;
+    java.util.Map<String, Intersection> intersectionMap;
+    java.util.Map<String, List<String>> adjacentsMap;
+    java.util.Map<Key, Segment> segmentMap;
     List<String> deliveries;
     List<String> pickups;
-    float differenceLatitude;
-    float differenceLongitude;
+    float maxLatitude;
+    float minLatitude;
+    float maxLongitude;
+    float minLongitude;
 
-    public Map<String, List<String>> getAdjacentsMap() {
-        return adjacentsMap;
-    }
-
-    public Segment getSegment(String origin, String destination){
-        Key key = new Key(origin, destination);
-        return segmentMap.get(key);
-    }
-
-    public List<String> getDeliveries() {
-        return deliveries;
-    }
-
-    public List<String> getPickups() {
-        return pickups;
-    }
+    PlanningRequest planningRequest = null;
 
     public Plan(java.util.Map<String, Intersection> intersectionMap, java.util.Map<String, List<String>> adjacentsMap, java.util.Map<Key, Segment> segmentMap, List<String> deliveries, List<String> pickups) {
         this.intersectionMap = intersectionMap;
@@ -42,24 +28,18 @@ public class Plan {
         this.pickups = pickups;
     }
 
-    public Plan(Map<String, Intersection> intersectionMap, Map<String, List<String>> adjacentsMap, Map<Key, Segment> segmentMap, List<String> deliveries, List<String> pickups, float differenceLatitude, float differenceLongitude) {
+    public Plan(Map<String, Intersection> intersectionMap, Map<String, List<String>> adjacentsMap, Map<Key, Segment> segmentMap, List<String> deliveries, List<String> pickups, float maxLatitude, float minLatitude, float maxLongitude, float minLongitude) {
         this.intersectionMap = intersectionMap;
         this.adjacentsMap = adjacentsMap;
         this.segmentMap = segmentMap;
         this.deliveries = deliveries;
         this.pickups = pickups;
-        this.differenceLatitude = differenceLatitude;
-        this.differenceLongitude = differenceLongitude;
+        this.maxLatitude = maxLatitude;
+        this.minLatitude = minLatitude;
+        this.maxLongitude = maxLongitude;
+        this.minLongitude = minLongitude;
     }
 
-    @Override
-    public String toString() {
-        return "Plan{" +
-                "intersectionMap=" + intersectionMap +
-                ", adjacentsMap=" + adjacentsMap +
-                ", segmentMap=" + segmentMap +
-                '}';
-    }
     public Map<String, Intersection> getIntersectionMap() {
         return intersectionMap;
     }
@@ -82,22 +62,27 @@ public class Plan {
         return segment.getLength();
     }
 
-    public float getDifferenceLatitude() {
-        return differenceLatitude;
+    public float getMaxLatitude() {
+        return maxLatitude;
     }
 
-    public float getDifferenceLongitude() {
-        return differenceLongitude;
+    public float getMinLatitude() {
+        return minLatitude;
     }
 
-    public List<Segment> getSegmentsFromIntersection(String origin) {
-        List<String> adjactendsNodes = adjacentsMap.get(origin);
-        List<Segment> segmentList = new ArrayList<>();
-        for (String destination:adjactendsNodes) {
-            Segment segment = segmentMap.get(new Key(origin, destination));
-            segmentList.add(segment);
-        }
+    public float getMaxLongitude() {
+        return maxLongitude;
+    }
 
-        return segmentList;
+    public float getMinLongitude() {
+        return minLongitude;
+    }
+
+    public PlanningRequest getPlanningRequest() {
+        return planningRequest;
+    }
+
+    public void setPlanningRequest(PlanningRequest planningRequest) {
+        this.planningRequest = planningRequest;
     }
 }

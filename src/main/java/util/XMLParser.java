@@ -7,7 +7,6 @@ import model.Intersection;
 import model.graphs.Graph;
 import model.graphs.Key;
 
-import model.graphs.Plan;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -51,7 +50,7 @@ public class XMLParser {
     }
 
     // Read a map xml file composed of intersections and segments
-    public Plan readMap(String filePath) {
+    public Graph readMap(String filePath) {
         Document doc = parseXMLFile(filePath);
         Map<String, Intersection> intersectionMap = new HashMap<>();
         Map<String, List<String>> adjacentsMap = new HashMap<>();
@@ -102,12 +101,10 @@ public class XMLParser {
             }
 
         }
+        
+        Graph graph = new Graph(intersectionMap,adjacentsMap,segmentMap,maxLatitude,minLatitude,maxLongitude,minLongitude);
 
-        float differenceLatitude = maxLatitude-minLatitude;
-        float differenceLongitude = maxLongitude - minLongitude;
-        Plan plan = new Plan(intersectionMap,adjacentsMap,segmentMap,null,null,differenceLatitude,differenceLongitude);
-
-        return plan;
+        return graph;
     }
 
     // Read a requests file

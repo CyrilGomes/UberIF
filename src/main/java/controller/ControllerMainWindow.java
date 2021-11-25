@@ -25,13 +25,14 @@ public class ControllerMainWindow {
         /*call the algorithms for calculation the tour*/
         XMLParser xmlParser = new XMLParser();
         PlanningRequest request = xmlParser.readRequests(xmlFile.getPath());
-        System.out.println(request);
+        // System.out.println(request);
+        mainWindow.setPlanningRequest(request);
     }
 
     public void importMap(File file){
         XMLParser parser = new XMLParser();
-        Plan plan = parser.readMap(file.getAbsolutePath());
-        Plan planData = new Plan(plan.getIntersectionMap(), plan.getAdjacentsMap(), plan.getSegmentMap(), null,null, plan.getDifferenceLatitude(), plan.getDifferenceLongitude());
+        Graph graph = parser.readMap(file.getAbsolutePath());
+        Plan planData = new Plan(graph.getIntersectionMap(), graph.getAdjacentsMap(), graph.getSegmentMap(), null,null, graph.getMaxLatitude(), graph.getMinLatitude(),graph.getMaxLongitude(),graph.getMinLongitude());
         mainWindow.setPlanData(planData);
     }
 }
