@@ -8,6 +8,7 @@ import java.util.Map;
 
 /**
  * Class Plan. It represents the plan currently opened by the user.
+ * @// TODO: 25/11/2021 Allow the deliveries and pickup points to be null and adjust later. Fusing it with graph.
  */
 public class Plan {
     java.util.Map<String, Intersection> intersectionMap;

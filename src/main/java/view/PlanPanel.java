@@ -9,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * The visualisation of the map. Updated when the data changes.
+ */
 public class PlanPanel extends JComponent {
 	private Plan planData;
 
