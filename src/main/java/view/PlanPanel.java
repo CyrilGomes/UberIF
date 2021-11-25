@@ -36,13 +36,14 @@ public class PlanPanel extends JComponent {
 		System.out.println("Paint");
 		g.drawLine(0,0, 50, 50);
 		if(planData != null){
-			float differenceLatitude  = planData.getDifferenceLatitude();
-			float differenceLongitude = planData.getDifferenceLongitude();
+			float maxLatitude = planData.getMaxLatitude();
+			float minLatitude = planData.getMinLatitude();
+			float maxLongitude = planData.getMaxLongitude();
+			float minLongitude = planData.getMinLongitude();
 			int width = this.getWidth();
 			int height = this.getHeight();
 			System.out.println("width: "+width+" height: "+height);
 
-			System.out.println("differenceLatitude: "+differenceLatitude+" differenceLongitude: "+differenceLongitude);
 			g.setColor(Color.BLACK);
 
 			Map<Key, Segment> segmentMap = planData.getSegmentMap();
@@ -51,19 +52,19 @@ public class PlanPanel extends JComponent {
 				Intersection origine = intersectionMap.get(segment.getOrigin());
 				Intersection destination = intersectionMap.get(segment.getDestination());
 
-				int xOrigine = getCoordinate(origine.getLatitude(),differenceLatitude,width);
-				int yOrigine = getCoordinate(origine.getLongitude(),differenceLongitude,height);
+				int yOrigine = getCoordinateY(origine.getLatitude(),0,width,minLatitude,maxLatitude);
+				int xOrigine = getCoordinate(origine.getLongitude(),0,height,minLongitude,maxLongitude);
 
 				System.out.println("xOrigine: " + xOrigine + "\tyOrigine: " + yOrigine+ " ");
 
-				int xDestination = getCoordinate(destination.getLatitude(),differenceLatitude,width);
-				int yDestination = getCoordinate(destination.getLongitude(),differenceLongitude,height);
+				int yDestination = getCoordinateY(destination.getLatitude(),0,width,minLatitude,maxLatitude);
+				int xDestination = getCoordinate(destination.getLongitude(),0,height,minLongitude,maxLongitude);
 
 				g.drawLine(xOrigine, yOrigine, xDestination, yDestination);
-				g.drawString(segment.getName(),xOrigine,yOrigine);
+				// g.drawString(segment.getName(),xOrigine,yOrigine);
 			});
 
-			if(planData.getPlanningRequest()!=null){
+			/*if(planData.getPlanningRequest()!=null){
 				PlanningRequest planningRequest = planData.getPlanningRequest();
 
 				// Drawing the depot
@@ -90,11 +91,15 @@ public class PlanPanel extends JComponent {
 
 					// Draw delivery as triangle
 				}
-			}
+			}*/
 		}
 	}
 
-	private int getCoordinate (float latitude,float difference, int width){
-		return (int)(latitude*width/difference)%width;
+	private int getCoordinate (float x ,int a, int b, float min , float max){
+		return (int)(((b-a)*(x-min)/(max-min)) + a);
+	}
+
+	private int getCoordinateY(float x,int a ,int b , float min,float max){
+		return b - getCoordinate(x,a,b,min,max);
 	}
 }
