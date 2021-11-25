@@ -25,7 +25,8 @@ public class ControllerMainWindow {
         /*call the algorithms for calculation the tour*/
         XMLParser xmlParser = new XMLParser();
         PlanningRequest request = xmlParser.readRequests(xmlFile.getPath());
-        System.out.println(request);
+        // System.out.println(request);
+        mainWindow.setPlanningRequest(request);
     }
 
     public void importMap(File file){

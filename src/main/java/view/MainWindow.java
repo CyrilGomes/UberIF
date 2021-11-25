@@ -7,6 +7,7 @@ package view;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import controller.ControllerMainWindow;
+import model.PlanningRequest;
 import model.graphs.Plan;
 import observer.Observable;
 import observer.Observer;
@@ -168,6 +169,10 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
     public void setPlanData(Plan planData) {
         planPanel.setPlanData(planData);
+    }
+
+    public void setPlanningRequest(PlanningRequest planningRequest){
+        planPanel.setPlanningRequest(planningRequest);
     }
 
     /**

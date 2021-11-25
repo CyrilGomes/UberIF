@@ -15,6 +15,7 @@ public class Plan {
     List<String> pickups;
     float differenceLatitude;
     float differenceLongitude;
+    PlanningRequest planningRequest = null;
 
     public Plan(java.util.Map<String, Intersection> intersectionMap, java.util.Map<String, List<String>> adjacentsMap, java.util.Map<Key, Segment> segmentMap, List<String> deliveries, List<String> pickups) {
         this.intersectionMap = intersectionMap;
@@ -64,4 +65,11 @@ public class Plan {
         return differenceLongitude;
     }
 
+    public PlanningRequest getPlanningRequest() {
+        return planningRequest;
+    }
+
+    public void setPlanningRequest(PlanningRequest planningRequest) {
+        this.planningRequest = planningRequest;
+    }
 }

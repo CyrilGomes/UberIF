@@ -1,6 +1,8 @@
 package view;
 
 import model.Intersection;
+import model.PlanningRequest;
+import model.Request;
 import model.Segment;
 import model.graphs.Key;
 import model.graphs.Plan;
@@ -20,6 +22,11 @@ public class PlanPanel extends JComponent {
 
 	public void setPlanData(Plan planData) {
 		this.planData = planData;
+		this.repaint();
+	}
+
+	public void setPlanningRequest(PlanningRequest planningRequest){
+		planData.setPlanningRequest(planningRequest);
 		this.repaint();
 	}
 
@@ -44,17 +51,50 @@ public class PlanPanel extends JComponent {
 				Intersection origine = intersectionMap.get(segment.getOrigin());
 				Intersection destination = intersectionMap.get(segment.getDestination());
 
-				int xOrigine = (int)(origine.getLatitude()*width/differenceLatitude) %width;
-				int yOrigine = (int)(origine.getLongitude()*height/differenceLongitude) % height;
+				int xOrigine = getCoordinate(origine.getLatitude(),differenceLatitude,width);
+				int yOrigine = getCoordinate(origine.getLongitude(),differenceLongitude,height);
 
 				System.out.println("xOrigine: " + xOrigine + "\tyOrigine: " + yOrigine+ " ");
 
-				int xDestination = (int)(destination.getLatitude()*width/differenceLatitude) %width;
-				int yDestination = (int)(destination.getLongitude()*height/differenceLongitude) % height;
+				int xDestination = getCoordinate(destination.getLatitude(),differenceLatitude,width);
+				int yDestination = getCoordinate(destination.getLongitude(),differenceLongitude,height);
 
 				g.drawLine(xOrigine, yOrigine, xDestination, yDestination);
-				// g.drawString(segment.getName(),xOrigine,yOrigine);
+				g.drawString(segment.getName(),xOrigine,yOrigine);
 			});
+
+			if(planData.getPlanningRequest()!=null){
+				PlanningRequest planningRequest = planData.getPlanningRequest();
+
+				// Drawing the depot
+				Intersection depot = intersectionMap.get(planningRequest.getStartId());
+				int xDepot = getCoordinate(depot.getLatitude(),differenceLatitude,width);
+				int yDepot = getCoordinate(depot.getLongitude(),differenceLongitude,height);
+				System.out.println("xDepot: "+xDepot+" yDepot: "+yDepot);
+				g.setColor(Color.BLUE);
+				g.fillOval(xDepot,yDepot,20,20);
+
+				for(Request request: planningRequest.getRequests()){
+					// Random color
+					Color color = new Color((int)(Math.random() * 0x1000000));
+					g.setColor(color);
+					Intersection pickup = intersectionMap.get(request.getPickupId());
+					Intersection delivery = intersectionMap.get(request.getDeliveryId());
+
+					int xPickup = getCoordinate(pickup.getLatitude(),differenceLatitude,width);
+					int yPickup = getCoordinate(pickup.getLongitude(),differenceLongitude,height);
+					int xDelivery = getCoordinate(delivery.getLatitude(),differenceLatitude,width);
+					int yDelivery  = getCoordinate(delivery.getLongitude(),differenceLongitude,height);
+
+					// Draw pickup as square
+
+					// Draw delivery as triangle
+				}
+			}
 		}
+	}
+
+	private int getCoordinate (float latitude,float difference, int width){
+		return (int)(latitude*width/difference)%width;
 	}
 }
