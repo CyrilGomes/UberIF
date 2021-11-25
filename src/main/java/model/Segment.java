@@ -4,10 +4,10 @@ package model;
  * Class representing a segment between two intersections.
  */
 public class Segment {
-    protected String origin;
-    protected String destination;
-    protected float length;
-    protected String name;
+    private String origin;
+    private String destination;
+    private float length;
+    private String name;
 
     /**
      * Constructor of the Segment object.

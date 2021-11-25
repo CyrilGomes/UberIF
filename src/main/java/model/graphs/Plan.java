@@ -2,6 +2,7 @@ package model.graphs;
 
 import model.Intersection;
 import model.Segment;
+
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,15 @@ public class Plan {
         this.pickups = pickups;
     }
 
+    public Map<String, Intersection> getIntersectionMap() {
+        return intersectionMap;
+    }
 
+    
+    public Map<Key, Segment> getSegmentMap() {
+        return segmentMap;
+    }
+    
     /**
      * Add an intersection to the map.
      * @param id the id of the intersection.

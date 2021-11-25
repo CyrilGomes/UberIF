@@ -5,9 +5,9 @@
  */
 package view;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import controller.ControllerMainWindow;
+import model.graphs.Plan;
 import observer.Observable;
 import observer.Observer;
 
@@ -16,6 +16,7 @@ import observer.Observer;
  * @author Thibaud Martin
  */
 public class MainWindow extends javax.swing.JFrame implements Observer {
+    private final PlanPanel planPanel;
 
     /**
      * Creates new form MainWindow
@@ -23,6 +24,20 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     public MainWindow() {
         buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow(this), this);
         initComponents();
+        planPanel = new PlanPanel();
+        javax.swing.GroupLayout planContainerLayout = new javax.swing.GroupLayout(planPanel);
+        planPanel.setLayout(planContainerLayout);
+        planContainerLayout.setHorizontalGroup(
+                planContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 364, Short.MAX_VALUE)
+        );
+        planContainerLayout.setVerticalGroup(
+                planContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 365, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(planPanel);
+        pack();
     }
 
     /**
@@ -36,7 +51,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -55,24 +69,11 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 364, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 365, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(jPanel5);
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addGap(0, 628, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -85,7 +86,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addGap(0, 628, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,6 +166,10 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         
     }
 
+    public void setPlanData(Plan planData) {
+        planPanel.setPlanData(planData);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -213,7 +218,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JTabbedPane jTabbedPane2;
     // End of variables declaration//GEN-END:variables

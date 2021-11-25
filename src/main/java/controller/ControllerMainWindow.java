@@ -1,6 +1,8 @@
 package controller;
 
 import model.PlanningRequest;
+import model.graphs.Graph;
+import model.graphs.Plan;
 import util.XMLParser;
 import view.MainWindow;
 
@@ -24,5 +26,12 @@ public class ControllerMainWindow {
         XMLParser xmlParser = new XMLParser();
         PlanningRequest request = xmlParser.readRequests(xmlFile.getPath());
         System.out.println(request);
+    }
+
+    public void importMap(File file){
+        XMLParser parser = new XMLParser();
+        Graph graph = parser.readMap(file.getAbsolutePath());
+        Plan planData = new Plan(graph.getIntersectionMap(), graph.getAdjacentsMap(), graph.getSegmentMap(), null,null);
+        mainWindow.setPlanData(planData);
     }
 }

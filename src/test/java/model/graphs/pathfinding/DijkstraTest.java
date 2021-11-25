@@ -1,9 +1,9 @@
 package model.graphs.pathfinding;
 
-import model.graphs.Plan;
-import model.graphs.Key;
 import model.Intersection;
 import model.Segment;
+import model.graphs.Key;
+import model.graphs.Plan;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -108,9 +108,9 @@ public class DijkstraTest {
     public void calculateMinimumDistance() {
     }
 
-    @Test
+    /*@Test
     public void executeAlgorithm() {
         dijkstra.executeAlgorithm(graph,"1");
 
-    }
+    }*/
 }
