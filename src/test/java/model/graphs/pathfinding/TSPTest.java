@@ -1,5 +1,8 @@
 package model.graphs.pathfinding;
 
+import javafx.util.Pair;
+import model.PlanningRequest;
+import model.Request;
 import model.graphs.Graph;
 import model.graphs.Plan;
 import org.junit.Before;
@@ -51,8 +54,15 @@ public class TSPTest {
     public void toursXml(){
         XMLParser xmlParser = new XMLParser();
 
-        Plan plan = xmlParser.readMap("files/map.xml");
+        Plan plan = xmlParser.readMap("files/largeMap.xml");
+        PlanningRequest planningRequest = xmlParser.readRequests("files/requestsMedium5.xml");
+        plan.setPlanningRequest(planningRequest);
 
+        TSP tsp = new TSP();
+        Graph graph = tsp.generateTsmCompleteGraph(plan);
+        Pair<Float, List<String>> result = tsp.allTours(graph,planningRequest);
+        System.out.println(result);
+        System.out.println(TSP.count);
 
     }
 
