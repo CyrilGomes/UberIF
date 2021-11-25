@@ -11,11 +11,21 @@ public class Graph {
     Map<String, Intersection> intersectionMap;
     Map<String, List<String>> adjacentsMap;
     Map<Key, Segment> segmentMap;
+    float differenceLatitude;
+    float differenceLongitude;
 
     public Graph(Map<String, Intersection> intersectionMap, Map<String, List<String>> adjacentsMap, Map<Key, Segment> segmentMap) {
         this.intersectionMap = intersectionMap;
         this.adjacentsMap = adjacentsMap;
         this.segmentMap = segmentMap;
+    }
+
+    public Graph(Map<String, Intersection> intersectionMap, Map<String, List<String>> adjacentsMap, Map<Key, Segment> segmentMap,float differenceLatitude,float differenceLongitude) {
+        this.intersectionMap = intersectionMap;
+        this.adjacentsMap = adjacentsMap;
+        this.segmentMap = segmentMap;
+        this.differenceLatitude = differenceLatitude;
+        this.differenceLongitude = differenceLongitude;
     }
 
     public Map<String, Intersection> getIntersectionMap() {
@@ -47,5 +57,13 @@ public class Graph {
 
     public Map<Key, Segment> getSegmentMap() {
         return segmentMap;
+    }
+
+    public float getDifferenceLatitude() {
+        return differenceLatitude;
+    }
+
+    public float getDifferenceLongitude() {
+        return differenceLongitude;
     }
 }

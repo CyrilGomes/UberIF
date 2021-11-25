@@ -29,22 +29,31 @@ public class PlanPanel extends JComponent {
 		System.out.println("Paint");
 		g.drawLine(0,0, 50, 50);
 		if(planData != null){
+			float differenceLatitude  = planData.getDifferenceLatitude();
+			float differenceLongitude = planData.getDifferenceLongitude();
+			int width = this.getWidth();
+			int height = this.getHeight();
+			System.out.println("width: "+width+" height: "+height);
+
+			System.out.println("differenceLatitude: "+differenceLatitude+" differenceLongitude: "+differenceLongitude);
 			g.setColor(Color.BLACK);
+
 			Map<Key, Segment> segmentMap = planData.getSegmentMap();
 			Map<String, Intersection> intersectionMap = planData.getIntersectionMap();
 			segmentMap.forEach((key, segment) -> {
 				Intersection origine = intersectionMap.get(segment.getOrigin());
 				Intersection destination = intersectionMap.get(segment.getDestination());
 
-				int xOrigine = (int)(((origine.getLongitude() + 180) * this.getWidth()) / 360);
-				int yOrigine = (int)(((origine.getLatitude() + 360) * this.getHeight()) / 180);
+				int xOrigine = (int)(origine.getLatitude()*width/differenceLatitude) %width;
+				int yOrigine = (int)(origine.getLongitude()*height/differenceLongitude) % height;
 
 				System.out.println("xOrigine: " + xOrigine + "\tyOrigine: " + yOrigine+ " ");
 
-				int xDestination = (int)((destination.getLatitude() * this.getWidth()) / 360);
-				int yDestination = (int)((destination.getLongitude() * this.getHeight()) / 180);
+				int xDestination = (int)(destination.getLatitude()*width/differenceLatitude) %width;
+				int yDestination = (int)(destination.getLongitude()*height/differenceLongitude) % height;
 
 				g.drawLine(xOrigine, yOrigine, xDestination, yDestination);
+				// g.drawString(segment.getName(),xOrigine,yOrigine);
 			});
 		}
 	}

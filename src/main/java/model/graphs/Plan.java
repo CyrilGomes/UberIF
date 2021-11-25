@@ -1,6 +1,7 @@
 package model.graphs;
 
 import model.Intersection;
+import model.PlanningRequest;
 import model.Segment;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public class Plan {
     java.util.Map<Key, Segment> segmentMap;
     List<String> deliveries;
     List<String> pickups;
+    float differenceLatitude;
+    float differenceLongitude;
 
     public Plan(java.util.Map<String, Intersection> intersectionMap, java.util.Map<String, List<String>> adjacentsMap, java.util.Map<Key, Segment> segmentMap, List<String> deliveries, List<String> pickups) {
         this.intersectionMap = intersectionMap;
@@ -19,6 +22,16 @@ public class Plan {
         this.segmentMap = segmentMap;
         this.deliveries = deliveries;
         this.pickups = pickups;
+    }
+
+    public Plan(java.util.Map<String, Intersection> intersectionMap, java.util.Map<String, List<String>> adjacentsMap, java.util.Map<Key, Segment> segmentMap, List<String> deliveries, List<String> pickups, float differenceLatitude, float differenceLongitude) {
+        this.intersectionMap = intersectionMap;
+        this.adjacentsMap = adjacentsMap;
+        this.segmentMap = segmentMap;
+        this.deliveries = deliveries;
+        this.pickups = pickups;
+        this.differenceLatitude = differenceLatitude;
+        this.differenceLongitude = differenceLongitude;
     }
 
     public Map<String, Intersection> getIntersectionMap() {
@@ -42,4 +55,13 @@ public class Plan {
         Segment segment = segmentMap.get(new Key(origin, destination));
         return segment.getLength();
     }
+
+    public float getDifferenceLatitude() {
+        return differenceLatitude;
+    }
+
+    public float getDifferenceLongitude() {
+        return differenceLongitude;
+    }
+
 }
