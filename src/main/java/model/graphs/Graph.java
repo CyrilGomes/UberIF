@@ -2,9 +2,7 @@ package model.graphs;
 
 import model.Intersection;
 import model.Segment;
-import javafx.util.Pair;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,5 +39,13 @@ public class Graph {
     public float getSegmentWeight(String origin, String destination){
         Segment segment = segmentMap.get(new Key(origin, destination));
         return segment.getLength();
+    }
+
+    public Map<String, List<String>> getAdjacentsMap() {
+        return adjacentsMap;
+    }
+
+    public Map<Key, Segment> getSegmentMap() {
+        return segmentMap;
     }
 }

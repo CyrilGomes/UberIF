@@ -4,6 +4,7 @@ public class Segment {
     private String origin;
     private String destination;
     private float length;
+    private String name;
 
     public Segment(String origin,String destination, float length, String name) {
         this.origin = origin;
