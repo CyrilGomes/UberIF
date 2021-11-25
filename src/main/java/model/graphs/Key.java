@@ -3,9 +3,8 @@ package model.graphs;
 import java.util.Objects;
 
 /**
- * the Key class. Serve as key for maps in Graph and Plan.
+ * the Key class. Serve as key for maps in Plan.
  * Used to order the segments by their origin and their destination intersections.
- * @see Graph
  * @see Plan
  */
 public class Key {

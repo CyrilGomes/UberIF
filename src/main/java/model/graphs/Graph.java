@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @deprecated anterior version of plan copied during git management. Do not use.
+ */
 public class Graph {
     Map<String, Intersection> intersectionMap;
     Map<String, List<String>> adjacentsMap;

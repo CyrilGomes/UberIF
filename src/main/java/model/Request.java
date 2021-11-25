@@ -1,6 +1,9 @@
 package model;
 /**
- * Request, a request from a client.
+ * class Request, a request from a client. Object constituted from
+ * the id of the pickup intersection, the id of the delivery intersection,
+ * the time needed for picking up and the time needed for delivering.
+ * @see Intersection
  */
 public class Request {
     private String pickupId;

@@ -47,11 +47,24 @@ public class Plan {
         intersectionMap.put(id, intersection);
     }
 
+    /**
+     * get all the adjacent intersections from an intersection.
+     * @param node the intersection.
+     * @return a list of adjacent intersections.
+     * @see Intersection
+     */
     public List<String> getAdjacentsNodes(String node){
         return adjacentsMap.get(node);
 
     }
 
+    /**
+     * Get the length of a segment between two intersections.
+     * @param origin the intersection at the beginning of the segment.
+     * @param destination the intersection at the end of the segment.
+     * @return the length of the segment
+     * @see Segment
+     */
     public float getSegmentWeight(String origin, String destination){
         Segment segment = segmentMap.get(new Key(origin, destination));
         return segment.getLength();
