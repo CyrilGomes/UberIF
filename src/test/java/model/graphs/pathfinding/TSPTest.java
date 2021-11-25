@@ -1,8 +1,10 @@
 package model.graphs.pathfinding;
 
 import model.graphs.Graph;
+import model.graphs.Plan;
 import org.junit.Before;
 import org.junit.Test;
+import util.XMLParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +46,14 @@ public class TSPTest {
     public void generateTsmCompleteGraph() {
     }
 
-    @Test
-    public void allTours() {
-        TSP TSP = new TSP();
 
-        System.out.println(TSP.allTours(g,"1"));
+    @Test
+    public void toursXml(){
+        XMLParser xmlParser = new XMLParser();
+
+        Plan plan = xmlParser.readMap("files/map.xml");
+
+
     }
 
 }

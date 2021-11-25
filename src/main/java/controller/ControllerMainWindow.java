@@ -30,8 +30,8 @@ public class ControllerMainWindow {
 
     public void importMap(File file){
         XMLParser parser = new XMLParser();
-        Graph graph = parser.readMap(file.getAbsolutePath());
-        Plan planData = new Plan(graph.getIntersectionMap(), graph.getAdjacentsMap(), graph.getSegmentMap(), null,null, graph.getDifferenceLatitude(), graph.getDifferenceLongitude());
+        Plan plan = parser.readMap(file.getAbsolutePath());
+        Plan planData = new Plan(plan.getIntersectionMap(), plan.getAdjacentsMap(), plan.getSegmentMap(), null,null, plan.getDifferenceLatitude(), plan.getDifferenceLongitude());
         mainWindow.setPlanData(planData);
     }
 }
