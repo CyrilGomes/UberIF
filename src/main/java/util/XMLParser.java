@@ -1,7 +1,11 @@
-package Util;
+package util;
 
+import model.PlanningRequest;
+import model.Request;
 import model.Segment;
 import model.Intersection;
+import model.graphs.Graph;
+import model.graphs.Key;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,7 +19,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class XMLParser {
@@ -43,9 +49,17 @@ public class XMLParser {
         }
     }
 
-    public Map<String, Intersection> readMap(String filePath) {
+    // Read a map xml file composed of intersections and segments
+    public Graph readMap(String filePath) {
         Document doc = parseXMLFile(filePath);
-        Map<String, Intersection> map = new HashMap<>();
+        Map<String, Intersection> intersectionMap = new HashMap<>();
+        Map<String, List<String>> adjacentsMap = new HashMap<>();
+        Map<Key,Segment> segmentMap = new HashMap<>();
+
+        float maxLatitude = Integer.MIN_VALUE;
+        float minLatitude = Integer.MAX_VALUE;
+        float maxLongitude = Integer.MIN_VALUE;
+        float minLongitude = Integer.MAX_VALUE;
 
         // Get all intersections
         NodeList intersections = doc.getElementsByTagName("intersection");
@@ -57,8 +71,14 @@ public class XMLParser {
                 float latitude = Float.parseFloat(element.getAttribute("latitude"));
                 float longitude = Float.parseFloat(element.getAttribute("longitude"));
 
+                maxLatitude = Math.max(maxLatitude,latitude);
+                minLatitude = Math.min(minLatitude,latitude);
+                maxLongitude= Math.max(maxLongitude,longitude);
+                minLongitude= Math.min(minLongitude,longitude);
+
                 Intersection intersection = new Intersection(id, latitude, longitude);
-                map.put(id, intersection);
+                intersectionMap.put(id, intersection);
+                adjacentsMap.put(id,new ArrayList<>());
             }
         }
 
@@ -74,11 +94,51 @@ public class XMLParser {
                 String name = element.getAttribute("name");
 
                 Segment segment = new Segment(origin,destination, length, name);
-                map.get(origin).addSegment(segment);
+                adjacentsMap.get(origin).add(destination);
+
+                Key key = new Key(origin,destination);
+                segmentMap.put(key,segment);
             }
 
         }
 
-        return map;
+        float differenceLatitude = maxLatitude-minLatitude;
+        float differenceLongitude = maxLongitude - minLongitude;
+        Graph graph = new Graph(intersectionMap,adjacentsMap,segmentMap,differenceLatitude,differenceLongitude);
+
+        return graph;
     }
+
+    // Read a requests file
+    public PlanningRequest readRequests (String filePath){
+        Document doc = parseXMLFile(filePath);
+
+        // Get depot
+        Element depot = (Element) doc.getElementsByTagName("depot").item(0);
+        String startId = depot.getAttribute("address");
+        String departureTime = depot.getAttribute("departureTime");
+
+        PlanningRequest planningRequest = new PlanningRequest(startId,departureTime);
+
+        // Get all requests
+        NodeList requests = doc.getElementsByTagName("request");
+        for (int i = 0; i < requests.getLength(); i++) {
+            Node node = requests.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element) node;
+                String pickupId = element.getAttribute("pickupAddress");
+                String deliveryId = element.getAttribute("deliveryAddress");
+                int pickupDuration = Integer.parseInt(element.getAttribute("pickupDuration"));
+                int deliveryDuration = Integer.parseInt(element.getAttribute("deliveryDuration"));
+
+                Request request = new Request(pickupId,deliveryId,pickupDuration,deliveryDuration);
+                planningRequest.addRequest(request);
+
+            }
+        }
+
+        return planningRequest;
+    }
+
+
 }
