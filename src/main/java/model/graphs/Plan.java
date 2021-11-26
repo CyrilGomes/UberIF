@@ -24,7 +24,21 @@ public class Plan {
 
     PlanningRequest planningRequest = null;
 
-    /**
+   
+    public Segment getSegment(String origin, String destination){
+        Key key = new Key(origin, destination);
+        return segmentMap.get(key);
+    }
+
+    public List<String> getDeliveries() {
+        return deliveries;
+    }
+
+    public List<String> getPickups() {
+        return pickups;
+    }
+
+     /**
      * the constructor of the class Plan.
      * @param intersectionMap where the string is the id of the intersection object.
      * @param adjacentsMap where the string is the id of an intersection object.
@@ -66,6 +80,15 @@ public class Plan {
         return segmentMap;
     }
     
+    @Override
+    public String toString() {
+        return "Plan{" +
+                "intersectionMap=" + intersectionMap +
+                ", adjacentsMap=" + adjacentsMap +
+                ", segmentMap=" + segmentMap +
+                '}';
+    }
+
     /**
      * Add an intersection to the map.
      * @param id the id of the intersection.

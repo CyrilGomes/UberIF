@@ -1,5 +1,8 @@
 package model.graphs.pathfinding;
 
+import model.graphs.Graph;
+import model.graphs.Plan;
+import model.graphs.Key;
 import model.Intersection;
 import model.Segment;
 import model.graphs.Key;
@@ -7,10 +10,7 @@ import model.graphs.Plan;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DijkstraTest {
     Dijkstra dijkstra;
@@ -91,7 +91,7 @@ public class DijkstraTest {
 
         List<String> deliveries = new ArrayList<>();
         deliveries.add("4");
-        deliveries.add("5");
+        deliveries.add("6");
         List<String> pickups =  new ArrayList<>();
         pickups.add("2");
         pickups.add("7");
@@ -108,9 +108,28 @@ public class DijkstraTest {
     public void calculateMinimumDistance() {
     }
 
-    /*@Test
-    public void executeAlgorithm() {
-        dijkstra.executeAlgorithm(graph,"1");
 
-    }*/
+    @Test
+    public void executeAlgorithm() {
+
+
+        Dijkstra dijkstra = new Dijkstra();
+        List<String> pointsOfInterests = new ArrayList<>();
+
+        pointsOfInterests.addAll(graph.getDeliveries());
+        pointsOfInterests.addAll(graph.getPickups());
+        pointsOfInterests.add("1");
+        Graph newGraph = new Graph();
+
+        dijkstra.executeAlgorithm(graph,"1",newGraph,pointsOfInterests );
+
+
+        Set<String> correctValues = new HashSet<>(Arrays.asList("1", "2", "4","6","7"));
+        assert(newGraph.getNbVertices() == 5);
+        System.out.println(newGraph.getEdges());
+        assert(newGraph.getNbEdges() == 4);
+        assert(Objects.equals(newGraph.getVertices(), correctValues));
+
+
+    }
 }

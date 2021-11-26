@@ -31,6 +31,14 @@ public class Key {
     }
 
     @Override
+    public String toString() {
+        return "Key{" +
+                "x='" + x + '\'' +
+                ", y='" + y + '\'' +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(x, y);
     }
