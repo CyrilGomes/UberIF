@@ -67,6 +67,11 @@ public class XMLParser {
         Map<String, List<String>> adjacentsMap = new HashMap<>();
         Map<Key,Segment> segmentMap = new HashMap<>();
 
+        float maxLatitude = Integer.MIN_VALUE;
+        float minLatitude = Integer.MAX_VALUE;
+        float maxLongitude = Integer.MIN_VALUE;
+        float minLongitude = Integer.MAX_VALUE;
+
         // Get all intersections
         NodeList intersections = doc.getElementsByTagName("intersection");
         for (int i = 0; i < intersections.getLength(); i++) {
@@ -76,6 +81,11 @@ public class XMLParser {
                 String id = element.getAttribute("id");
                 float latitude = Float.parseFloat(element.getAttribute("latitude"));
                 float longitude = Float.parseFloat(element.getAttribute("longitude"));
+
+                maxLatitude = Math.max(maxLatitude,latitude);
+                minLatitude = Math.min(minLatitude,latitude);
+                maxLongitude= Math.max(maxLongitude,longitude);
+                minLongitude= Math.min(minLongitude,longitude);
 
                 Intersection intersection = new Intersection(id, latitude, longitude);
                 intersectionMap.put(id, intersection);
@@ -103,7 +113,9 @@ public class XMLParser {
 
         }
 
-        Graph graph = new Graph(intersectionMap,adjacentsMap,segmentMap);
+        float differenceLatitude = maxLatitude-minLatitude;
+        float differenceLongitude = maxLongitude - minLongitude;
+        Graph graph = new Graph(intersectionMap,adjacentsMap,segmentMap,differenceLatitude,differenceLongitude);
 
         return graph;
     }

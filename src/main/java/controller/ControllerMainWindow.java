@@ -45,7 +45,7 @@ public class ControllerMainWindow {
     public void importMap(File file){
         XMLParser parser = new XMLParser();
         Graph graph = parser.readMap(file.getAbsolutePath());
-        Plan planData = new Plan(graph.getIntersectionMap(), graph.getAdjacentsMap(), graph.getSegmentMap(), null,null);
+        Plan planData = new Plan(graph.getIntersectionMap(), graph.getAdjacentsMap(), graph.getSegmentMap(), null,null, graph.getDifferenceLatitude(), graph.getDifferenceLongitude());
         mainWindow.setPlanData(planData);
     }
 }
