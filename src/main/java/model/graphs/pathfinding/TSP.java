@@ -65,7 +65,8 @@ public class TSP {
             Edge edge = graph.getEdge(tour.get(i-1),tour.get(i));
             segmentList.addAll(edge.segmentList);
         }
-
+        Edge edge = graph.getEdge(tour.get(listSize-1),tour.get(0));
+        segmentList.addAll(edge.segmentList);
 
         return new DeliveryTour(segmentList,bestRoute.getKey());
     }
@@ -130,10 +131,7 @@ public class TSP {
                     if(currentRoute.getKey() > bestRoute.getKey()){
                         bestRoute = currentRoute;
                     }
-
-
                 }
-
             }
         }
 
