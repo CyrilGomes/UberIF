@@ -32,7 +32,6 @@ public class ControllerMainWindow {
     public void importMap(File file){
         XMLParser parser = new XMLParser();
         Plan plan = parser.readMap(file.getAbsolutePath());
-        Plan planData = new Plan(plan.getIntersectionMap(), plan.getAdjacentsMap(), plan.getSegmentMap(),plan.getMaxLatitude(), plan.getMinLatitude(),plan.getMaxLongitude(),plan.getMinLongitude());
-        mainWindow.setPlanData(planData);
+        mainWindow.setPlanData(plan);
     }
 }

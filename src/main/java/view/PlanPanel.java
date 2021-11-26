@@ -18,6 +18,14 @@ import java.util.concurrent.TimeUnit;
 public class PlanPanel extends JComponent {
 	private Plan planData;
 	private DeliveryTour deliveryTour;
+	float maxLatitude;
+	float minLatitude;
+	float maxLongitude;
+	float minLongitude;
+	int width;
+	int height;
+
+
 	public PlanPanel() {
 		setBackground(Color.BLUE);
 		setVisible(true);
@@ -38,12 +46,6 @@ public class PlanPanel extends JComponent {
 		System.out.println(deliveryTour.getSegmentList());
 		this.repaint();
 	}
-	float maxLatitude;
-	float minLatitude;
-	float maxLongitude;
-	float minLongitude;
-	int width;
-	int height;
 
 	public void drawSegment(Graphics g, Segment segment, Color color,Map<String, Intersection> intersectionMap, boolean isBestPath ){
 
