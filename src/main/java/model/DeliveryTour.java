@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Class representing the computed Delivery tour. result of the TSP.
+ * @see Segment
  */
 public class DeliveryTour {
     List<Segment> segmentList;
