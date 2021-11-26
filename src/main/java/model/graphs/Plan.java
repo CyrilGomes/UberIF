@@ -17,8 +17,12 @@ public class Plan {
     java.util.Map<Key, Segment> segmentMap;
     List<String> deliveries;
     List<String> pickups;
-    float differenceLatitude;
-    float differenceLongitude;
+    float maxLatitude;
+    float minLatitude;
+    float maxLongitude;
+    float minLongitude;
+
+    PlanningRequest planningRequest = null;
 
     /**
      * the constructor of the class Plan.
@@ -41,14 +45,16 @@ public class Plan {
         this.pickups = pickups;
     }
 
-    public Plan(java.util.Map<String, Intersection> intersectionMap, java.util.Map<String, List<String>> adjacentsMap, java.util.Map<Key, Segment> segmentMap, List<String> deliveries, List<String> pickups, float differenceLatitude, float differenceLongitude) {
+    public Plan(Map<String, Intersection> intersectionMap, Map<String, List<String>> adjacentsMap, Map<Key, Segment> segmentMap, List<String> deliveries, List<String> pickups, float maxLatitude, float minLatitude, float maxLongitude, float minLongitude) {
         this.intersectionMap = intersectionMap;
         this.adjacentsMap = adjacentsMap;
         this.segmentMap = segmentMap;
         this.deliveries = deliveries;
         this.pickups = pickups;
-        this.differenceLatitude = differenceLatitude;
-        this.differenceLongitude = differenceLongitude;
+        this.maxLatitude = maxLatitude;
+        this.minLatitude = minLatitude;
+        this.maxLongitude = maxLongitude;
+        this.minLongitude = minLongitude;
     }
 
     public Map<String, Intersection> getIntersectionMap() {
@@ -93,12 +99,27 @@ public class Plan {
         return segment.getLength();
     }
 
-    public float getDifferenceLatitude() {
-        return differenceLatitude;
+    public float getMaxLatitude() {
+        return maxLatitude;
     }
 
-    public float getDifferenceLongitude() {
-        return differenceLongitude;
+    public float getMinLatitude() {
+        return minLatitude;
     }
 
+    public float getMaxLongitude() {
+        return maxLongitude;
+    }
+
+    public float getMinLongitude() {
+        return minLongitude;
+    }
+
+    public PlanningRequest getPlanningRequest() {
+        return planningRequest;
+    }
+
+    public void setPlanningRequest(PlanningRequest planningRequest) {
+        this.planningRequest = planningRequest;
+    }
 }

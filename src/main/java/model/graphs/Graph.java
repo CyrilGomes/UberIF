@@ -15,8 +15,10 @@ public class Graph {
     Map<String, Intersection> intersectionMap;
     Map<String, List<String>> adjacentsMap;
     Map<Key, Segment> segmentMap;
-    float differenceLatitude;
-    float differenceLongitude;
+    float maxLatitude;
+    float minLatitude;
+    float maxLongitude;
+    float minLongitude;
 
     public Graph(Map<String, Intersection> intersectionMap, Map<String, List<String>> adjacentsMap, Map<Key, Segment> segmentMap) {
         this.intersectionMap = intersectionMap;
@@ -24,12 +26,14 @@ public class Graph {
         this.segmentMap = segmentMap;
     }
 
-    public Graph(Map<String, Intersection> intersectionMap, Map<String, List<String>> adjacentsMap, Map<Key, Segment> segmentMap,float differenceLatitude,float differenceLongitude) {
+    public Graph(Map<String, Intersection> intersectionMap, Map<String, List<String>> adjacentsMap, Map<Key, Segment> segmentMap, float maxLatitude, float minLatitude, float maxLongitude, float minLongitude) {
         this.intersectionMap = intersectionMap;
         this.adjacentsMap = adjacentsMap;
         this.segmentMap = segmentMap;
-        this.differenceLatitude = differenceLatitude;
-        this.differenceLongitude = differenceLongitude;
+        this.maxLatitude = maxLatitude;
+        this.minLatitude = minLatitude;
+        this.maxLongitude = maxLongitude;
+        this.minLongitude = minLongitude;
     }
 
     public Map<String, Intersection> getIntersectionMap() {
@@ -63,11 +67,19 @@ public class Graph {
         return segmentMap;
     }
 
-    public float getDifferenceLatitude() {
-        return differenceLatitude;
+    public float getMaxLatitude() {
+        return maxLatitude;
     }
 
-    public float getDifferenceLongitude() {
-        return differenceLongitude;
+    public float getMinLatitude() {
+        return minLatitude;
+    }
+
+    public float getMaxLongitude() {
+        return maxLongitude;
+    }
+
+    public float getMinLongitude() {
+        return minLongitude;
     }
 }

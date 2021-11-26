@@ -112,10 +112,8 @@ public class XMLParser {
             }
 
         }
-
-        float differenceLatitude = maxLatitude-minLatitude;
-        float differenceLongitude = maxLongitude - minLongitude;
-        Graph graph = new Graph(intersectionMap,adjacentsMap,segmentMap,differenceLatitude,differenceLongitude);
+        
+        Graph graph = new Graph(intersectionMap,adjacentsMap,segmentMap,maxLatitude,minLatitude,maxLongitude,minLongitude);
 
         return graph;
     }
