@@ -3,23 +3,44 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package View;
+package view;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import controller.ControllerMainWindow;
+import model.PlanningRequest;
+import model.graphs.Plan;
+import observer.Observable;
+import observer.Observer;
 
 /**
+ * The main class, displaying the HMI and starting the application.
  *
  * @author Thibaud Martin
+ * @author Aurelia Inard
  */
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame implements Observer {
+    private final PlanPanel planPanel;
 
     /**
-     * Creates new form MainWindow
+     * Creates new form MainWindow.
      */
     public MainWindow() {
+        buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow(this), this);
         initComponents();
+        planPanel = new PlanPanel();
+        javax.swing.GroupLayout planContainerLayout = new javax.swing.GroupLayout(planPanel);
+        planPanel.setLayout(planContainerLayout);
+        planContainerLayout.setHorizontalGroup(
+                planContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 364, Short.MAX_VALUE)
+        );
+        planContainerLayout.setVerticalGroup(
+                planContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 365, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(planPanel);
+        pack();
     }
 
     /**
@@ -33,7 +54,6 @@ public class MainWindow extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -52,24 +72,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 364, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 365, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(jPanel5);
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addGap(0, 628, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,7 +89,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addGap(0, 628, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,7 +111,7 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuItem4.setText("Exit");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jMenuItemActionPerformed(evt);
             }
         });
         jMenu3.add(jMenuItem4);
@@ -114,6 +121,11 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu1.setText("Map");
 
         jMenuItem3.setText("Import map");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
@@ -121,12 +133,17 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu2.setText("Delivery");
 
         jMenuItem1.setText("Import tour");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem1);
 
-        jMenuItem2.setText("Ajouter livraison");
+        jMenuItem2.setText("Add a request");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jMenuItemActionPerformed(evt);
             }
         });
         jMenu2.add(jMenuItem2);
@@ -138,14 +155,37 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    /**
+     * the Event listener, detect when a button is clicked and send it to the buttonListener Class.
+     *
+     * @param evt the event caught.
+     * @see ButtonListenerMainWindow
+     */
+    private void jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+        System.out.println(evt.getActionCommand());
+        buttonListenerMainWindow.actionPerformed(evt);
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        setVisible(false);
-        System.exit(0);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_jMenuItemActionPerformed
+
+
+
+    @Override
+    public void update(Observable o, Object arg){
+        
+    }
+
+    /**
+     * update the plan.
+     * @param planData the plan to update.
+     */
+    public void setPlanData(Plan planData) {
+        planPanel.setPlanData(planData);
+    }
+
+    public void setPlanningRequest(PlanningRequest planningRequest){
+        planPanel.setPlanningRequest(planningRequest);
+    }
 
     /**
      * @param args the command line arguments
@@ -177,7 +217,7 @@ public class MainWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FlatDarkLaf.setup();
+                FlatLightLaf.setup();
                 new MainWindow().setVisible(true);
                 System.out.println("Hello world");
             }
@@ -195,8 +235,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JTabbedPane jTabbedPane2;
     // End of variables declaration//GEN-END:variables
+
+    private ButtonListenerMainWindow buttonListenerMainWindow;
 }

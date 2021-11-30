@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="View.MainWindow" />
+    <option name="MAIN_CLASS_NAME" value="view.MainWindow" />
     <module name="UberIF" />
     <method v="2">
       <option name="Make" enabled="true" />
