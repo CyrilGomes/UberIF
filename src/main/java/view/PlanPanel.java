@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * The visualisation of the map. Updated when the data changes.
  */
-public class PlanPanel extends JComponent {
+public class PlanPanel extends JPanel {
 	private Plan planData;
 	private DeliveryTour deliveryTour;
 	float maxLatitude;
@@ -28,9 +28,9 @@ public class PlanPanel extends JComponent {
 
 
 	public PlanPanel() {
-		setBackground(Color.BLUE);
-		setVisible(true);
-
+		super();
+		this.setBackground(Color.LIGHT_GRAY);
+		this.setVisible(true);
 	}
 
 	public void setPlanData(Plan planData) {
@@ -49,16 +49,12 @@ public class PlanPanel extends JComponent {
 	}
 
 	public void drawSegment(Graphics g, Segment segment, Color color,Map<String, Intersection> intersectionMap, boolean isBestPath ){
-
 		g.setColor(color);
 		Intersection origine = intersectionMap.get(segment.getOrigin());
 		Intersection destination = intersectionMap.get(segment.getDestination());
 
 		int yOrigine = getCoordinateY(origine.getLatitude(),0,height,minLatitude,maxLatitude);
 		int xOrigine = getCoordinate(origine.getLongitude(),0,width,minLongitude,maxLongitude);
-		//g.drawRect(xOrigine,yOrigine,10,10);
-
-		//System.out.println("xOrigine: " + xOrigine + "\tyOrigine: " + yOrigine+ " ");
 
 		int yDestination = getCoordinateY(destination.getLatitude(),0,height,minLatitude,maxLatitude);
 		int xDestination = getCoordinate(destination.getLongitude(),0,width,minLongitude,maxLongitude);
@@ -86,7 +82,7 @@ public class PlanPanel extends JComponent {
 			Map<Key, Segment> segmentMap = planData.getSegmentMap();
 			Map<String, Intersection> intersectionMap = planData.getIntersectionMap();
 			segmentMap.forEach((key, segment) -> {
-				drawSegment(g,segment,Color.BLACK, intersectionMap,false);
+				drawSegment(g,segment,Color.WHITE, intersectionMap,false);
 			});
 
 			if(planData.getPlanningRequest()!=null){
@@ -138,7 +134,6 @@ public class PlanPanel extends JComponent {
 
 			}
 		}
-
 	}
 
 	private int getCoordinate (float x ,int a, int b, float min , float max){
