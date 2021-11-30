@@ -31,5 +31,10 @@
       <option name="name" value="A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository." />
       <option name="url" value="file:C:\aurelia\travail\4IF\agile\UberIF/lib" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="unknown-jars-temp-repo" />
+      <option name="name" value="A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository." />
+      <option name="url" value="file:D:\Cours4A\WebSemantique\UberIF/lib" />
+    </remote-repository>
   </component>
 </project>
