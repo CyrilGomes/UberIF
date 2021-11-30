@@ -13,14 +13,16 @@ import observer.Observable;
 import observer.Observer;
 
 /**
+ * The main class, displaying the HMI and starting the application.
  *
  * @author Thibaud Martin
+ * @author Aurelia Inard
  */
 public class MainWindow extends javax.swing.JFrame implements Observer {
     private final PlanPanel planPanel;
 
     /**
-     * Creates new form MainWindow
+     * Creates new form MainWindow.
      */
     public MainWindow() {
         buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow(this), this);
@@ -138,7 +140,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         });
         jMenu2.add(jMenuItem1);
 
-        jMenuItem2.setText("Ajouter livraison");
+        jMenuItem2.setText("Add a request");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemActionPerformed(evt);
@@ -153,6 +155,12 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * the Event listener, detect when a button is clicked and send it to the buttonListener Class.
+     *
+     * @param evt the event caught.
+     * @see ButtonListenerMainWindow
+     */
     private void jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActionPerformed
         // TODO add your handling code here:
         System.out.println(evt.getActionCommand());
@@ -167,6 +175,10 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         
     }
 
+    /**
+     * update the plan.
+     * @param planData the plan to update.
+     */
     public void setPlanData(Plan planData) {
         planPanel.setPlanData(planData);
     }

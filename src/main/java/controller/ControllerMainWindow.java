@@ -8,17 +8,26 @@ import view.MainWindow;
 
 import java.io.File;
 
+/**
+ * The Controller of the MainWindow view. Receive information from the view
+ * and compute the response.
+ */
 public class ControllerMainWindow {
     private MainWindow mainWindow;
+
+    /**
+     * The constructor of the class.
+     * @param mainWindow the window that it must control.
+     */
     public ControllerMainWindow(MainWindow mainWindow){
         this.mainWindow = mainWindow;
     }
 
     /**
-     * Method that take a delivery points file and compute the optimal tour.
-     *
+     * Method that take a file of requests and compute the optimal tour.
+     * Update the Plan accordingly.
      * @param xmlFile the file containing the delivery points
-     * @return a list of the point to visit in an optimal order. (yet to be implemented)
+     *
      */
     public void importTour(File xmlFile){
         System.out.println("read requests");
@@ -29,6 +38,11 @@ public class ControllerMainWindow {
         mainWindow.setPlanningRequest(request);
     }
 
+    /**
+     * Method that take a file representing a map, create the object
+     * and finally ask the MainWindow to display it.
+     * @param file the file read.
+     */
     public void importMap(File file){
         XMLParser parser = new XMLParser();
         Plan plan = parser.readMap(file.getAbsolutePath());

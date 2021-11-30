@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The visualisation of the map. Updated when the data changes.
+ */
 public class PlanPanel extends JComponent {
 	private Plan planData;
 	private DeliveryTour deliveryTour;

@@ -1,11 +1,21 @@
 package model;
 
+/**
+ * Class representing a segment between two intersections.
+ */
 public class Segment {
     private String origin;
     private String destination;
     private float length;
     private String name;
 
+    /**
+     * Constructor of the Segment object.
+     * @param origin the id from the origin intersection.
+     * @param destination the id from the destination intersection.
+     * @param length the length of the segment.
+     * @param name the name of the segment.
+     */
     public Segment(String origin,String destination, float length, String name) {
         this.origin = origin;
         this.destination = destination;

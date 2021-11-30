@@ -24,7 +24,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class XMLParser: parse xml files and translate the content in Plan and PlanningRequest object.
+ * @// TODO: 25/11/2021 transform it into a static class.
+ * @see model.graphs.Plan
+ * @see model.PlanningRequest
+ */
 public class XMLParser {
+
     private Document parseXMLFile(String filePath) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -49,7 +56,11 @@ public class XMLParser {
         }
     }
 
-    // Read a map xml file composed of intersections and segments
+    /** Read a map xml file composed of intersections and segments.
+     *
+     * @param filePath the path of the file to read
+     * @return the graph resulting of the parsing. (to change to Plan)
+     */
     public Plan readMap(String filePath) {
         Document doc = parseXMLFile(filePath);
         Map<String, Intersection> intersectionMap = new HashMap<>();
@@ -107,7 +118,11 @@ public class XMLParser {
         return plan;
     }
 
-    // Read a requests file
+    /**Read a requests file.
+     *
+     * @param filePath the path to the file to read.
+     * @return
+     */
     public PlanningRequest readRequests (String filePath){
         Document doc = parseXMLFile(filePath);
 
