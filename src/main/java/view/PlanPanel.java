@@ -42,11 +42,6 @@ public class PlanPanel extends JPanel {
 
 	public void setPlanningRequest(PlanningRequest planningRequest){
 		planData.setPlanningRequest(planningRequest);
-		TSP tsp = new TSP1();
-		Graph graph = Graph.generateCompleteGraphFromPlan(planData);
-		tsp.searchSolution(20000,graph,planningRequest);
-		deliveryTour = tsp.getDeliveryTour();
-		System.out.println(deliveryTour.getSegmentList());
 		this.repaint();
 	}
 
