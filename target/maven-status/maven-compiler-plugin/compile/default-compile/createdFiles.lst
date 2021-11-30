@@ -12,7 +12,6 @@ observer\Observable.class
 controller\ControllerMainWindow.class
 model\graphs\Key.class
 view\MainWindow$1.class
-view\PlanPanel.class
 model\graphs\pathfinding\Dijkstra.class
 util\XMLParser.class
 view\MainWindow$4.class
