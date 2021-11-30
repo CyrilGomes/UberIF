@@ -24,3 +24,16 @@ hs_err_pid*
 
 .DS_Store
 .idea
+/.idea/
+/.idea/checkstyleidea-libs/
+/.idea/runConfigurations/
+/.idea/.gitignore
+/.idea/checkstyle-idea.xml
+/.idea/compiler.xml
+/.idea/jarRepositories.xml
+/.idea/misc.xml
+/.idea/runConfigurations.xml
+/.idea/UberIF.iml
+/.idea/uiDesigner.xml
+/.idea/vcs.xml
+/.idea/workspace.xml
