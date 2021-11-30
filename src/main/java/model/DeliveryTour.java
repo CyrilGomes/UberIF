@@ -10,6 +10,15 @@ public class DeliveryTour {
     List<Segment> segmentList;
     float globalTime;
 
+    
+    public List<Segment> getSegmentList() {
+        return segmentList;
+    }
+
+    public float getGlobalTime() {
+        return globalTime;
+    }
+
     /**
      * Constructor of the delivery tour.
      * @param segmentList the list of segments, in order, which compose the tour.

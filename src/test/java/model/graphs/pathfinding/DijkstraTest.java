@@ -1,12 +1,12 @@
 package model.graphs.pathfinding;
 
+import model.PlanningRequest;
+import model.Request;
 import model.graphs.Graph;
 import model.graphs.Plan;
 import model.graphs.Key;
 import model.Intersection;
 import model.Segment;
-import model.graphs.Key;
-import model.graphs.Plan;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class DijkstraTest {
 
     Map<String, List<String>> adjacentsMap = new HashMap<>();
     Map<Key, Segment> segmentMap = new HashMap<>();
-    Plan graph;
+    Plan plan;
 
     private void connectNodes(String i1, String i2, float length){
         Segment segment = new Segment(i1, i2,length, i1+i2);
@@ -95,8 +95,12 @@ public class DijkstraTest {
         List<String> pickups =  new ArrayList<>();
         pickups.add("2");
         pickups.add("7");
-
-        graph = new Plan(intersectionMap,adjacentsMap,segmentMap,deliveries,pickups);
+        PlanningRequest planningRequest = new PlanningRequest("1","2:0:0");
+        planningRequest.addRequest(new Request("2","4",5,4));
+        planningRequest.addRequest(new Request("7","6",5,4));
+        plan = new Plan(intersectionMap,adjacentsMap,segmentMap,0,0,0,0);
+        plan.setPlanningRequest(planningRequest);
+        //graph = new Plan(intersectionMap,adjacentsMap,segmentMap,0,0);
 
     }
 
@@ -116,17 +120,29 @@ public class DijkstraTest {
         Dijkstra dijkstra = new Dijkstra();
         List<String> pointsOfInterests = new ArrayList<>();
 
-        pointsOfInterests.addAll(graph.getDeliveries());
-        pointsOfInterests.addAll(graph.getPickups());
-        pointsOfInterests.add("1");
+        PlanningRequest planningRequest = plan.getPlanningRequest();
+        pointsOfInterests.add(planningRequest.getStartId());
+        for (Request request: planningRequest.getRequests()) {
+            pointsOfInterests.add(request.getDeliveryId());
+            pointsOfInterests.add(request.getPickupId());
+        }
+
         Graph newGraph = new Graph();
 
-        dijkstra.executeAlgorithm(graph,"1",newGraph,pointsOfInterests );
+
+        for (String currentPoint:pointsOfInterests) {
+
+            dijkstra.executeAlgorithm(plan,currentPoint,newGraph,pointsOfInterests );
+        }
+
+
+        dijkstra.executeAlgorithm(plan,planningRequest.getStartId(),newGraph,pointsOfInterests );
 
 
         Set<String> correctValues = new HashSet<>(Arrays.asList("1", "2", "4","6","7"));
-        assert(newGraph.getNbVertices() == 5);
         System.out.println(newGraph.getEdges());
+        assert(newGraph.getNbVertices() == 5);
+
         assert(newGraph.getNbEdges() == 4);
         assert(Objects.equals(newGraph.getVertices(), correctValues));
 

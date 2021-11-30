@@ -2,6 +2,8 @@ package model.graphs.pathfinding;
 
 import javafx.util.Pair;
 import model.DeliveryTour;
+import model.PlanningRequest;
+import model.Request;
 import model.Segment;
 import model.graphs.Graph;
 import model.graphs.Key;
@@ -10,26 +12,23 @@ import model.graphs.Plan;
 import java.util.*;
 
 public class TSP {
-    public Graph generateTsmCompleteGraph(Plan graph, String sourceNode){
+    public Graph generateTsmCompleteGraph(Plan plan){
         Dijkstra dijkstra = new Dijkstra();
         List<String> pointsOfInterests = new ArrayList<>();
 
-        pointsOfInterests.addAll(graph.getDeliveries());
-        pointsOfInterests.addAll(graph.getPickups());
-        pointsOfInterests.add(sourceNode);
+        PlanningRequest planningRequest = plan.getPlanningRequest();
+        pointsOfInterests.add(planningRequest.getStartId());
+        for (Request request: planningRequest.getRequests()) {
+            pointsOfInterests.add(request.getDeliveryId());
+            pointsOfInterests.add(request.getPickupId());
+        }
+
         Graph newGraph = new Graph();
-        /*
-        dijkstra.executeAlgorithm(graph,"6",newGraph,pointsOfInterests );
-        dijkstra.executeAlgorithm(graph,"4",newGraph,pointsOfInterests );
-        dijkstra.executeAlgorithm(graph,"4",newGraph,pointsOfInterests );
-
-
-        System.out.println(newGraph.keySet());      */
 
 
         for (String currentPoint:pointsOfInterests) {
 
-            dijkstra.executeAlgorithm(graph,currentPoint,newGraph,pointsOfInterests );
+            dijkstra.executeAlgorithm(plan,currentPoint,newGraph,pointsOfInterests );
         }
 
 
@@ -37,16 +36,25 @@ public class TSP {
 
     }
 
-    public Pair<Float, List<String>> allTours(Graph graph, String sourceVertex){
+    public Pair<Float, List<String>> allTours(Graph graph,PlanningRequest planningRequest){
+
+        String sourceVertex = planningRequest.getStartId();
         List<String> visited = new ArrayList<String>(graph.getNbVertices());
         visited.add(sourceVertex);
         List<String> unvisited = new ArrayList<String>(graph.getNbVertices()-1);
         Set<String> vertices = graph.getVertices();
         unvisited.addAll(vertices);
         unvisited.remove(sourceVertex);
+        List<String> deliveryPoints = new ArrayList<>();
+        List<String> pickupPoints = new ArrayList<>();
+        List<Request> requests = planningRequest.getRequests();
+        for (Request request:requests) {
+            deliveryPoints.add(request.getDeliveryId());
+            pickupPoints.add(request.getPickupId());
+        }
 
 
-        return allTours(graph, sourceVertex,sourceVertex,visited,unvisited);
+        return allTours(graph, sourceVertex,sourceVertex,visited,unvisited,pickupPoints,deliveryPoints);
     }
 
     public DeliveryTour generatedDeliveryTour(Graph graph,Pair<Float, List<String>> bestRoute){
@@ -57,6 +65,9 @@ public class TSP {
             Edge edge = graph.getEdge(tour.get(i-1),tour.get(i));
             segmentList.addAll(edge.segmentList);
         }
+        Edge edge = graph.getEdge(tour.get(listSize-1),tour.get(0));
+        segmentList.addAll(edge.segmentList);
+
         return new DeliveryTour(segmentList,bestRoute.getKey());
     }
     public float calculateRouteLength(Graph graph, List<String> route){
@@ -73,12 +84,18 @@ public class TSP {
 
 
 
+    static int count = 0;
     public Pair<Float, List<String>> allTours(Graph g,
                                               String sourceVertex,
                                               String currentVertex,
                                               List<String> visited,
-                                              List<String> unvisited
+                                              List<String> unvisited,
+                                              List<String> pickupPoints,
+                                              List<String> deliveryPoints
                                              ){
+
+        count++;
+        //System.out.println((count/5040.0) * 100.0);
 
         Pair<Float, List<String>> bestRoute = null;
 
@@ -92,8 +109,12 @@ public class TSP {
 
 
             for (String nextVertex : unvisited) {
-
-
+                if(deliveryPoints.contains(nextVertex)){
+                    int id = deliveryPoints.indexOf(nextVertex);
+                    if(!visited.contains(pickupPoints.get(id))){
+                        continue;
+                    }
+                }
 
                 if(g.isArc(currentVertex,nextVertex)){
                     Pair<Float, List<String>> currentRoute;
@@ -103,17 +124,14 @@ public class TSP {
                     newVisited.add(nextVertex);
                     newUnVisited.remove(nextVertex);
                     if(bestRoute == null ){
-                        bestRoute = allTours(g,sourceVertex, nextVertex ,newVisited,newUnVisited);
+                        bestRoute = allTours(g,sourceVertex, nextVertex ,newVisited,newUnVisited, pickupPoints,deliveryPoints);
                     }
 
-                    currentRoute = allTours(g,sourceVertex, nextVertex ,newVisited,newUnVisited);
+                    currentRoute = allTours(g,sourceVertex, nextVertex ,newVisited,newUnVisited,pickupPoints,deliveryPoints);
                     if(currentRoute.getKey() > bestRoute.getKey()){
                         bestRoute = currentRoute;
                     }
-
-
                 }
-
             }
         }
 

@@ -4,7 +4,7 @@ import model.PlanningRequest;
 import model.Request;
 import model.Segment;
 import model.Intersection;
-import model.graphs.Graph;
+import model.graphs.Plan;
 import model.graphs.Key;
 
 import org.w3c.dom.Document;
@@ -61,7 +61,7 @@ public class XMLParser {
      * @param filePath the path of the file to read
      * @return the graph resulting of the parsing. (to change to Plan)
      */
-    public Graph readMap(String filePath) {
+    public Plan readMap(String filePath) {
         Document doc = parseXMLFile(filePath);
         Map<String, Intersection> intersectionMap = new HashMap<>();
         Map<String, List<String>> adjacentsMap = new HashMap<>();
@@ -113,9 +113,9 @@ public class XMLParser {
 
         }
         
-        Graph graph = new Graph(intersectionMap,adjacentsMap,segmentMap,maxLatitude,minLatitude,maxLongitude,minLongitude);
+        Plan plan = new Plan(intersectionMap,adjacentsMap,segmentMap,maxLatitude,minLatitude,maxLongitude,minLongitude);
 
-        return graph;
+        return plan;
     }
 
     /**Read a requests file.

@@ -23,6 +23,16 @@ public class Segment {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Segment{" +
+                "origin='" + origin + '\'' +
+                ", destination='" + destination + '\'' +
+                ", length=" + length +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public String getOrigin() {
         return origin;
     }
