@@ -54,14 +54,14 @@ public class PlanPanel extends JComponent {
 		Intersection origine = intersectionMap.get(segment.getOrigin());
 		Intersection destination = intersectionMap.get(segment.getDestination());
 
-		int yOrigine = getCoordinateY(origine.getLatitude(),0,width,minLatitude,maxLatitude);
-		int xOrigine = getCoordinate(origine.getLongitude(),0,height,minLongitude,maxLongitude);
+		int yOrigine = getCoordinateY(origine.getLatitude(),0,height,minLatitude,maxLatitude);
+		int xOrigine = getCoordinate(origine.getLongitude(),0,width,minLongitude,maxLongitude);
 		//g.drawRect(xOrigine,yOrigine,10,10);
 
 		//System.out.println("xOrigine: " + xOrigine + "\tyOrigine: " + yOrigine+ " ");
 
-		int yDestination = getCoordinateY(destination.getLatitude(),0,width,minLatitude,maxLatitude);
-		int xDestination = getCoordinate(destination.getLongitude(),0,height,minLongitude,maxLongitude);
+		int yDestination = getCoordinateY(destination.getLatitude(),0,height,minLatitude,maxLatitude);
+		int xDestination = getCoordinate(destination.getLongitude(),0,width,minLongitude,maxLongitude);
 
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(isBestPath ? 3: 1));
@@ -87,23 +87,6 @@ public class PlanPanel extends JComponent {
 			Map<String, Intersection> intersectionMap = planData.getIntersectionMap();
 			segmentMap.forEach((key, segment) -> {
 				drawSegment(g,segment,Color.BLACK, intersectionMap,false);
-				/*
-				Intersection origine = intersectionMap.get(segment.getOrigin());
-				Intersection destination = intersectionMap.get(segment.getDestination());
-
-				int yOrigine = getCoordinateY(origine.getLatitude(),0,width,minLatitude,maxLatitude);
-				int xOrigine = getCoordinate(origine.getLongitude(),0,height,minLongitude,maxLongitude);
-				//g.drawRect(xOrigine,yOrigine,10,10);
-
-				//System.out.println("xOrigine: " + xOrigine + "\tyOrigine: " + yOrigine+ " ");
-
-				int yDestination = getCoordinateY(destination.getLatitude(),0,width,minLatitude,maxLatitude);
-				int xDestination = getCoordinate(destination.getLongitude(),0,height,minLongitude,maxLongitude);
-
-				g.drawLine(xOrigine, yOrigine, xDestination, yDestination);
-				// g.drawString(segment.getName(),xOrigine,yOrigine);
-
-				 */
 			});
 
 			if(planData.getPlanningRequest()!=null){
@@ -111,8 +94,8 @@ public class PlanPanel extends JComponent {
 
 				// Drawing the depot
 				Intersection depot = intersectionMap.get(planningRequest.getStartId());
-				int yDepot = getCoordinateY(depot.getLatitude(),0,width,minLatitude,maxLatitude);
-				int xDepot = getCoordinate(depot.getLongitude(),0,height,minLongitude,maxLongitude);
+				int yDepot = getCoordinateY(depot.getLatitude(),0,height,minLatitude,maxLatitude);
+				int xDepot = getCoordinate(depot.getLongitude(),0,width,minLongitude,maxLongitude);
 				System.out.println("xDepot: "+xDepot+" yDepot: "+yDepot);
 				g.setColor(Color.BLUE);
 				g.fillOval(xDepot,yDepot,20,20);
@@ -126,10 +109,10 @@ public class PlanPanel extends JComponent {
 					Intersection pickup = intersectionMap.get(request.getPickupId());
 					Intersection delivery = intersectionMap.get(request.getDeliveryId());
 
-					int yPickup = getCoordinateY(pickup.getLatitude(),0,width,minLatitude,maxLatitude);
-					int xPickup = getCoordinate(pickup.getLongitude(),0,height,minLongitude,maxLongitude);
-					int yDelivery = getCoordinateY(delivery.getLatitude(),0,width,minLatitude,maxLatitude);
-					int xDelivery  = getCoordinate(delivery.getLongitude(),0,height,minLongitude,maxLongitude);
+					int yPickup = getCoordinateY(pickup.getLatitude(),0,height,minLatitude,maxLatitude);
+					int xPickup = getCoordinate(pickup.getLongitude(),0,width,minLongitude,maxLongitude);
+					int yDelivery = getCoordinateY(delivery.getLatitude(),0,height,minLatitude,maxLatitude);
+					int xDelivery  = getCoordinate(delivery.getLongitude(),0,width,minLongitude,maxLongitude);
 
 					// Draw pickup as square
 					g.setColor(Color.getHSBColor((float)i/(float)allLength,1,1));

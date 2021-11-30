@@ -28,16 +28,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow(this), this);
         initComponents();
         planPanel = new PlanPanel();
-        javax.swing.GroupLayout planContainerLayout = new javax.swing.GroupLayout(planPanel);
-        planPanel.setLayout(planContainerLayout);
-        planContainerLayout.setHorizontalGroup(
-                planContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 364, Short.MAX_VALUE)
-        );
-        planContainerLayout.setVerticalGroup(
-                planContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 365, Short.MAX_VALUE)
-        );
 
         jPanel1.add(planPanel);
         pack();
@@ -70,7 +60,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         setPreferredSize(new java.awt.Dimension(720, 576));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel1.setLayout(new java.awt.GridLayout());
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -140,7 +130,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         });
         jMenu2.add(jMenuItem1);
 
-        jMenuItem2.setText("Add a request");
+        jMenuItem2.setText("Ajouter livraison");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemActionPerformed(evt);
