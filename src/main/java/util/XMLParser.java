@@ -140,7 +140,7 @@ public class XMLParser {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) node;
                 String pickupId = element.getAttribute("pickupAddress");
-                String deliveryId = element.getAttribute("deliveryAddress");
+                String deliveryId = !element.getAttribute("deliveryAddress").isEmpty() ? element.getAttribute("deliveryAddress") : element.getAttribute("adresseLivraison");
                 int pickupDuration = Integer.parseInt(element.getAttribute("pickupDuration"));
                 int deliveryDuration = Integer.parseInt(element.getAttribute("deliveryDuration"));
 

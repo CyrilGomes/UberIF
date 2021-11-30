@@ -6,14 +6,14 @@ import model.graphs.Graph;
 import model.graphs.Key;
 import model.graphs.Plan;
 import model.graphs.pathfinding.TSP;
+import model.graphs.pathfinding.TSP1;
+import model.graphs.pathfinding.TemplateTSP;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The visualisation of the map. Updated when the data changes.
@@ -42,10 +42,10 @@ public class PlanPanel extends JComponent {
 
 	public void setPlanningRequest(PlanningRequest planningRequest){
 		planData.setPlanningRequest(planningRequest);
-		TSP tsp = new TSP();
-		Graph graph = tsp.generateTsmCompleteGraph(planData);
-		Pair<Float, List<String>> result = tsp.allTours(graph,planningRequest);
-		deliveryTour = tsp.generatedDeliveryTour(graph,result);
+		TSP tsp = new TSP1();
+		Graph graph = Graph.generateCompleteGraphFromPlan(planData);
+		tsp.searchSolution(20000,graph,planningRequest);
+		deliveryTour = tsp.getDeliveryTour();
 		System.out.println(deliveryTour.getSegmentList());
 		this.repaint();
 	}
