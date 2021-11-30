@@ -9,11 +9,9 @@ import model.graphs.pathfinding.TSP;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The visualisation of the map. Updated when the data changes.
@@ -68,7 +66,6 @@ public class PlanPanel extends JComponent {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(isBestPath ? 3: 1));
 		g2.draw(new Line2D.Float(xOrigine, yOrigine, xDestination, yDestination));
-
 	}
 
 	@Override

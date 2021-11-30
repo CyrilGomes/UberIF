@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="2" failures="0" name="model.graphs.pathfinding.DijkstraTest" time="0.009" errors="0" skipped="0">
+<testsuite tests="3" failures="1" name="model.graphs.pathfinding.DijkstraTest" time="0.023" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2021.2.3"/>
-    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
-    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-1.8.0\jre\bin"/>
-    <property name="java.vm.version" value="25.312-b07"/>
-    <property name="java.vm.vendor" value="Temurin"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_212\jre\bin"/>
+    <property name="java.vm.version" value="25.212-b10"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="maven.multiModuleProjectDirectory" value="C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF"/>
-    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
     <property name="path.separator" value=";"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
-    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
     <property name="file.encoding.pkg" value="sun.io"/>
     <property name="user.script" value=""/>
     <property name="user.country" value="FR"/>
@@ -18,9 +18,9 @@
     <property name="sun.os.patch.level" value=""/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="user.dir" value="C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF"/>
-    <property name="java.runtime.version" value="1.8.0_312-b07"/>
+    <property name="java.runtime.version" value="1.8.0_212-b10"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk-1.8.0\jre\lib\endorsed"/>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.8.0_212\jre\lib\endorsed"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.io.tmpdir" value="C:\Users\creep\AppData\Local\Temp\"/>
     <property name="line.separator" value="
@@ -31,7 +31,7 @@
     <property name="maven.ext.class.path" value="C:\Users\creep\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\212.5457.46\plugins\maven\lib\maven-event-listener.jar"/>
     <property name="classworlds.conf" value="C:\Users\creep\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\212.5457.46\plugins\maven\lib\maven3\bin\m2.conf"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-1.8.0\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Java\jdk-1.8.0\bin;C:\Program Files\Java\jdk-16.0.2-hotspot\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Matlab\bin;C:\Program Files (x86)\dotnet\;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\swipl\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\creep\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\creep\AppData\Local\Programs\Python\Python39\;C:\Users\creep\AppData\Local\Microsoft\WindowsApps;C:\Users\creep\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\creep\AppData\Local\GitHubDesktop\bin;C:\Users\creep\AppData\Roaming\TinyTeX\bin\win32;C:\Program Files\Java\jdk-17.0.1\bin;;."/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.8.0_212\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Java\jdk-1.8.0\bin;C:\Program Files\Java\jdk-16.0.2-hotspot\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Matlab\bin;C:\Program Files (x86)\dotnet\;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\swipl\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\creep\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\creep\AppData\Local\Programs\Python\Python39\;C:\Users\creep\AppData\Local\Microsoft\WindowsApps;C:\Users\creep\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\creep\AppData\Local\GitHubDesktop\bin;C:\Users\creep\AppData\Roaming\TinyTeX\bin\win32;C:\Program Files\Java\jdk-17.0.1\bin;;."/>
     <property name="maven.conf" value="C:\Users\creep\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\212.5457.46\plugins\maven\lib\maven3/conf"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="52.0"/>
@@ -46,24 +46,64 @@
     <property name="java.class.path" value="C:\Users\creep\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\212.5457.46\plugins\maven\lib\maven3\boot\plexus-classworlds-2.6.0.jar;C:\Users\creep\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\212.5457.46\plugins\maven\lib\maven3\boot\plexus-classworlds.license"/>
     <property name="java.vm.specification.version" value="1.8"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="java.home" value="C:\Program Files\Java\jdk-1.8.0\jre"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_212\jre"/>
     <property name="sun.java.command" value="org.codehaus.classworlds.Launcher -Didea.version=2021.2.3 install --non-recursive"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="fr"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
     <property name="java.vm.info" value="mixed mode"/>
-    <property name="java.version" value="1.8.0_312"/>
-    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk-1.8.0\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext"/>
-    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk-1.8.0\jre\lib\resources.jar;C:\Program Files\Java\jdk-1.8.0\jre\lib\rt.jar;C:\Program Files\Java\jdk-1.8.0\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk-1.8.0\jre\lib\jsse.jar;C:\Program Files\Java\jdk-1.8.0\jre\lib\jce.jar;C:\Program Files\Java\jdk-1.8.0\jre\lib\charsets.jar;C:\Program Files\Java\jdk-1.8.0\jre\lib\jfr.jar;C:\Program Files\Java\jdk-1.8.0\jre\classes"/>
-    <property name="java.vendor" value="Temurin"/>
+    <property name="java.version" value="1.8.0_212"/>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.8.0_212\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_212\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_212\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_212\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_212\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_212\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_212\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_212\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_212\jre\classes"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
     <property name="maven.home" value="C:\Users\creep\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\212.5457.46\plugins\maven\lib\maven3"/>
     <property name="file.separator" value="\"/>
-    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="model.graphs.pathfinding.DijkstraTest" name="getLowestDistanceNode" time="0.009"/>
+  <testcase classname="model.graphs.pathfinding.DijkstraTest" name="getLowestDistanceNode" time="0.01"/>
+  <testcase classname="model.graphs.pathfinding.DijkstraTest" name="executeAlgorithm" time="0.013">
+    <failure type="java.lang.AssertionError">java.lang.AssertionError
+	at model.graphs.pathfinding.DijkstraTest.executeAlgorithm(DijkstraTest.java:146)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+</failure>
+    <system-out>{Key{x=&apos;2&apos;, y=&apos;1&apos;}=Edge{origin=&apos;2&apos;, destination=&apos;1&apos;, segmentList=[Segment{origin=&apos;2&apos;, destination=&apos;1&apos;, length=1.0, name=&apos;21&apos;}], duration=1.0}, Key{x=&apos;7&apos;, y=&apos;6&apos;}=Edge{origin=&apos;7&apos;, destination=&apos;6&apos;, segmentList=[Segment{origin=&apos;7&apos;, destination=&apos;6&apos;, length=6.0, name=&apos;76&apos;}], duration=6.0}, Key{x=&apos;1&apos;, y=&apos;2&apos;}=Edge{origin=&apos;1&apos;, destination=&apos;2&apos;, segmentList=[Segment{origin=&apos;1&apos;, destination=&apos;2&apos;, length=3.0, name=&apos;12&apos;}], duration=3.0}, Key{x=&apos;6&apos;, y=&apos;7&apos;}=Edge{origin=&apos;6&apos;, destination=&apos;7&apos;, segmentList=[Segment{origin=&apos;6&apos;, destination=&apos;7&apos;, length=3.0, name=&apos;67&apos;}], duration=3.0}, Key{x=&apos;4&apos;, y=&apos;6&apos;}=Edge{origin=&apos;4&apos;, destination=&apos;6&apos;, segmentList=[Segment{origin=&apos;4&apos;, destination=&apos;6&apos;, length=2.0, name=&apos;46&apos;}], duration=2.0}, Key{x=&apos;2&apos;, y=&apos;4&apos;}=Edge{origin=&apos;2&apos;, destination=&apos;4&apos;, segmentList=[Segment{origin=&apos;2&apos;, destination=&apos;4&apos;, length=2.0, name=&apos;24&apos;}], duration=2.0}, Key{x=&apos;1&apos;, y=&apos;4&apos;}=Edge{origin=&apos;1&apos;, destination=&apos;4&apos;, segmentList=[Segment{origin=&apos;1&apos;, destination=&apos;3&apos;, length=2.0, name=&apos;13&apos;}, Segment{origin=&apos;3&apos;, destination=&apos;4&apos;, length=1.5, name=&apos;34&apos;}], duration=3.5}, Key{x=&apos;4&apos;, y=&apos;7&apos;}=Edge{origin=&apos;4&apos;, destination=&apos;7&apos;, segmentList=[Segment{origin=&apos;4&apos;, destination=&apos;6&apos;, length=2.0, name=&apos;46&apos;}, Segment{origin=&apos;6&apos;, destination=&apos;7&apos;, length=3.0, name=&apos;67&apos;}], duration=5.0}, Key{x=&apos;2&apos;, y=&apos;6&apos;}=Edge{origin=&apos;2&apos;, destination=&apos;6&apos;, segmentList=[Segment{origin=&apos;2&apos;, destination=&apos;4&apos;, length=2.0, name=&apos;24&apos;}, Segment{origin=&apos;4&apos;, destination=&apos;6&apos;, length=2.0, name=&apos;46&apos;}], duration=4.0}, Key{x=&apos;1&apos;, y=&apos;6&apos;}=Edge{origin=&apos;1&apos;, destination=&apos;6&apos;, segmentList=[Segment{origin=&apos;1&apos;, destination=&apos;3&apos;, length=2.0, name=&apos;13&apos;}, Segment{origin=&apos;3&apos;, destination=&apos;4&apos;, length=1.5, name=&apos;34&apos;}, Segment{origin=&apos;4&apos;, destination=&apos;6&apos;, length=2.0, name=&apos;46&apos;}], duration=5.5}, Key{x=&apos;2&apos;, y=&apos;7&apos;}=Edge{origin=&apos;2&apos;, destination=&apos;7&apos;, segmentList=[Segment{origin=&apos;2&apos;, destination=&apos;4&apos;, length=2.0, name=&apos;24&apos;}, Segment{origin=&apos;4&apos;, destination=&apos;6&apos;, length=2.0, name=&apos;46&apos;}, Segment{origin=&apos;6&apos;, destination=&apos;7&apos;, length=3.0, name=&apos;67&apos;}], duration=7.0}, Key{x=&apos;1&apos;, y=&apos;7&apos;}=Edge{origin=&apos;1&apos;, destination=&apos;7&apos;, segmentList=[Segment{origin=&apos;1&apos;, destination=&apos;3&apos;, length=2.0, name=&apos;13&apos;}, Segment{origin=&apos;3&apos;, destination=&apos;4&apos;, length=1.5, name=&apos;34&apos;}, Segment{origin=&apos;4&apos;, destination=&apos;6&apos;, length=2.0, name=&apos;46&apos;}, Segment{origin=&apos;6&apos;, destination=&apos;7&apos;, length=3.0, name=&apos;67&apos;}], duration=8.5}, Key{x=&apos;7&apos;, y=&apos;1&apos;}=Edge{origin=&apos;7&apos;, destination=&apos;1&apos;, segmentList=[Segment{origin=&apos;7&apos;, destination=&apos;6&apos;, length=6.0, name=&apos;76&apos;}, Segment{origin=&apos;6&apos;, destination=&apos;4&apos;, length=1.0, name=&apos;64&apos;}, Segment{origin=&apos;4&apos;, destination=&apos;2&apos;, length=3.0, name=&apos;42&apos;}, Segment{origin=&apos;2&apos;, destination=&apos;1&apos;, length=1.0, name=&apos;21&apos;}], duration=11.0}, Key{x=&apos;6&apos;, y=&apos;1&apos;}=Edge{origin=&apos;6&apos;, destination=&apos;1&apos;, segmentList=[Segment{origin=&apos;6&apos;, destination=&apos;4&apos;, length=1.0, name=&apos;64&apos;}, Segment{origin=&apos;4&apos;, destination=&apos;2&apos;, length=3.0, name=&apos;42&apos;}, Segment{origin=&apos;2&apos;, destination=&apos;1&apos;, length=1.0, name=&apos;21&apos;}], duration=5.0}, Key{x=&apos;7&apos;, y=&apos;2&apos;}=Edge{origin=&apos;7&apos;, destination=&apos;2&apos;, segmentList=[Segment{origin=&apos;7&apos;, destination=&apos;6&apos;, length=6.0, name=&apos;76&apos;}, Segment{origin=&apos;6&apos;, destination=&apos;4&apos;, length=1.0, name=&apos;64&apos;}, Segment{origin=&apos;4&apos;, destination=&apos;2&apos;, length=3.0, name=&apos;42&apos;}], duration=10.0}, Key{x=&apos;6&apos;, y=&apos;2&apos;}=Edge{origin=&apos;6&apos;, destination=&apos;2&apos;, segmentList=[Segment{origin=&apos;6&apos;, destination=&apos;4&apos;, length=1.0, name=&apos;64&apos;}, Segment{origin=&apos;4&apos;, destination=&apos;2&apos;, length=3.0, name=&apos;42&apos;}], duration=4.0}, Key{x=&apos;4&apos;, y=&apos;1&apos;}=Edge{origin=&apos;4&apos;, destination=&apos;1&apos;, segmentList=[Segment{origin=&apos;4&apos;, destination=&apos;2&apos;, length=3.0, name=&apos;42&apos;}, Segment{origin=&apos;2&apos;, destination=&apos;1&apos;, length=1.0, name=&apos;21&apos;}], duration=4.0}, Key{x=&apos;7&apos;, y=&apos;4&apos;}=Edge{origin=&apos;7&apos;, destination=&apos;4&apos;, segmentList=[Segment{origin=&apos;7&apos;, destination=&apos;6&apos;, length=6.0, name=&apos;76&apos;}, Segment{origin=&apos;6&apos;, destination=&apos;4&apos;, length=1.0, name=&apos;64&apos;}], duration=7.0}, Key{x=&apos;4&apos;, y=&apos;2&apos;}=Edge{origin=&apos;4&apos;, destination=&apos;2&apos;, segmentList=[Segment{origin=&apos;4&apos;, destination=&apos;2&apos;, length=3.0, name=&apos;42&apos;}], duration=3.0}, Key{x=&apos;6&apos;, y=&apos;4&apos;}=Edge{origin=&apos;6&apos;, destination=&apos;4&apos;, segmentList=[Segment{origin=&apos;6&apos;, destination=&apos;4&apos;, length=1.0, name=&apos;64&apos;}], duration=1.0}}
+</system-out>
+  </testcase>
   <testcase classname="model.graphs.pathfinding.DijkstraTest" name="calculateMinimumDistance" time="0"/>
 </testsuite>
