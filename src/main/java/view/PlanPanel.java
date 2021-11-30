@@ -42,11 +42,11 @@ public class PlanPanel extends JComponent {
 
 	public void setPlanningRequest(PlanningRequest planningRequest){
 		planData.setPlanningRequest(planningRequest);
-		TSP tsp = new TSP();
-		Graph graph = tsp.generateTsmCompleteGraph(planData);
-		Pair<Float, List<String>> result = tsp.allTours(graph,planningRequest);
-		deliveryTour = tsp.generatedDeliveryTour(graph,result);
-		System.out.println(deliveryTour.getSegmentList());
+		this.repaint();
+	}
+
+	public void setDeliveryTour(DeliveryTour deliveryTour){
+		this.deliveryTour = deliveryTour;
 		this.repaint();
 	}
 
