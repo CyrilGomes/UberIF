@@ -30,7 +30,9 @@ public class PlanPanel extends JPanel {
 	public PlanPanel() {
 		super();
 		this.setBackground(Color.LIGHT_GRAY);
-		this.addMouseListener(new MouseListenerPlanPanel());
+		MouseListenerPlanPanel mouseEvent = new MouseListenerPlanPanel();
+		this.addMouseListener(mouseEvent);
+		this.addMouseWheelListener(mouseEvent);
 		setVisible(true);
 
 	}

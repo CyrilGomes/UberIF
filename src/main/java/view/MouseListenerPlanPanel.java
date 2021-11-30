@@ -1,20 +1,37 @@
 package view;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.*;
 
-public class MouseListenerPlanPanel extends MouseAdapter {
+public class MouseListenerPlanPanel implements MouseListener, MouseWheelListener {
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e){
-        int notches = e.getWheelRotation();
-        System.out.println("mouse wheel rotates "+notches+" bit!");
+        System.out.println("mouse wheel used");
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
 
     }
 
     @Override
     public void mousePressed(MouseEvent e){
-        System.out.println("Mouse clicked!");
+        System.out.println("Mouse pressed!");
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
