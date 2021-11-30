@@ -1,12 +1,16 @@
 package controller;
 
+import javafx.util.Pair;
+import model.DeliveryTour;
 import model.PlanningRequest;
 import model.graphs.Graph;
 import model.graphs.Plan;
+import model.graphs.pathfinding.TSP;
 import util.XMLParser;
 import view.MainWindow;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * The Controller of the MainWindow view. Receive information from the view
@@ -14,6 +18,8 @@ import java.io.File;
  */
 public class ControllerMainWindow {
     private MainWindow mainWindow;
+    private Plan planData;
+    private DeliveryTour deliveryTour;
 
     /**
      * The constructor of the class.
@@ -21,6 +27,8 @@ public class ControllerMainWindow {
      */
     public ControllerMainWindow(MainWindow mainWindow){
         this.mainWindow = mainWindow;
+        planData = null;
+        deliveryTour = null;
     }
 
     /**
@@ -31,9 +39,17 @@ public class ControllerMainWindow {
      */
     public void importTour(File xmlFile){
         System.out.println("read requests");
-        /*call the algorithms for calculation the tour*/
         XMLParser xmlParser = new XMLParser();
         PlanningRequest request = xmlParser.readRequests(xmlFile.getPath());
+        planData.setPlanningRequest(request);
+
+        // Calling TSP to calculate the best tour
+        TSP tsp = new TSP();
+        Graph graph = tsp.generateTsmCompleteGraph(planData);
+        Pair<Float, List<String>> result = tsp.allTours(graph,request);
+        DeliveryTour deliveryTour = tsp.generatedDeliveryTour(graph,result);
+        this.deliveryTour = deliveryTour;
+        mainWindow.setDeliveryTour(deliveryTour);
         // System.out.println(request);
         mainWindow.setPlanningRequest(request);
     }
@@ -46,6 +62,7 @@ public class ControllerMainWindow {
     public void importMap(File file){
         XMLParser parser = new XMLParser();
         Plan plan = parser.readMap(file.getAbsolutePath());
+        planData = plan;
         mainWindow.setPlanData(plan);
     }
 }

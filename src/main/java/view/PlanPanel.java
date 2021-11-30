@@ -30,7 +30,11 @@ public class PlanPanel extends JPanel {
 	public PlanPanel() {
 		super();
 		this.setBackground(Color.LIGHT_GRAY);
-		this.setVisible(true);
+		MouseListenerPlanPanel mouseEvent = new MouseListenerPlanPanel();
+		this.addMouseListener(mouseEvent);
+		this.addMouseWheelListener(mouseEvent);
+		setVisible(true);
+
 	}
 
 	public void setPlanData(Plan planData) {
@@ -40,11 +44,11 @@ public class PlanPanel extends JPanel {
 
 	public void setPlanningRequest(PlanningRequest planningRequest){
 		planData.setPlanningRequest(planningRequest);
-		TSP tsp = new TSP();
-		Graph graph = tsp.generateTsmCompleteGraph(planData);
-		Pair<Float, List<String>> result = tsp.allTours(graph,planningRequest);
-		deliveryTour = tsp.generatedDeliveryTour(graph,result);
-		System.out.println(deliveryTour.getSegmentList());
+		this.repaint();
+	}
+
+	public void setDeliveryTour(DeliveryTour deliveryTour){
+		this.deliveryTour = deliveryTour;
 		this.repaint();
 	}
 
