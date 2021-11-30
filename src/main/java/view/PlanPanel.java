@@ -31,6 +31,7 @@ public class PlanPanel extends JComponent {
 
 	public PlanPanel() {
 		setBackground(Color.BLUE);
+		this.addMouseListener(new MouseListenerPlanPanel());
 		setVisible(true);
 
 	}
