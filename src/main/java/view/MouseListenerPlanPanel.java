@@ -1,6 +1,9 @@
 package view;
 
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 public class MouseListenerPlanPanel implements MouseListener, MouseWheelListener {
 
@@ -19,7 +22,10 @@ public class MouseListenerPlanPanel implements MouseListener, MouseWheelListener
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        final int x = e.getX();
+        final int y = e.getY();
 
+        plan.onMouseClicked(x, y);
     }
 
     @Override
