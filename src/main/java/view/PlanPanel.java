@@ -19,6 +19,13 @@ import java.util.Map;
 public class PlanPanel extends JPanel {
 	private Plan planData;
 	private DeliveryTour deliveryTour;
+	private int currentScale = 1;
+	private int xPosition = -1;
+	private int yPosition = -1;
+	private int xMovement;
+	private int yMovement;
+	private boolean zoom = false;
+	private boolean move = false;
 	float maxLatitude;
 	float minLatitude;
 	float maxLongitude;
@@ -33,6 +40,7 @@ public class PlanPanel extends JPanel {
 		MouseListenerPlanPanel mouseEvent = new MouseListenerPlanPanel(this);
 		this.addMouseListener(mouseEvent);
 		this.addMouseWheelListener(mouseEvent);
+		this.addMouseMotionListener(mouseEvent);
 		setVisible(true);
 
 	}
@@ -52,6 +60,39 @@ public class PlanPanel extends JPanel {
 		this.repaint();
 	}
 
+	public void onMouseWheel(int notches){
+		if((this.currentScale+notches)>=1){
+			this.currentScale += notches;
+			zoom = true;
+			this.repaint();
+		}else{
+			this.xPosition = width/2;
+			this.yPosition = height/2;
+		}
+	}
+
+	public void onMousePressed(int xMove, int yMove ){
+		if(xPosition<0 && yPosition<0){
+			this.xPosition = xMove;
+			this.yPosition = yMove;
+		}else{
+			this.xMovement = xMove - this.xPosition;
+			this.yMovement = yMove - this.yPosition;
+			this.xPosition += this.xMovement;
+			this.yPosition += this.yMovement;
+		}
+		this.move = true;
+		this.repaint();
+	}
+	public void onMouseDragged(int xMove, int yMove ){
+		this.xMovement = xMove - this.xPosition;
+		this.yMovement = yMove - this.yPosition;
+		this.xPosition += this.xMovement;
+		this.yPosition += this.yMovement;
+		this.move = true;
+		this.repaint();
+
+	}
 	public void drawSegment(Graphics g, Segment segment, Color color,Map<String, Intersection> intersectionMap, boolean isBestPath ){
 		g.setColor(color);
 		Intersection origine = intersectionMap.get(segment.getOrigin());
@@ -71,6 +112,30 @@ public class PlanPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+
+		if(this.zoom){
+			if(this.xPosition<0 && this.yPosition<0){
+				g2.translate(width/2, height/2);
+				g2.scale(this.currentScale, this.currentScale);
+				g2.translate(-width/2, -height/2);
+			}else{
+				g2.translate(this.xPosition, this.yPosition);
+				g2.scale(this.currentScale, this.currentScale);
+				g2.translate(-this.xPosition, -this.yPosition);
+			}
+			this.zoom=false;
+
+		}else if(this.move){
+			g2.translate(this.xPosition, this.yPosition);
+			g2.scale(this.currentScale, this.currentScale);
+			g2.translate(-this.xPosition, -this.yPosition);
+			this.move=false;
+		}
+
+
+
+
 		System.out.println("Paint");
 
 		if(planData != null){
