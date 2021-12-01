@@ -10,10 +10,7 @@ import model.graphs.pathfinding.TemplateTSP;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Arc2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
+import java.awt.geom.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -107,6 +104,7 @@ public class PlanPanel extends JPanel {
 		g2.setStroke(new BasicStroke(isBestPath ? 3: 1));
 		g2.draw(new Line2D.Float(xOrigine, yOrigine, xDestination, yDestination));
 	}
+	//The bullet point icons for the pickups
 	private void drawBullet(Graphics g, int x, int y, int w, int h, Color color){
 		Graphics2D ga = (Graphics2D) g;
 
@@ -133,6 +131,43 @@ public class PlanPanel extends JPanel {
 		ga.draw(circle);
 		ga.setPaint(Color.WHITE);
 		ga.fill(circle);
+
+	}
+	//The houses icons for the deliveries
+	private void drawHouse(Graphics g, int x, int y, int w, int h, Color color){
+		Graphics2D ga = (Graphics2D) g;
+
+		//Positioning the end of the house in the route coordinate
+		//y = y-h;
+
+		//chimney
+		Shape square3 = new Rectangle2D.Double( x-w/2.4, y-h/1.7, w/5, h/4);
+		ga.draw(square3);
+		ga.setPaint(color);
+		ga.fill(square3);
+
+		//Triangle - roof
+		Path2D path = new Path2D.Double();
+		Double firstX = x - (w/1.5);
+		Double firstY = y * 1.0 - 5.0;
+		path.moveTo(firstX,firstY);
+		path.lineTo(firstX + 2*w/1.5, firstY);
+		path.lineTo(x, firstY - h/2);
+		path.closePath();
+		ga.setColor(color);
+		ga.fill(path);
+
+
+		Shape square = new Rectangle2D.Double( x-w/3, y-h/4, w/1.5, h/3);
+		ga.draw(square);
+		ga.setPaint(color);
+		ga.fill(square);
+
+		//Door
+		Shape square2 = new Rectangle2D.Double( x-w/10, y-h/4, w/5, h/3);
+		ga.draw(square2);
+		ga.setPaint(Color.WHITE);
+		ga.fill(square2);
 
 	}
 
@@ -209,7 +244,7 @@ public class PlanPanel extends JPanel {
 					g.setColor(Color.getHSBColor((float)i/(float)allLength,0.5f,1));
 					// Draw delivery as triangle
 					//g.fillRoundRect(xDelivery,yDelivery,10,10,5,5);
-					drawBullet(g, xDelivery,yDelivery,25,25, Color.getHSBColor((float)i/(float)allLength,1,1));
+					drawHouse(g, xDelivery,yDelivery,30,30, Color.getHSBColor((float)i/(float)allLength,1,1));
 					i++;
 				}
 			}
