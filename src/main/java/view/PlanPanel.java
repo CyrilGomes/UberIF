@@ -10,7 +10,10 @@ import model.graphs.pathfinding.TemplateTSP;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -104,6 +107,34 @@ public class PlanPanel extends JPanel {
 		g2.setStroke(new BasicStroke(isBestPath ? 3: 1));
 		g2.draw(new Line2D.Float(xOrigine, yOrigine, xDestination, yDestination));
 	}
+	private void drawBullet(Graphics g, int x, int y, int w, int h, Color color){
+		Graphics2D ga = (Graphics2D) g;
+
+		//Positioning the end of the bullet in the route coordinate
+		y = y-h;
+
+		Path2D path = new Path2D.Double();
+		Double firstX = x - (w/2.0);
+		Double firstY = y * 1.0;
+		path.moveTo(firstX,firstY);
+		path.lineTo(firstX + w, firstY);
+		path.lineTo(x, firstY + h);
+		path.closePath();
+		ga.setColor(color);
+		ga.fill(path);
+
+		Shape semiCircle = new Arc2D.Double( x-w/2, y-h/2, w, h, 0, 180, Arc2D.OPEN);
+		ga.draw(semiCircle);
+		ga.setPaint(color);
+		ga.fill(semiCircle);
+
+
+		Shape circle = new Ellipse2D.Float( x-w/4, y-h/4, w/2, h/2);
+		ga.draw(circle);
+		ga.setPaint(Color.WHITE);
+		ga.fill(circle);
+
+	}
 
 	@Override
 	public void paintComponent(Graphics g){
@@ -128,6 +159,19 @@ public class PlanPanel extends JPanel {
 				}
 			});
 
+			if(deliveryTour != null){
+				List<Segment> segments = deliveryTour.getSegmentList();
+				float fullLength = deliveryTour.getGlobalTime();
+				float lengthCounter = 0;
+				for (Segment segment:segments) {
+
+					drawSegment(g,segment,Color.getHSBColor(0f,1,lengthCounter/fullLength), intersectionMap,true);
+					lengthCounter+=segment.getLength();
+					//g.drawLine(xOrigine, yOrigine, xDestination, yDestination);
+				}
+
+			}
+
 			if(planData.getPlanningRequest()!=null){
 				PlanningRequest planningRequest = planData.getPlanningRequest();
 
@@ -136,8 +180,12 @@ public class PlanPanel extends JPanel {
 				int yDepot = getCoordinateY(depot.getLatitude(),0,height,minLatitude,maxLatitude);
 				int xDepot = getCoordinate(depot.getLongitude(),0,width,minLongitude,maxLongitude);
 				System.out.println("xDepot: "+xDepot+" yDepot: "+yDepot);
-				g.setColor(Color.BLUE);
-				g.fillOval(xDepot,yDepot,20,20);
+				g.setColor(Color.BLACK);
+				//g.fillOval(xDepot,yDepot,20,20);
+				//drawBullet(g, xDepot, yDepot, 40, 40,  Color.BLACK);
+				g.fillRect(xDepot,yDepot,20,20);
+
+
 
 				int allLength = planningRequest.getRequests().size();
 				int i = 0;
@@ -155,27 +203,17 @@ public class PlanPanel extends JPanel {
 
 					// Draw pickup as square
 					g.setColor(Color.getHSBColor((float)i/(float)allLength,1,1));
-					g.fillRect(xPickup,yPickup,10,10);
-
+					//g.fillRect(xPickup,yPickup,10,10);
+					drawBullet(g, xPickup, yPickup, 25, 25,  Color.getHSBColor((float)i/(float)allLength,1,1));
 
 					g.setColor(Color.getHSBColor((float)i/(float)allLength,0.5f,1));
 					// Draw delivery as triangle
-					g.fillRoundRect(xDelivery,yDelivery,10,10,5,5);
+					//g.fillRoundRect(xDelivery,yDelivery,10,10,5,5);
+					drawBullet(g, xDelivery,yDelivery,25,25, Color.getHSBColor((float)i/(float)allLength,1,1));
 					i++;
 				}
 			}
-			if(deliveryTour != null){
-				List<Segment> segments = deliveryTour.getSegmentList();
-				float fullLength = deliveryTour.getGlobalTime();
-				float lengthCounter = 0;
-				for (Segment segment:segments) {
 
-					drawSegment(g,segment,Color.getHSBColor(0f,1,lengthCounter/fullLength), intersectionMap,true);
-					lengthCounter+=segment.getLength();
-					//g.drawLine(xOrigine, yOrigine, xDestination, yDestination);
-				}
-
-			}
 		}
 	}
 
