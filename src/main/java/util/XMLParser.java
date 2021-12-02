@@ -56,6 +56,10 @@ public class XMLParser {
         }
     }
 
+    private String formatDepartureTime(String departureTime){
+        return "0" + departureTime.replaceAll(":",":0");
+    }
+
     /** Read a map xml file composed of intersections and segments.
      *
      * @param filePath the path of the file to read
@@ -129,7 +133,7 @@ public class XMLParser {
         // Get depot
         Element depot = (Element) doc.getElementsByTagName("depot").item(0);
         String startId = depot.getAttribute("address");
-        String departureTime = depot.getAttribute("departureTime");
+        String departureTime = formatDepartureTime(depot.getAttribute("departureTime"));
 
         PlanningRequest planningRequest = new PlanningRequest(startId,departureTime);
 

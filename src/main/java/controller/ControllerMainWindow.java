@@ -60,6 +60,7 @@ public class ControllerMainWindow {
         mainWindow.setPlanningRequest(request);
 
         calculateTimes();
+        mainWindow.showSummary(planData.getPlanningRequest());
     }
 
     /**
@@ -83,7 +84,7 @@ public class ControllerMainWindow {
         PlanningRequest planningRequest = planData.getPlanningRequest();
         List<Segment> segmentList = deliveryTour.getSegmentList();
         String departureTime = planningRequest.getDepartureTime();
-        LocalTime currentTime = LocalTime.parse(formatDepartureTime(departureTime));
+        LocalTime currentTime = LocalTime.parse(departureTime);
         // Speed of the cyclist in m/s
         float speed = (float)(15/3.6) ;
 
@@ -95,14 +96,14 @@ public class ControllerMainWindow {
             // The origin of the segment is a pickup
             Request requestPick = requests.stream().filter(request->request.getPickupId().equals(origin)).findFirst().orElse(null);
             if(requestPick!=null){
-                requestPick.setPickupTime(currentTime.toString());
+                requestPick.setPickupTimePassage(currentTime.toString());
                 currentTime = currentTime.plusSeconds(requestPick.getPickupDuration());
             }
 
             // The origin of the segment is a delivery
             Request requestDelivery = requests.stream().filter(request->request.getDeliveryId().equals(origin)).findFirst().orElse(null);
             if(requestDelivery!=null){
-                requestDelivery.setDeliveryTime(currentTime.toString());
+                requestDelivery.setDeliveryTimePassage(currentTime.toString());
                 currentTime = currentTime.plusSeconds(requestDelivery.getDeliveryDuration());
             }
 
@@ -114,14 +115,5 @@ public class ControllerMainWindow {
 
         String finishTime = currentTime.toString();
         planningRequest.setFinishTime(finishTime);
-        System.out.println("<<<<<<< Showing times of each request");
-        for(Request request: planningRequest.getRequests()){
-            System.out.println("PickupTime: "+request.getPickupTime()+"  DeliveryTime: "+request.getDeliveryTime());
-        }
-        System.out.println("<<<Final time of return to depot: "+finishTime);
-    }
-
-    public String formatDepartureTime(String departureTime){
-        return "0" + departureTime.replaceAll(":",":0");
     }
 }

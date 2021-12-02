@@ -11,9 +11,9 @@ public class Request {
     private int pickupDuration;
     private int deliveryDuration;
     // The time the cyclist arrive to this pickup in the tour
-    private String pickupTime;
-    // The time the cyclist arrive to this pickup in the tour
-    private String deliveryTime;
+    private String pickupTimePassage;
+    // The time the cyclist arrive to this delivery in the tour
+    private String deliveryTimePassage;
 
 
     /**
@@ -69,19 +69,19 @@ public class Request {
                 " delivery duration: "+this.deliveryDuration+"]";
     }
 
-    public String getPickupTime() {
-        return pickupTime;
+    public String getPickupTimePassage() {
+        return pickupTimePassage;
     }
 
-    public void setPickupTime(String pickupTime) {
-        this.pickupTime = pickupTime;
+    public void setPickupTimePassage(String pickupTimePassage) {
+        this.pickupTimePassage = pickupTimePassage;
     }
 
-    public String getDeliveryTime() {
-        return deliveryTime;
+    public String getDeliveryTimePassage() {
+        return deliveryTimePassage;
     }
 
-    public void setDeliveryTime(String deliveryTime) {
-        this.deliveryTime = deliveryTime;
+    public void setDeliveryTimePassage(String deliveryTimePassage) {
+        this.deliveryTimePassage = deliveryTimePassage;
     }
 }
