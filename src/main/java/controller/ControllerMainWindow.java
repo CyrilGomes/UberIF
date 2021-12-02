@@ -8,6 +8,7 @@ import model.Segment;
 import model.graphs.Graph;
 import model.graphs.Plan;
 import model.graphs.pathfinding.TSP;
+import model.graphs.pathfinding.TSP1;
 import util.XMLParser;
 import view.MainWindow;
 
@@ -50,10 +51,10 @@ public class ControllerMainWindow {
         planData.setPlanningRequest(request);
 
         // Calling TSP to calculate the best tour
-        TSP tsp = new TSP();
-        Graph graph = tsp.generateTsmCompleteGraph(planData);
-        Pair<Float, List<String>> result = tsp.allTours(graph,request);
-        DeliveryTour deliveryTour = tsp.generatedDeliveryTour(graph,result);
+        TSP tsp = new TSP1();
+        Graph graph = Graph.generateCompleteGraphFromPlan(planData);
+        tsp.searchSolution(20000,graph,request);
+        DeliveryTour deliveryTour = tsp.getDeliveryTour();
         this.deliveryTour = deliveryTour;
         mainWindow.setDeliveryTour(deliveryTour);
         // System.out.println(request);
