@@ -14,6 +14,7 @@ public class PlanDrawing {
 	private final Map<Key, Segment> segmentMap;
 	private final Map<String, Intersection> intersectionMap;
 	private final Graphics g;
+	private final String selectedStreetName;
 
 	private final float maxLatitude;
 	private final float minLatitude;
@@ -27,6 +28,7 @@ public class PlanDrawing {
 		this.g = g;
 		segmentMap = this.planData.getSegmentMap();
 		intersectionMap = this.planData.getIntersectionMap();
+		selectedStreetName = this.planData.getSelectedStreetName();
 
 		maxLatitude = this.planData.getMaxLatitude();
 		minLatitude = this.planData.getMinLatitude();
@@ -37,7 +39,6 @@ public class PlanDrawing {
 	}
 
 	public void drawPlan(){
-		final String selectedStreetName = planData.getSelectedStreetName();
 		segmentMap.forEach((key, segment) -> {
 			if(!selectedStreetName.isEmpty() && segment.getName().equals(selectedStreetName)){
 				drawSegment(segment, Color.BLUE, 1);
@@ -154,7 +155,13 @@ public class PlanDrawing {
 		float fullLength = deliveryTour.getGlobalTime();
 		float lengthCounter = 0;
 		for (Segment segment:segments) {
-			drawSegment(segment,Color.getHSBColor(0f,1,lengthCounter/fullLength),3);
+			if(!selectedStreetName.isEmpty() && segment.getName().equals(selectedStreetName)){
+				drawSegment(segment,Color.BLUE,3);
+			}
+			else{
+				drawSegment(segment,Color.getHSBColor(0f,1,lengthCounter/fullLength),3);
+			}
+
 			lengthCounter+=segment.getLength();
 		}
 	}
@@ -175,11 +182,11 @@ public class PlanDrawing {
 		g2.draw(new Line2D.Float(xOrigine, yOrigine, xDestination, yDestination));
 	}
 
-	private int getCoordinate (float x ,int a, int b, float min , float max){
+	public static int getCoordinate (float x ,int a, int b, float min , float max){
 		return (int)(((b-a)*(x-min)/(max-min)) + a);
 	}
 
-	private int getCoordinateY(float x,int a ,int b , float min,float max){
+	public static int getCoordinateY(float x,int a ,int b , float min,float max){
 		return b - getCoordinate(x,a,b,min,max);
 	}
 }
