@@ -136,6 +136,8 @@ public class Plan {
 
     public void setSelectedStreetName(String selectedStreetName) {
         this.selectedStreetName = selectedStreetName;
+    }
+
     public DeliveryTour getDeliveryTour() {
         return deliveryTour;
     }
