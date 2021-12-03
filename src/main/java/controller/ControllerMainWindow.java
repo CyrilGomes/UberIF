@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import model.*;
 import model.graphs.Graph;
 import model.graphs.Plan;
+import model.graphs.pathfinding.Dijkstra;
 import model.graphs.pathfinding.TSP;
 import model.graphs.pathfinding.TSP1;
 import util.XMLParser;
@@ -24,6 +25,7 @@ public class ControllerMainWindow {
     private MainWindow mainWindow;
     private Plan planData;
     private DeliveryTour deliveryTour;
+    private Graph graph;
 
     /**
      * The constructor of the class.
@@ -33,6 +35,7 @@ public class ControllerMainWindow {
         this.mainWindow = mainWindow;
         planData = null;
         deliveryTour = null;
+        graph = null;
     }
 
     /**
@@ -49,7 +52,7 @@ public class ControllerMainWindow {
 
         // Calling TSP to calculate the best tour
         TSP tsp = new TSP1();
-        Graph graph = Graph.generateCompleteGraphFromPlan(planData);
+        graph = Graph.generateCompleteGraphFromPlan(planData);
         tsp.searchSolution(20000,graph,request);
         DeliveryTour deliveryTour = tsp.getDeliveryTour();
         this.deliveryTour = deliveryTour;
@@ -127,11 +130,15 @@ public class ControllerMainWindow {
             System.out.println(deliveryPlace);
             if (pickupPlace != null && deliveryPlace != null){
                 Request newRequest = new Request(pickupId, deliveryId,pickupDurationInt,deliveryDurationInt);
-                System.out.println("hellooo :)");
+                //TODO : create the planning request if it doesn't exist
                 planData.getPlanningRequest().addRequest(newRequest);
-                System.out.println("hellooo :) x 2 ");
                 System.out.println(planData.getPlanningRequest());
                 mainWindow.setPlanningRequest(planData.getPlanningRequest());
+                mainWindow.showSummary(planData.getPlanningRequest());
+                String lastIntersectionId = deliveryTour.getLastIntersectionId();
+
+
+
             }
             if(pickupPlace == null){
                 System.out.println("Yooo renseigne la pickup place man");
@@ -141,7 +148,7 @@ public class ControllerMainWindow {
             }
 
         }catch (Exception e){
-            //TODO : Faire plusieurs exceptions pour le nombre converti et pour l'id pas trouvé
+            //TODO : manage different exceptions like conversion or not found id
             System.out.println(e);
         }
     }

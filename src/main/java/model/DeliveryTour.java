@@ -1,6 +1,6 @@
 package model;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Class representing the computed Delivery tour. result of the TSP.
@@ -8,7 +8,9 @@ import java.util.List;
  */
 public class DeliveryTour {
     List<Segment> segmentList;
+    List<String> orderedIdIntersectionTour;
     float globalTime;
+    String lastIntersectionId;
 
     
     public List<Segment> getSegmentList() {
@@ -27,5 +29,21 @@ public class DeliveryTour {
     public DeliveryTour(List<Segment> segmentList, float globalTime) {
         this.segmentList = segmentList;
         this.globalTime = globalTime;
+        this.orderedIdIntersectionTour = new ArrayList<String>();
+        this.lastIntersectionId = null;
+
+    }
+
+    public String getLastIntersectionId() {
+        return lastIntersectionId;
+    }
+
+    public String getFirstIntersectionId(){
+        return orderedIdIntersectionTour.get(0);
+    }
+
+    public void addNextPoint(String idIntersection){
+        this.orderedIdIntersectionTour.add(idIntersection);
+        this.lastIntersectionId = idIntersection;
     }
 }
