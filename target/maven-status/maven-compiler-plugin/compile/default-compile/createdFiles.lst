@@ -1,5 +1,6 @@
 view\MainWindow.class
 view\MainWindow$2.class
+view\plan\PlanPanel.class
 observer\Observer.class
 observer\Observable.class
 model\graphs\Key.class
@@ -13,6 +14,7 @@ model\Segment.class
 view\ButtonListenerMainWindow.class
 model\Request.class
 model\Intersection.class
+view\plan\PlanDrawing.class
 controller\ControllerMainWindow.class
 view\MainWindow$1.class
 model\graphs\pathfinding\Dijkstra.class

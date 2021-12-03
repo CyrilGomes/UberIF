@@ -17,6 +17,7 @@ public class Plan {
     java.util.Map<String, List<String>> adjacentsMap;
     java.util.Map<Key, Segment> segmentMap;
     PlanningRequest planningRequest = null;
+    String selectedStreetName = "";
     float maxLatitude;
     float minLatitude;
     float maxLongitude;
@@ -127,6 +128,13 @@ public class Plan {
         return segmentMap.get(new Key(origin,destination));
     }
 
+    public String getSelectedStreetName() {
+        return selectedStreetName;
+    }
+
+    public void setSelectedStreetName(String selectedStreetName) {
+        this.selectedStreetName = selectedStreetName;
+    }
 
     public List<Segment> getSegmentsFromIntersection(String origin) {
         List<String> adjacents = adjacentsMap.get(origin);

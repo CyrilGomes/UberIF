@@ -6,7 +6,6 @@ import model.graphs.Plan;
 
 import java.awt.*;
 import java.awt.geom.*;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +37,14 @@ public class PlanDrawing {
 	}
 
 	public void drawPlan(){
+		final String selectedStreetName = planData.getSelectedStreetName();
 		segmentMap.forEach((key, segment) -> {
-			drawSegment(segment, Color.WHITE, 1);
+			if(!selectedStreetName.isEmpty() && segment.getName().equals(selectedStreetName)){
+				drawSegment(segment, Color.BLUE, 1);
+			}
+			else{
+				drawSegment(segment, Color.WHITE, 1);
+			}
 		});
 	}
 
@@ -149,16 +154,9 @@ public class PlanDrawing {
 		float fullLength = deliveryTour.getGlobalTime();
 		float lengthCounter = 0;
 		for (Segment segment:segments) {
-
 			drawSegment(segment,Color.getHSBColor(0f,1,lengthCounter/fullLength),3);
 			lengthCounter+=segment.getLength();
 		}
-	}
-
-	public void highlightStreet(Collection<Segment> streetSegments){
-		streetSegments.forEach(segment ->  {
-			drawSegment(segment, Color.BLUE, 1);
-		});
 	}
 
 	private void drawSegment(Segment segment, Color color, int stroke){

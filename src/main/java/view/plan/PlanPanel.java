@@ -12,6 +12,7 @@ import view.MouseListenerPlanPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -22,6 +23,7 @@ public class PlanPanel extends JPanel {
 	private Plan planData;
 	private Map<Key, Segment> segmentMap;
 	private Map<String, Intersection> intersectionMap;
+	private ArrayList<Segment> selectedStreetSegments;
 	private DeliveryTour deliveryTour;
 	private int currentScale = 1;
 	private int xPosition = -1;
@@ -80,6 +82,7 @@ public class PlanPanel extends JPanel {
 	public void onMousePressed(int xMove, int yMove ){
 		
 	}
+
 	public void onMouseDragged(int xMove, int yMove ){
 		if(xPosition<0 && yPosition<0){
 			this.xPosition = xMove;
@@ -94,8 +97,10 @@ public class PlanPanel extends JPanel {
 		this.repaint();
 
 	}
+
 	private void identifyStreet(int xMouse, int yMouse){
-		segmentMap.forEach((key, segment) -> {
+		for (Key value : segmentMap.keySet()) {
+			Segment segment = segmentMap.get(value);
 			Intersection origine = intersectionMap.get(segment.getOrigin());
 			Intersection destination = intersectionMap.get(segment.getDestination());
 
@@ -114,10 +119,12 @@ public class PlanPanel extends JPanel {
 					== (int)(pointDestination.distance(pointOrigine))
 					&& !selectedStreetLabel.getText().equals(segment.getName())
 			){
+				planData.setSelectedStreetName(segment.getName());
 				selectedStreetLabel.setText(segment.getName());
-				repaint();
+				break;
 			}
-		});
+		}
+		repaint();
 	}
 
 	public void onMouseClicked(int xMouse, int yMouse){
@@ -315,6 +322,8 @@ public class PlanPanel extends JPanel {
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+		width = this.getWidth();
+		height = this.getHeight();
 
 		if(this.zoom){
 			if(this.xPosition<0 && this.yPosition<0){
@@ -336,6 +345,10 @@ public class PlanPanel extends JPanel {
 		}
 
 		if(planData != null){
+			maxLatitude = planData.getMaxLatitude();
+			minLatitude = planData.getMinLatitude();
+			maxLongitude = planData.getMaxLongitude();
+			minLongitude = planData.getMinLongitude();
 			PlanDrawing planDrawing = new PlanDrawing(planData, this, g);
 			planDrawing.drawPlan();
 			if(deliveryTour != null){
