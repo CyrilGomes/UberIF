@@ -13,6 +13,7 @@ import model.Request;
 import model.graphs.Plan;
 import observer.Observable;
 import observer.Observer;
+import view.plan.PlanPanel;
 
 import javax.swing.*;
 import java.awt.*;

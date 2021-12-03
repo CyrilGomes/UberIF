@@ -1,19 +1,18 @@
-package view;
+package view.plan;
 
 import javafx.geometry.Point2D;
-import model.*;
+import model.DeliveryTour;
+import model.Intersection;
+import model.PlanningRequest;
+import model.Segment;
 import model.graphs.Key;
 import model.graphs.Plan;
-import model.graphs.pathfinding.TSP;
-import model.graphs.pathfinding.TSP1;
-import model.graphs.pathfinding.TemplateTSP;
+import view.MouseListenerPlanPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * The visualisation of the map. Updated when the data changes.
@@ -207,7 +206,7 @@ public class PlanPanel extends JPanel {
 
 	}
 
-	@Override
+	/*@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
@@ -309,6 +308,42 @@ public class PlanPanel extends JPanel {
 				}
 			}
 
+		}
+	}*/
+
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+
+		if(this.zoom){
+			if(this.xPosition<0 && this.yPosition<0){
+				g2.translate(width/2, height/2);
+				g2.scale(this.currentScale, this.currentScale);
+				g2.translate(-width/2, -height/2);
+			}else{
+				g2.translate(this.xPosition, this.yPosition);
+				g2.scale(this.currentScale, this.currentScale);
+				g2.translate(-this.xPosition, -this.yPosition);
+			}
+			this.zoom=false;
+
+		}else if(this.move){
+			g2.translate(this.xPosition, this.yPosition);
+			g2.scale(this.currentScale, this.currentScale);
+			g2.translate(-this.xPosition, -this.yPosition);
+			this.move=false;
+		}
+
+		if(planData != null){
+			PlanDrawing planDrawing = new PlanDrawing(planData, this, g);
+			planDrawing.drawPlan();
+			if(deliveryTour != null){
+				planDrawing.drawRequestsRoute(deliveryTour);
+			}
+			if(planData.getPlanningRequest() != null){
+				planDrawing.drawPOI();
+			}
 		}
 	}
 
