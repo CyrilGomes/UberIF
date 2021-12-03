@@ -1,10 +1,7 @@
 package controller;
 
 import javafx.util.Pair;
-import model.DeliveryTour;
-import model.PlanningRequest;
-import model.Request;
-import model.Segment;
+import model.*;
 import model.graphs.Graph;
 import model.graphs.Plan;
 import model.graphs.pathfinding.TSP;
@@ -116,5 +113,36 @@ public class ControllerMainWindow {
 
         String finishTime = currentTime.toString();
         planningRequest.setFinishTime(finishTime);
+    }
+
+    public void addNewRequest(String pickupId, String pickupDuration, String deliveryId, String deliveryDuration) {
+        try{
+            int deliveryDurationInt = Integer.parseInt(deliveryDuration);
+            int pickupDurationInt = Integer.parseInt(pickupDuration);
+
+
+            Intersection pickupPlace = planData.getIntersectionMap().get(pickupId);
+            System.out.println(pickupPlace);
+            Intersection deliveryPlace = planData.getIntersectionMap().get(deliveryId);
+            System.out.println(deliveryPlace);
+            if (pickupPlace != null && deliveryPlace != null){
+                Request newRequest = new Request(pickupId, deliveryId,pickupDurationInt,deliveryDurationInt);
+                System.out.println("hellooo :)");
+                planData.getPlanningRequest().addRequest(newRequest);
+                System.out.println("hellooo :) x 2 ");
+                System.out.println(planData.getPlanningRequest());
+                mainWindow.setPlanningRequest(planData.getPlanningRequest());
+            }
+            if(pickupPlace == null){
+                System.out.println("Yooo renseigne la pickup place man");
+            }
+            if(deliveryPlace== null){
+                System.out.println("Yooo renseigne la delivery place man");
+            }
+
+        }catch (Exception e){
+            //TODO : Faire plusieurs exceptions pour le nombre converti et pour l'id pas trouvé
+            System.out.println(e);
+        }
     }
 }

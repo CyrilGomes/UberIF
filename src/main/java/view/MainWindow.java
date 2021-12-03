@@ -51,6 +51,18 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        panelAddRequest = new javax.swing.JPanel();
+        btAddRequest = new javax.swing.JButton();
+        tfDeliveryID = new javax.swing.JTextField();
+        tfDeliveryTime = new javax.swing.JTextField();
+        tfPickupID = new javax.swing.JTextField();
+        tfPickupTime = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         infoLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -63,7 +75,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(720, 576));
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
@@ -80,15 +91,120 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         jTabbedPane2.addTab("Summary", jPanel6);
 
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        btAddRequest.setText("Add request");
+        btAddRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAddRequestActionPerformed(evt);
+            }
+        });
+
+        tfPickupTime.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfPickupTimeActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Pickup intersection ID");
+
+        jLabel2.setText("Delivery time");
+
+        jLabel3.setText("Pickup time");
+
+        jLabel4.setText("Delivery intersection ID");
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        jLabel5.setText("Add a new request");
+
+        javax.swing.GroupLayout panelAddRequestLayout = new javax.swing.GroupLayout(panelAddRequest);
+        panelAddRequest.setLayout(panelAddRequestLayout);
+        panelAddRequestLayout.setHorizontalGroup(
+            panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAddRequestLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btAddRequest)
+                .addGap(270, 270, 270))
+            .addGroup(panelAddRequestLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAddRequestLayout.createSequentialGroup()
+                        .addComponent(tfPickupTime, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2))
+                    .addGroup(panelAddRequestLayout.createSequentialGroup()
+                        .addComponent(tfPickupID, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                        .addComponent(jLabel4)))
+                .addGap(12, 12, 12)
+                .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfDeliveryTime, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfDeliveryID, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(63, 63, 63))
+            .addGroup(panelAddRequestLayout.createSequentialGroup()
+                .addGap(238, 238, 238)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelAddRequestLayout.setVerticalGroup(
+            panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAddRequestLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAddRequestLayout.createSequentialGroup()
+                        .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfDeliveryID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfDeliveryTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)))
+                    .addGroup(panelAddRequestLayout.createSequentialGroup()
+                        .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfPickupID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfPickupTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))))
+                .addGap(18, 18, 18)
+                .addComponent(btAddRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 628, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelAddRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 332, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelAddRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         jTabbedPane2.addTab("Deliveries", jPanel2);
@@ -164,6 +280,17 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         buttonListenerMainWindow.actionPerformed(evt);
 
     }//GEN-LAST:event_jMenuItemActionPerformed
+
+    private void btAddRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddRequestActionPerformed
+        // TODO add your handling code here:
+        System.out.println(evt.getActionCommand());
+        buttonListenerMainWindow.actionPerformed(evt);
+        
+    }//GEN-LAST:event_btAddRequestActionPerformed
+
+    private void tfPickupTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPickupTimeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfPickupTimeActionPerformed
 
 
 
@@ -269,10 +396,17 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 System.out.println("Hello world");
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAddRequest;
     private javax.swing.JLabel infoLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -284,8 +418,31 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JPanel panelAddRequest;
+    private javax.swing.JTextField tfDeliveryID;
+    private javax.swing.JTextField tfDeliveryTime;
+    private javax.swing.JTextField tfPickupID;
+
+    public JTextField getTfDeliveryID() {
+        return tfDeliveryID;
+    }
+
+    public JTextField getTfDeliveryTime() {
+        return tfDeliveryTime;
+    }
+
+    public JTextField getTfPickupID() {
+        return tfPickupID;
+    }
+
+    public JTextField getTfPickupTime() {
+        return tfPickupTime;
+    }
+
+    private javax.swing.JTextField tfPickupTime;
     // End of variables declaration//GEN-END:variables
 
     private ButtonListenerMainWindow buttonListenerMainWindow;

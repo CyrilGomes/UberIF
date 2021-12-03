@@ -43,6 +43,8 @@ public class Plan {
         this.segmentMap = segmentMap;
     }
 
+
+
     public Map<String, List<String>> getAdjacentsMap() {
         return adjacentsMap;
     }
