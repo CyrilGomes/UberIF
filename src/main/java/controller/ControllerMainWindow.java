@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The Controller of the MainWindow view. Receive information from the view
@@ -116,5 +117,11 @@ public class ControllerMainWindow {
 
         String finishTime = currentTime.toString();
         planningRequest.setFinishTime(finishTime);
+
+        // Sort request by pickUpTimePassage
+        List<Request> sortedRequests = requests.stream().sorted((request1,request2)->{
+            return LocalTime.parse(request1.getPickupTimePassage()).compareTo(LocalTime.parse(request2.getPickupTimePassage()));
+        }).collect(Collectors.toList());
+        planningRequest.setRequests(sortedRequests);
     }
 }

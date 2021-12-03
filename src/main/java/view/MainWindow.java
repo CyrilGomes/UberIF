@@ -196,6 +196,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
             // Add information to jPanel
             JPanel container = jPanel6;
+            jPanel6.removeAll();
             container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
             JLabel startLabel = new JLabel("Start time: "+startTime);
             startLabel.setFont(new Font("Verdana",1,20));

@@ -44,6 +44,10 @@ public class PlanningRequest {
         return requests;
     }
 
+    public void setRequests(List<Request> requests) {
+        this.requests = requests;
+    }
+
     public String toString(){
         String print = "departure time: "+this.departureTime+"\n"+
                 "id of the deposit: "+this.startId+
