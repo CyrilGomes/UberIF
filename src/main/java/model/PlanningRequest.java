@@ -11,7 +11,8 @@ public class PlanningRequest {
     private String startId;
     private String departureTime;
     private List<Request> requests;
-
+    // Finish time calculated for the tour
+    private String finishTime;
     /**
      * the constructor of the object PlanningRequest.
      * @param startId the id of the intersection of the deposit.
@@ -54,5 +55,13 @@ public class PlanningRequest {
         }
         print +="]";
         return print;
+    }
+
+    public String getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(String finishTime) {
+        this.finishTime = finishTime;
     }
 }

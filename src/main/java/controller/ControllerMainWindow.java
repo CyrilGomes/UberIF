@@ -3,14 +3,21 @@ package controller;
 import javafx.util.Pair;
 import model.DeliveryTour;
 import model.PlanningRequest;
+import model.Request;
+import model.Segment;
 import model.graphs.Graph;
 import model.graphs.Plan;
 import model.graphs.pathfinding.TSP;
+import model.graphs.pathfinding.TSP1;
 import util.XMLParser;
 import view.MainWindow;
 
 import java.io.File;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The Controller of the MainWindow view. Receive information from the view
@@ -44,14 +51,17 @@ public class ControllerMainWindow {
         planData.setPlanningRequest(request);
 
         // Calling TSP to calculate the best tour
-        TSP tsp = new TSP();
-        Graph graph = tsp.generateTsmCompleteGraph(planData);
-        Pair<Float, List<String>> result = tsp.allTours(graph,request);
-        DeliveryTour deliveryTour = tsp.generatedDeliveryTour(graph,result);
+        TSP tsp = new TSP1();
+        Graph graph = Graph.generateCompleteGraphFromPlan(planData);
+        tsp.searchSolution(20000,graph,request);
+        DeliveryTour deliveryTour = tsp.getDeliveryTour();
         this.deliveryTour = deliveryTour;
         mainWindow.setDeliveryTour(deliveryTour);
         // System.out.println(request);
         mainWindow.setPlanningRequest(request);
+
+        calculateTimes();
+        mainWindow.showSummary(planData.getPlanningRequest());
     }
 
     /**
@@ -64,5 +74,47 @@ public class ControllerMainWindow {
         Plan plan = parser.readMap(file.getAbsolutePath());
         planData = plan;
         mainWindow.setPlanData(plan);
+    }
+
+    /**
+     * Method that calculate for each request(pickup and delivery) when it will pass
+     *
+     */
+
+    public void calculateTimes(){
+        PlanningRequest planningRequest = planData.getPlanningRequest();
+        List<Segment> segmentList = deliveryTour.getSegmentList();
+        String departureTime = planningRequest.getDepartureTime();
+        LocalTime currentTime = LocalTime.parse(departureTime);
+        // Speed of the cyclist in m/s
+        float speed = (float)(15/3.6) ;
+
+        List<Request> requests = planningRequest.getRequests();
+
+        for (Segment segment: segmentList){
+            String origin = segment.getOrigin();
+
+            // The origin of the segment is a pickup
+            Request requestPick = requests.stream().filter(request->request.getPickupId().equals(origin)).findFirst().orElse(null);
+            if(requestPick!=null){
+                requestPick.setPickupTimePassage(currentTime.toString());
+                currentTime = currentTime.plusSeconds(requestPick.getPickupDuration());
+            }
+
+            // The origin of the segment is a delivery
+            Request requestDelivery = requests.stream().filter(request->request.getDeliveryId().equals(origin)).findFirst().orElse(null);
+            if(requestDelivery!=null){
+                requestDelivery.setDeliveryTimePassage(currentTime.toString());
+                currentTime = currentTime.plusSeconds(requestDelivery.getDeliveryDuration());
+            }
+
+
+            // Time needed in seconds to go through the segment
+            int segmentDuration = (int) (segment.getLength()/speed);
+            currentTime = currentTime.plusSeconds(segmentDuration);
+        }
+
+        String finishTime = currentTime.toString();
+        planningRequest.setFinishTime(finishTime);
     }
 }

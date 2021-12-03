@@ -42,7 +42,7 @@ public class XMLParserTest {
     public void readRequests(){
         PlanningRequest planningRequest = xmlParser.readRequests("files/requestsSmall1.xml");
         assertEquals("342873658",planningRequest.getStartId());
-        assertEquals("8:0:0",planningRequest.getDepartureTime());
+        assertEquals("08:00:00",planningRequest.getDepartureTime());
 
         List<Request> requests = planningRequest.getRequests();
         assertEquals(1,requests.size());

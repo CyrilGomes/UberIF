@@ -10,6 +10,11 @@ public class Request {
     private String deliveryId;
     private int pickupDuration;
     private int deliveryDuration;
+    // The time the cyclist arrive to this pickup in the tour
+    private String pickupTimePassage;
+    // The time the cyclist arrive to this delivery in the tour
+    private String deliveryTimePassage;
+
 
     /**
      * The constructor of a request object.
@@ -62,5 +67,21 @@ public class Request {
                 " pickup duration: "+this.pickupDuration+"\n"+
                 "id of the delivery: "+this.deliveryId+
                 " delivery duration: "+this.deliveryDuration+"]";
+    }
+
+    public String getPickupTimePassage() {
+        return pickupTimePassage;
+    }
+
+    public void setPickupTimePassage(String pickupTimePassage) {
+        this.pickupTimePassage = pickupTimePassage;
+    }
+
+    public String getDeliveryTimePassage() {
+        return deliveryTimePassage;
+    }
+
+    public void setDeliveryTimePassage(String deliveryTimePassage) {
+        this.deliveryTimePassage = deliveryTimePassage;
     }
 }
