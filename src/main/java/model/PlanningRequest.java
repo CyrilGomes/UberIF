@@ -68,4 +68,8 @@ public class PlanningRequest {
     public void setFinishTime(String finishTime) {
         this.finishTime = finishTime;
     }
+
+    public void removeRequest(Request request){
+        requests.remove(request);
+    }
 }

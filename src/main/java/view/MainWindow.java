@@ -25,12 +25,14 @@ import java.awt.*;
  */
 public class MainWindow extends javax.swing.JFrame implements Observer {
     private final PlanPanel planPanel;
+    private final ControllerMainWindow controller;
 
     /**
      * Creates new form MainWindow.
      */
     public MainWindow() {
-        buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow(this), this);
+        controller = new ControllerMainWindow(this);
+        buttonListenerMainWindow = new ButtonListenerMainWindow(controller, this);
         initComponents();
         planPanel = new PlanPanel(infoLabel);
 
@@ -190,7 +192,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
             // Add information to jPanel
             JPanel container = jPanel6;
-            jPanel6.removeAll();
+            container.removeAll();
             container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
             JLabel startLabel = new JLabel("Start time: "+startTime);
             startLabel.setFont(new Font("Verdana",1,20));
@@ -209,6 +211,10 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 JLabel requestLabel = new JLabel("Request number "+i+":");
                 requestLabel.setFont(new Font("Verdana",1,16));
                 container.add(requestLabel);
+
+                JButton deleteButton = new JButton("Delete request");
+                container.add(deleteButton);
+                deleteButton.addActionListener(new DeleteButtonListener(controller,request));
 
                 JLabel timeLabel = new JLabel("PickupTime: "+pickUpTimePassage+"\t DeliveryTime: "+deliveryTimePassage);
                 timeLabel.setFont(new Font("Verdana",1,12));

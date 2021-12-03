@@ -123,4 +123,16 @@ public class ControllerMainWindow {
         }).collect(Collectors.toList());
         planningRequest.setRequests(sortedRequests);
     }
+
+    /**
+     * Method called when we remove a request
+     * @param request the request to delete
+     */
+
+    public void removeRequest(Request request){
+        planData.getPlanningRequest().removeRequest(request);
+        mainWindow.setPlanData(planData);
+        calculateTimes();
+        mainWindow.showSummary(planData.getPlanningRequest());
+    }
 }
