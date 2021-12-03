@@ -23,7 +23,6 @@ public class PlanPanel extends JPanel {
 	private Plan planData;
 	private Map<Key, Segment> segmentMap;
 	private Map<String, Intersection> intersectionMap;
-	private DeliveryTour deliveryTour;
 	private int currentScale = 1;
 	private int xPosition = -1;
 	private int yPosition = -1;
@@ -57,14 +56,8 @@ public class PlanPanel extends JPanel {
 		this.repaint();
 	}
 
-	public void setPlanningRequest(PlanningRequest planningRequest){
-		planData.setPlanningRequest(planningRequest);
-		this.repaint();
-	}
-
-	public void setDeliveryTour(DeliveryTour deliveryTour){
-		this.deliveryTour = deliveryTour;
-		this.repaint();
+	public Plan getPlanData() {
+		return planData;
 	}
 
 	public void onMouseWheel(int notches){
@@ -188,8 +181,8 @@ public class PlanPanel extends JPanel {
 				}
 			});
 
-			if(planData.getPlanningRequest()!=null){
-				PlanningRequest planningRequest = planData.getPlanningRequest();
+			PlanningRequest planningRequest = planData.getPlanningRequest();
+			if(planningRequest!=null){
 
 				// Drawing the depot
 				Intersection depot = intersectionMap.get(planningRequest.getStartId());
@@ -224,6 +217,7 @@ public class PlanPanel extends JPanel {
 					i++;
 				}
 			}
+			DeliveryTour deliveryTour = planData.getDeliveryTour();
 			if(deliveryTour != null){
 				List<Segment> segments = deliveryTour.getSegmentList();
 				float fullLength = deliveryTour.getGlobalTime();

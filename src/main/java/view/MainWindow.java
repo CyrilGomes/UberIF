@@ -180,19 +180,13 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         planPanel.setPlanData(planData);
     }
 
-    public void setPlanningRequest(PlanningRequest planningRequest){
-        planPanel.setPlanningRequest(planningRequest);
-    }
-
-    public void setDeliveryTour(DeliveryTour deliveryTour){
-        planPanel.setDeliveryTour(deliveryTour);
+    public Plan getPlanData(Plan planData){
+        return planPanel.getPlanData();
     }
 
     public void showSummary(PlanningRequest planningRequest){
             String startTime = planningRequest.getDepartureTime();
             String finishTime = planningRequest.getFinishTime();
-            System.out.println("<<<Start time: "+startTime);
-            System.out.println("<<<Final time of return to depot: "+finishTime);
 
             // Add information to jPanel
             JPanel container = jPanel6;
@@ -211,7 +205,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             for(Request request : planningRequest.getRequests()){
                 String pickUpTimePassage = request.getPickupTimePassage();
                 String deliveryTimePassage = request.getDeliveryTimePassage();
-                System.out.println("PickupTime: "+pickUpTimePassage+"  DeliveryTime: "+deliveryTimePassage);
 
                 JLabel requestLabel = new JLabel("Request number "+i+":");
                 requestLabel.setFont(new Font("Verdana",1,16));
