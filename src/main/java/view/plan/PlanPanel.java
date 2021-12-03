@@ -26,7 +26,6 @@ public class PlanPanel extends JPanel {
 	private Map<Key, Segment> segmentMap;
 	private Map<String, Intersection> intersectionMap;
 	private ArrayList<Segment> selectedStreetSegments;
-	private DeliveryTour deliveryTour;
 	private int currentScale = 1;
 	private int xPosition = -1;
 	private int yPosition = -1;
@@ -60,14 +59,8 @@ public class PlanPanel extends JPanel {
 		this.repaint();
 	}
 
-	public void setPlanningRequest(PlanningRequest planningRequest){
-		planData.setPlanningRequest(planningRequest);
-		this.repaint();
-	}
-
-	public void setDeliveryTour(DeliveryTour deliveryTour){
-		this.deliveryTour = deliveryTour;
-		this.repaint();
+	public Plan getPlanData() {
+		return planData;
 	}
 
 	public void onMouseWheel(int notches){
@@ -168,6 +161,7 @@ public class PlanPanel extends JPanel {
 			// Sélection et ordonnancement des logiques de dessin
 			PlanDrawing planDrawing = new PlanDrawing(planData, this, g);
 			planDrawing.drawPlan();
+			DeliveryTour deliveryTour = planData.getDeliveryTour();
 			if(deliveryTour != null) {
 				planDrawing.drawRequestsRoute(deliveryTour);
 			}

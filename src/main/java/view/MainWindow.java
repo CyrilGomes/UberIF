@@ -26,12 +26,14 @@ import java.awt.*;
  */
 public class MainWindow extends javax.swing.JFrame implements Observer {
     private final PlanPanel planPanel;
+    private final ControllerMainWindow controller;
 
     /**
      * Creates new form MainWindow.
      */
     public MainWindow() {
-        buttonListenerMainWindow = new ButtonListenerMainWindow(new ControllerMainWindow(this), this);
+        controller = new ControllerMainWindow(this);
+        buttonListenerMainWindow = new ButtonListenerMainWindow(controller, this);
         initComponents();
         planPanel = new PlanPanel(infoLabel);
 
@@ -181,23 +183,17 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         planPanel.setPlanData(planData);
     }
 
-    public void setPlanningRequest(PlanningRequest planningRequest){
-        planPanel.setPlanningRequest(planningRequest);
-    }
-
-    public void setDeliveryTour(DeliveryTour deliveryTour){
-        planPanel.setDeliveryTour(deliveryTour);
+    public Plan getPlanData(Plan planData){
+        return planPanel.getPlanData();
     }
 
     public void showSummary(PlanningRequest planningRequest){
             String startTime = planningRequest.getDepartureTime();
             String finishTime = planningRequest.getFinishTime();
-            System.out.println("<<<Start time: "+startTime);
-            System.out.println("<<<Final time of return to depot: "+finishTime);
 
             // Add information to jPanel
             JPanel container = jPanel6;
-            jPanel6.removeAll();
+            container.removeAll();
             container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
             JLabel startLabel = new JLabel("Start time: "+startTime);
             startLabel.setFont(new Font("Verdana",1,20));
@@ -212,11 +208,14 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             for(Request request : planningRequest.getRequests()){
                 String pickUpTimePassage = request.getPickupTimePassage();
                 String deliveryTimePassage = request.getDeliveryTimePassage();
-                System.out.println("PickupTime: "+pickUpTimePassage+"  DeliveryTime: "+deliveryTimePassage);
 
                 JLabel requestLabel = new JLabel("Request number "+i+":");
                 requestLabel.setFont(new Font("Verdana",1,16));
                 container.add(requestLabel);
+
+                JButton deleteButton = new JButton("Delete request");
+                container.add(deleteButton);
+                deleteButton.addActionListener(new DeleteButtonListener(controller,request));
 
                 JLabel timeLabel = new JLabel("PickupTime: "+pickUpTimePassage+"\t DeliveryTime: "+deliveryTimePassage);
                 timeLabel.setFont(new Font("Verdana",1,12));

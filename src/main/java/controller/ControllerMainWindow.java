@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 public class ControllerMainWindow {
     private MainWindow mainWindow;
     private Plan planData;
-    private DeliveryTour deliveryTour;
 
     /**
      * The constructor of the class.
@@ -36,7 +35,6 @@ public class ControllerMainWindow {
     public ControllerMainWindow(MainWindow mainWindow){
         this.mainWindow = mainWindow;
         planData = null;
-        deliveryTour = null;
     }
 
     /**
@@ -56,10 +54,11 @@ public class ControllerMainWindow {
         Graph graph = Graph.generateCompleteGraphFromPlan(planData);
         tsp.searchSolution(20000,graph,request);
         DeliveryTour deliveryTour = tsp.getDeliveryTour();
-        this.deliveryTour = deliveryTour;
-        mainWindow.setDeliveryTour(deliveryTour);
+        planData.setDeliveryTour(deliveryTour);
         // System.out.println(request);
-        mainWindow.setPlanningRequest(request);
+        planData.setPlanningRequest(request);
+
+        mainWindow.setPlanData(planData);
 
         calculateTimes();
         mainWindow.showSummary(planData.getPlanningRequest());
@@ -84,7 +83,7 @@ public class ControllerMainWindow {
 
     public void calculateTimes(){
         PlanningRequest planningRequest = planData.getPlanningRequest();
-        List<Segment> segmentList = deliveryTour.getSegmentList();
+        List<Segment> segmentList = planData.getDeliveryTour().getSegmentList();
         String departureTime = planningRequest.getDepartureTime();
         LocalTime currentTime = LocalTime.parse(departureTime);
         // Speed of the cyclist in m/s
@@ -123,5 +122,17 @@ public class ControllerMainWindow {
             return LocalTime.parse(request1.getPickupTimePassage()).compareTo(LocalTime.parse(request2.getPickupTimePassage()));
         }).collect(Collectors.toList());
         planningRequest.setRequests(sortedRequests);
+    }
+
+    /**
+     * Method called when we remove a request
+     * @param request the request to delete
+     */
+
+    public void removeRequest(Request request){
+        planData.getPlanningRequest().removeRequest(request);
+        mainWindow.setPlanData(planData);
+        calculateTimes();
+        mainWindow.showSummary(planData.getPlanningRequest());
     }
 }
