@@ -131,6 +131,8 @@ public class ControllerMainWindow {
 
     public void removeRequest(Request request){
         planData.getPlanningRequest().removeRequest(request);
+        //planData.getPlanningRequest().getRequests().get(0).get
+
         mainWindow.setPlanData(planData);
         calculateTimes();
         mainWindow.showSummary(planData.getPlanningRequest());

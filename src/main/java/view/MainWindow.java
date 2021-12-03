@@ -217,6 +217,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 container.add(deleteButton);
                 deleteButton.addActionListener(new DeleteButtonListener(controller,request));
 
+
                 JLabel timeLabel = new JLabel("PickupTime: "+pickUpTimePassage+"\t DeliveryTime: "+deliveryTimePassage);
                 timeLabel.setFont(new Font("Verdana",1,12));
                 container.add(timeLabel);

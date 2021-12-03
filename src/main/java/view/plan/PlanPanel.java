@@ -1,10 +1,7 @@
 package view.plan;
 
 import javafx.geometry.Point2D;
-import model.DeliveryTour;
-import model.Intersection;
-import model.PlanningRequest;
-import model.Segment;
+import model.*;
 import model.graphs.Key;
 import model.graphs.Plan;
 import view.MouseListenerPlanPanel;
@@ -123,7 +120,48 @@ public class PlanPanel extends JPanel {
 
 	public void onMouseClicked(int xMouse, int yMouse){
 		identifyStreet(xMouse, yMouse);
+
+		zer(xMouse, yMouse);
 		repaint();
+	}
+
+	public boolean intersectionIsClicked(Intersection intersection, int mouseX, int mouseY) {
+		int y = getCoordinateY(intersection.getLatitude(),0,height,minLatitude,maxLatitude);
+		int x = getCoordinate(intersection.getLongitude(),0,width,minLongitude,maxLongitude);
+
+		return (Math.abs(x - mouseX) < 20 && Math.abs(y - mouseY) < 20);
+	}
+
+	public void zer(int xMouse, int yMouse) {
+
+
+		for (Request request : planData.getPlanningRequest().getRequests()) {
+			String id = request.getPickupId();
+			Intersection pickup = intersectionMap.get(id);
+			if (intersectionIsClicked(pickup, xMouse, yMouse))
+			{
+				System.out.println("Clicked on a pickup point");
+				System.out.println("pickup duration : " + request.getPickupDuration());
+				System.out.println("pickup Time passage" + request.getPickupTimePassage());
+			}
+			id = request.getDeliveryId();
+			Intersection delivery = intersectionMap.get(id);
+			if (intersectionIsClicked(delivery, xMouse, yMouse))
+			{
+				System.out.println("Clicked on a delivery point");
+				System.out.println("delivery duration : " + request.getDeliveryDuration());
+				System.out.println("delivery Time passage" + request.getDeliveryTimePassage());
+			}
+
+		}
+
+
+		String z1 = planData.getPlanningRequest().getRequests().get(0).getPickupId();
+		String z2 = planData.getPlanningRequest().getRequests().get(0).getDeliveryId();
+
+		//System.out.println(planData.getIntersectionMap().get(z1).getLatitude());
+		//System.out.println(planData.getIntersectionMap().get(z2).getLatitude());
+
 	}
 
 	@Override
