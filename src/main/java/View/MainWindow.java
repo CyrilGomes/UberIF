@@ -147,6 +147,75 @@ public class MainWindow extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+
+    @Override
+    public void update(Observable o, Object arg){
+        setDeliveryTour((DeliveryTour) arg);
+
+    }
+
+    /**
+     * update the plan.
+     * @param planData the plan to update.
+     */
+    public void setPlanData(Plan planData) {
+        planPanel.setPlanData(planData);
+    }
+
+    public void setPlanningRequest(PlanningRequest planningRequest){
+        planPanel.setPlanningRequest(planningRequest);
+    }
+
+    public void setDeliveryTour(DeliveryTour deliveryTour){
+        planPanel.setDeliveryTour(deliveryTour);
+    }
+
+    public void showSummary(PlanningRequest planningRequest){
+            String startTime = planningRequest.getDepartureTime();
+            String finishTime = planningRequest.getFinishTime();
+            System.out.println("<<<Start time: "+startTime);
+            System.out.println("<<<Final time of return to depot: "+finishTime);
+
+            // Add information to jPanel
+            JPanel container = jPanel6;
+            container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+            JLabel startLabel = new JLabel("Start time: "+startTime);
+            startLabel.setFont(new Font("Verdana",1,20));
+            startLabel.setForeground(new Color(20,100,10));
+            container.add(startLabel);
+            // Adding space between components
+            container.add(Box.createVerticalStrut(10));
+
+
+            // For each request we get the time of passage of the pickup and the delivery
+            int i = 1 ;
+            for(Request request : planningRequest.getRequests()){
+                String pickUpTimePassage = request.getPickupTimePassage();
+                String deliveryTimePassage = request.getDeliveryTimePassage();
+                System.out.println("PickupTime: "+pickUpTimePassage+"  DeliveryTime: "+deliveryTimePassage);
+
+                JLabel requestLabel = new JLabel("Request number "+i+":");
+                requestLabel.setFont(new Font("Verdana",1,16));
+                container.add(requestLabel);
+
+                JLabel timeLabel = new JLabel("PickupTime: "+pickUpTimePassage+"\t DeliveryTime: "+deliveryTimePassage);
+                timeLabel.setFont(new Font("Verdana",1,12));
+                container.add(timeLabel);
+                container.add(Box.createVerticalStrut(5));
+                i++;
+            }
+
+            container.add(Box.createVerticalStrut(10));
+
+            JLabel finishLabel = new JLabel("Finish time: "+finishTime);
+            finishLabel.setFont(new Font("Verdana",1,20));
+            finishLabel.setForeground(Color.BLUE);
+            container.add(finishLabel);
+
+            container.revalidate();
+            container.repaint();
+    }
+
     /**
      * @param args the command line arguments
      */
