@@ -60,7 +60,7 @@ public class ControllerMainWindow {
 
         mainWindow.setPlanData(planData);
 
-        calculateTimes();
+        planData.getPlanningRequest().calculateTimes(deliveryTour);
         mainWindow.showSummary(planData.getPlanningRequest());
     }
 
@@ -77,62 +77,17 @@ public class ControllerMainWindow {
     }
 
     /**
-     * Method that calculate for each request(pickup and delivery) when it will pass
-     *
-     */
-
-    public void calculateTimes(){
-        PlanningRequest planningRequest = planData.getPlanningRequest();
-        List<Segment> segmentList = planData.getDeliveryTour().getSegmentList();
-        String departureTime = planningRequest.getDepartureTime();
-        LocalTime currentTime = LocalTime.parse(departureTime);
-        // Speed of the cyclist in m/s
-        float speed = (float)(15/3.6) ;
-
-        List<Request> requests = planningRequest.getRequests();
-
-        for (Segment segment: segmentList){
-            String origin = segment.getOrigin();
-
-            // The origin of the segment is a pickup
-            Request requestPick = requests.stream().filter(request->request.getPickupId().equals(origin)).findFirst().orElse(null);
-            if(requestPick!=null){
-                requestPick.setPickupTimePassage(currentTime.toString());
-                currentTime = currentTime.plusSeconds(requestPick.getPickupDuration());
-            }
-
-            // The origin of the segment is a delivery
-            Request requestDelivery = requests.stream().filter(request->request.getDeliveryId().equals(origin)).findFirst().orElse(null);
-            if(requestDelivery!=null){
-                requestDelivery.setDeliveryTimePassage(currentTime.toString());
-                currentTime = currentTime.plusSeconds(requestDelivery.getDeliveryDuration());
-            }
-
-
-            // Time needed in seconds to go through the segment
-            int segmentDuration = (int) (segment.getLength()/speed);
-            currentTime = currentTime.plusSeconds(segmentDuration);
-        }
-
-        String finishTime = currentTime.toString();
-        planningRequest.setFinishTime(finishTime);
-
-        // Sort request by pickUpTimePassage
-        List<Request> sortedRequests = requests.stream().sorted((request1,request2)->{
-            return LocalTime.parse(request1.getPickupTimePassage()).compareTo(LocalTime.parse(request2.getPickupTimePassage()));
-        }).collect(Collectors.toList());
-        planningRequest.setRequests(sortedRequests);
-    }
-
-    /**
      * Method called when we remove a request
      * @param request the request to delete
      */
 
     public void removeRequest(Request request){
-        planData.getPlanningRequest().removeRequest(request);
+        PlanningRequest planningRequest = planData.getPlanningRequest();
+        planningRequest.removeRequest(request);
+        // Updates the map to not have icons of the removed request
         mainWindow.setPlanData(planData);
-        calculateTimes();
+        // Recalculate times
+        planningRequest.calculateTimes(planData.getDeliveryTour());
         mainWindow.showSummary(planData.getPlanningRequest());
     }
 }
