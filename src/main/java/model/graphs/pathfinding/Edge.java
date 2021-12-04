@@ -20,6 +20,22 @@ public class Edge {
                 '}';
     }
 
+    public String getOrigin() {
+        return origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public List<Segment> getSegmentList() {
+        return segmentList;
+    }
+
+    public float getDuration() {
+        return duration;
+    }
+
     public Edge(String origin, String destination, List<Segment> segmentList, float duration) {
         this.origin = origin;
         this.destination = destination;

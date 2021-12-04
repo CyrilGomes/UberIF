@@ -3,23 +3,42 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package View;
+package view;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import controller.ControllerMainWindow;
+import model.DeliveryTour;
+import model.PlanningRequest;
+import model.Request;
+import model.graphs.Plan;
+import observer.Observable;
+import observer.Observer;
+import view.plan.PlanPanel;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
+ * The main class, displaying the HMI and starting the application.
  *
  * @author Thibaud Martin
+ * @author Aurelia Inard
  */
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame implements Observer {
+    private final PlanPanel planPanel;
+    private final ControllerMainWindow controller;
 
     /**
-     * Creates new form MainWindow
+     * Creates new form MainWindow.
      */
     public MainWindow() {
+        controller = new ControllerMainWindow(this);
+        buttonListenerMainWindow = new ButtonListenerMainWindow(controller, this);
         initComponents();
+        planPanel = new PlanPanel(infoLabel);
+
+        jPanel1.add(planPanel);
+        pack();
     }
 
     /**
@@ -30,13 +49,13 @@ public class MainWindow extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        infoLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -48,28 +67,14 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(720, 576));
-        getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 364, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 365, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(jPanel5);
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addGap(0, 628, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,7 +87,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addGap(0, 628, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,18 +98,20 @@ public class MainWindow extends javax.swing.JFrame {
 
         jPanel1.add(jTabbedPane2);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jPanel1, gridBagConstraints);
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        jPanel3.setMinimumSize(new java.awt.Dimension(0, 20));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel3.add(infoLabel);
+
+        getContentPane().add(jPanel3, java.awt.BorderLayout.PAGE_END);
 
         jMenu3.setText("File");
 
         jMenuItem4.setText("Exit");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jMenuItemActionPerformed(evt);
             }
         });
         jMenu3.add(jMenuItem4);
@@ -114,6 +121,11 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu1.setText("Map");
 
         jMenuItem3.setText("Import map");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
@@ -121,12 +133,17 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu2.setText("Delivery");
 
         jMenuItem1.setText("Import tour");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem1);
 
         jMenuItem2.setText("Ajouter livraison");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jMenuItemActionPerformed(evt);
             }
         });
         jMenu2.add(jMenuItem2);
@@ -138,14 +155,85 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    /**
+     * the Event listener, detect when a button is clicked and send it to the buttonListener Class.
+     *
+     * @param evt the event caught.
+     * @see ButtonListenerMainWindow
+     */
+    private void jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+        System.out.println(evt.getActionCommand());
+        buttonListenerMainWindow.actionPerformed(evt);
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        setVisible(false);
-        System.exit(0);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_jMenuItemActionPerformed
+
+
+
+    @Override
+    public void update(Observable o, Object arg){
+        
+    }
+
+    /**
+     * update the plan.
+     * @param planData the plan to update.
+     */
+    public void setPlanData(Plan planData) {
+        planPanel.setPlanData(planData);
+    }
+
+    public Plan getPlanData(Plan planData){
+        return planPanel.getPlanData();
+    }
+
+    public void showSummary(PlanningRequest planningRequest){
+            String startTime = planningRequest.getDepartureTime();
+            String finishTime = planningRequest.getFinishTime();
+
+            // Add information to jPanel
+            JPanel container = jPanel6;
+            container.removeAll();
+            container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+            JLabel startLabel = new JLabel("Start time: "+startTime);
+            startLabel.setFont(new Font("Verdana",1,20));
+            startLabel.setForeground(new Color(20,100,10));
+            container.add(startLabel);
+            // Adding space between components
+            container.add(Box.createVerticalStrut(10));
+
+
+            // For each request we get the time of passage of the pickup and the delivery
+            int i = 1 ;
+            for(Request request : planningRequest.getRequests()){
+                String pickUpTimePassage = request.getPickupTimePassage();
+                String deliveryTimePassage = request.getDeliveryTimePassage();
+
+                JLabel requestLabel = new JLabel("Request number "+i+":");
+                requestLabel.setFont(new Font("Verdana",1,16));
+                container.add(requestLabel);
+
+                JButton deleteButton = new JButton("Delete request");
+                container.add(deleteButton);
+                deleteButton.addActionListener(new DeleteButtonListener(controller,request));
+
+                JLabel timeLabel = new JLabel("PickupTime: "+pickUpTimePassage+"\t DeliveryTime: "+deliveryTimePassage);
+                timeLabel.setFont(new Font("Verdana",1,12));
+                container.add(timeLabel);
+                container.add(Box.createVerticalStrut(5));
+                i++;
+            }
+
+            container.add(Box.createVerticalStrut(10));
+
+            JLabel finishLabel = new JLabel("Finish time: "+finishTime);
+            finishLabel.setFont(new Font("Verdana",1,20));
+            finishLabel.setForeground(Color.BLUE);
+            container.add(finishLabel);
+
+            container.revalidate();
+            container.repaint();
+    }
 
 
     @Override
@@ -246,7 +334,7 @@ public class MainWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FlatDarkLaf.setup();
+                FlatLightLaf.setup();
                 new MainWindow().setVisible(true);
                 System.out.println("Hello world");
             }
@@ -254,6 +342,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel infoLabel;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -264,8 +353,10 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JTabbedPane jTabbedPane2;
     // End of variables declaration//GEN-END:variables
+
+    private ButtonListenerMainWindow buttonListenerMainWindow;
 }

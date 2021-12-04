@@ -43,6 +43,9 @@ public class Dijkstra {
 
 
     public void executeAlgorithm(Plan graph, String sourceNodeId, Graph newGraph, List<String> pointsOfInterests ){
+        if(graph == null){
+            System.out.println("BOOOBOO");
+        }
         poids = new HashMap<>();
         precedence = new HashMap<>();
         int globalSize = pointsOfInterests.size();

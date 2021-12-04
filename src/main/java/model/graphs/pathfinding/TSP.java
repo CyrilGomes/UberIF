@@ -1,8 +1,7 @@
 package model.graphs.pathfinding;
 
-import javafx.util.Pair;
 import model.DeliveryTour;
-import model.Segment;
+import model.PlanningRequest;
 import model.graphs.Graph;
 import model.graphs.Key;
 import model.graphs.Plan;
