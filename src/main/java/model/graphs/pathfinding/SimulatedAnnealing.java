@@ -132,7 +132,6 @@ public class SimulatedAnnealing extends Observable implements TSP {
             if(curCost < bestSolCost){
                 bestSolCost = curCost;
                 bestSol = Arrays.copyOf(permutation,permutation.length);
-                System.out.println("AH BOOBOO");
                 rejected = 0;
             }
         }else{
