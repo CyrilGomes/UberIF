@@ -1,13 +1,17 @@
 package model.graphs.pathfinding;
 
+import javafx.util.Pair;
+import model.PlanningRequest;
 import model.graphs.Graph;
+import model.graphs.Plan;
 import org.junit.Before;
 import org.junit.Test;
+import util.XMLParser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TSPTest {
+public class TemplateTSPTest {
 
     Graph g = new Graph();
 
@@ -44,11 +48,22 @@ public class TSPTest {
     public void generateTsmCompleteGraph() {
     }
 
-    @Test
-    public void allTours() {
-        TSP TSP = new TSP();
 
-        System.out.println(TSP.allTours(g,"1"));
+    @Test
+    public void toursXml(){
+        /*
+        XMLParser xmlParser = new XMLParser();
+
+        Plan plan = xmlParser.readMap("files/largeMap.xml");
+        PlanningRequest planningRequest = xmlParser.readRequests("files/requestsMedium5.xml");
+        plan.setPlanningRequest(planningRequest);
+
+        TemplateTSP templateTsp = new TemplateTSP();
+        Graph graph = templateTsp.generateTsmCompleteGraph(plan);
+        Pair<Float, List<String>> result = templateTsp.allTours(graph,planningRequest);
+        System.out.println(result);
+        System.out.println(TemplateTSP.count);*/
+
     }
 
 }
