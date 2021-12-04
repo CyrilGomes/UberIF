@@ -53,19 +53,15 @@ public class ControllerMainWindow {
         planData.setPlanningRequest(request);
 
 
-
+        mainWindow.setPlanData(planData);
         TSP tsp = new SimulatedAnnealing(mainWindow);
         Graph graph = Graph.generateCompleteGraphFromPlan(planData);
-        mainWindow.setPlanningRequest(request);
+
         // Calling TSP to calculate the best tour
         new Thread(new Runnable() {
             @Override
             public void run() {
                 tsp.searchSolution(100000,graph,request);
-                DeliveryTour deliveryTour = tsp.getDeliveryTour();
-
-                calculateTimes(deliveryTour);
-                mainWindow.showSummary(planData.getPlanningRequest());
             }
         }).start();
 
