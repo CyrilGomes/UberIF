@@ -1,12 +1,11 @@
 package util;
 
+import model.Intersection;
 import model.PlanningRequest;
 import model.Request;
 import model.Segment;
-import model.Intersection;
-import model.graphs.Plan;
 import model.graphs.Key;
-
+import model.graphs.Plan;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -60,6 +59,14 @@ public class XMLParser {
         return "0" + departureTime.replaceAll(":",":0");
     }
 
+    private float getMercatorY(float latitude){
+        // convert from degrees to radians
+        float latRad = (float) ((latitude*Math.PI)/180);
+
+        // get y value
+        return (float) Math.log(Math.tan((Math.PI/4)+(latRad/2)));
+    }
+
     /** Read a map xml file composed of intersections and segments.
      *
      * @param filePath the path of the file to read
@@ -83,7 +90,7 @@ public class XMLParser {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) node;
                 String id = element.getAttribute("id");
-                float latitude = Float.parseFloat(element.getAttribute("latitude"));
+                float latitude = getMercatorY(Float.parseFloat(element.getAttribute("latitude")));
                 float longitude = Float.parseFloat(element.getAttribute("longitude"));
 
                 maxLatitude = Math.max(maxLatitude,latitude);
