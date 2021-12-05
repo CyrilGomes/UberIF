@@ -17,6 +17,7 @@ import static view.plan.PlanDrawing.getCoordinateY;
 /**
  * The visualisation of the map. Updated when the data changes.
  */
+
 public class PlanPanel extends JPanel {
 	private final JLabel selectedStreetLabel;
 	private Plan planData;
@@ -36,6 +37,11 @@ public class PlanPanel extends JPanel {
 	float minLongitude;
 	int width;
 	int height;
+	public OnPointClick onPointClick;
+
+	public interface OnPointClick {
+		void onPointClick(Request request, boolean isPickup);
+	}
 
 
 	public PlanPanel(JLabel infoLabel) {
@@ -119,9 +125,8 @@ public class PlanPanel extends JPanel {
 	}
 
 	public void onMouseClicked(int xMouse, int yMouse){
+		checkIfDeliveryPointClicked(xMouse, yMouse);
 		identifyStreet(xMouse, yMouse);
-
-		zer(xMouse, yMouse);
 		repaint();
 	}
 
@@ -129,28 +134,37 @@ public class PlanPanel extends JPanel {
 		int y = getCoordinateY(intersection.getLatitude(),0,height,minLatitude,maxLatitude);
 		int x = getCoordinate(intersection.getLongitude(),0,width,minLongitude,maxLongitude);
 
-		return (Math.abs(x - mouseX) < 20 && Math.abs(y - mouseY) < 20);
+		return (Math.abs(x - mouseX) < 80 && Math.abs(y - mouseY) < 80);
 	}
 
-	public void zer(int xMouse, int yMouse) {
-
+	public void checkIfDeliveryPointClicked(int xMouse, int yMouse) {
 
 		for (Request request : planData.getPlanningRequest().getRequests()) {
 			String id = request.getPickupId();
 			Intersection pickup = intersectionMap.get(id);
 			if (intersectionIsClicked(pickup, xMouse, yMouse))
 			{
+
 				System.out.println("Clicked on a pickup point");
 				System.out.println("pickup duration : " + request.getPickupDuration());
 				System.out.println("pickup Time passage" + request.getPickupTimePassage());
+				planData.clickedRequest = request;
+				planData.clickedRequestIsPickup = true;
+				planData.onPointClick.onPointClick(request, true);
 			}
 			id = request.getDeliveryId();
 			Intersection delivery = intersectionMap.get(id);
 			if (intersectionIsClicked(delivery, xMouse, yMouse))
 			{
+
 				System.out.println("Clicked on a delivery point");
 				System.out.println("delivery duration : " + request.getDeliveryDuration());
 				System.out.println("delivery Time passage" + request.getDeliveryTimePassage());
+				System.out.println("delivery Time passage" + request.getDeliveryTimePassage());
+				planData.clickedRequest = request;
+				planData.clickedRequestIsPickup = false;
+				planData.onPointClick.onPointClick(request, false);
+
 			}
 
 		}

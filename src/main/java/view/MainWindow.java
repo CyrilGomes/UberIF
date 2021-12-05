@@ -181,6 +181,13 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      */
     public void setPlanData(Plan planData) {
         planPanel.setPlanData(planData);
+        planData.onPointClick =  new Plan.OnPointClick() {
+            @Override
+            public void onPointClick(Request request, boolean isPickup) {
+                System.out.println("Showing");
+                showDeliveries(request, isPickup);
+            }
+        };
     }
 
     public Plan getPlanData(Plan planData){
@@ -234,6 +241,42 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
             container.revalidate();
             container.repaint();
+    }
+
+    public void showDeliveries(Request request, boolean isPickup) {
+        System.out.println("SHOWING FOR REQUEST WITH TUME" + request.getPickupTimePassage());
+        if (request != null) {
+            JPanel container = jPanel2;
+            container.removeAll();
+            container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+
+            //String pickUpTimePassage = request.getPickupTimePassage();
+            //String deliveryTimePassage = request.getDeliveryTimePassage();
+
+            int duration;
+            String timePassage;
+            String label;
+            if (isPickup)
+            {
+                duration = request.getPickupDuration();
+                timePassage = request.getPickupTimePassage();
+                label = "Pickup point";
+            } else {
+                duration = request.getDeliveryDuration();
+                timePassage = request.getDeliveryTimePassage();
+                label = "Delivery point";
+            }
+
+            JLabel requestLabel = new JLabel(label);
+            requestLabel.setFont(new Font("Verdana",1,16));
+            container.add(requestLabel);
+            JLabel timeLabel = new JLabel("Duration : " + duration);
+            JLabel timePassageLabel = new JLabel("Time Passage : " + timePassage);
+            container.add(timeLabel);
+            container.add(timePassageLabel);
+        }
+
+
     }
 
     /**

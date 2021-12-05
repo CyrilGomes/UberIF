@@ -1,9 +1,7 @@
 package model.graphs;
 
-import model.DeliveryTour;
-import model.Intersection;
-import model.PlanningRequest;
-import model.Segment;
+import controller.ControllerMainWindow;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +12,7 @@ import java.util.Map;
  * @// TODO: 25/11/2021 Allow the deliveries and pickup points to be null and adjust later. Fusing it with graph.
  */
 public class Plan {
+    public ControllerMainWindow window;
     java.util.Map<String, Intersection> intersectionMap;
     java.util.Map<String, List<String>> adjacentsMap;
     java.util.Map<Key, Segment> segmentMap;
@@ -24,10 +23,13 @@ public class Plan {
     float minLatitude;
     float maxLongitude;
     float minLongitude;
+    public Request clickedRequest;
+    public boolean clickedRequestIsPickup;
+    public OnPointClick onPointClick;
 
-
-
-
+    public interface OnPointClick {
+        void onPointClick(Request request, boolean isPickup);
+    }
 
      /**
      * the constructor of the class Plan.
