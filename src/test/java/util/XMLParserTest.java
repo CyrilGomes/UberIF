@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class XMLParserTest {
 
@@ -58,8 +58,10 @@ public class XMLParserTest {
     @Test
     public void readLargeMap(){
         Plan plan = xmlParser.readMap("files/largeMap.xml");
-        for (Map.Entry<String, Intersection> entry : plan.getIntersectionMap().entrySet()) {
-            System.out.println(plan.getSegmentsFromIntersection(entry.getKey()));
-        }
+        assertEquals(3736,plan.getIntersectionMap().size());
+        plan.getIntersectionMap().forEach((key,value)->{
+            assertNotEquals("",key);
+            assertNotNull(value);
+        });
     }
 }
