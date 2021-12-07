@@ -36,7 +36,10 @@ public class PlanPanel extends JPanel {
 	int width;
 	int height;
 
-
+	/**
+	 * Creates a new instance of the graphical component and initializes its listeners
+	 * @param infoLabel Label of the system info text
+	 */
 	public PlanPanel(JLabel infoLabel) {
 		super();
 		this.selectedStreetLabel = infoLabel;
@@ -48,6 +51,10 @@ public class PlanPanel extends JPanel {
 		setVisible(true);
 	}
 
+	/**
+	 * Sets a new context to the visualization of the map
+	 * @param planData The data of the new context
+	 */
 	public void setPlanData(Plan planData) {
 		this.planData = planData;
 		segmentMap = planData.getSegmentMap();
@@ -70,6 +77,10 @@ public class PlanPanel extends JPanel {
 		this.height = height;
 	}
 
+	/**
+	 * Detects if the user is zooming on the map
+	 * @param notches Amount of zoom applied
+	 */
 	public void onMouseWheel(int notches){
 		if((this.currentScale+notches)>=1){
 			this.currentScale += notches;
@@ -81,10 +92,13 @@ public class PlanPanel extends JPanel {
 		}
 	}
 
-	public void onMousePressed(int xMove, int yMove ){
-		
-	}
+	public void onMousePressed(int xMove, int yMove ){}
 
+	/**
+	 * Detects if the user is moving a zoomed map
+	 * @param xMove x coordinate of the mouse after the drag
+	 * @param yMove y coordinate of the mouse after the drag
+	 */
 	public void onMouseDragged(int xMove, int yMove ){
 		if(xPosition<0 && yPosition<0){
 			this.xPosition = xMove;
@@ -100,11 +114,21 @@ public class PlanPanel extends JPanel {
 
 	}
 
+	/**
+	 * Detects if the user has selected something on the map
+	 * @param xMouse x coordinate of the mouse
+	 * @param yMouse y coordinate of the mouse
+	 */
 	public void onMouseClicked(int xMouse, int yMouse){
 		identifyStreet(xMouse, yMouse);
 		repaint();
 	}
 
+	/**
+	 * Scales an x coordinate to the current size of the graphical component
+	 * @param x Coordinate to scale
+	 * @return the scaled x coordinate
+	 */
 	public int scaleXCoordinateToPlan(float x){
 		if(x < minLongitude || x > maxLongitude){
 			return -1;
@@ -112,6 +136,11 @@ public class PlanPanel extends JPanel {
 		return (int)Math.floor((width*(x-minLongitude)/(maxLongitude-minLongitude)));
 	}
 
+	/**
+	 * Scales and flips the y coordinate to fit the current size and orientation of the graphical component
+	 * @param y Coordinate to convert
+	 * @return the converted y coordinate
+	 */
 	public int scaleYCoordinateToPlan(float y){
 		if(y < minLatitude || y > maxLatitude){
 			return -1;
@@ -119,10 +148,21 @@ public class PlanPanel extends JPanel {
 		return flipYAxis((int)Math.floor((height*(y-minLatitude)/(maxLatitude-minLatitude))));
 	}
 
-	private int flipYAxis(int x){
-		return height - x;
+	/**
+	 * Flips a y coordinate to fit the current orientation of the graphical component
+	 * @param y The coordinate to flip
+	 * @return the flipped coordinate
+	 */
+	private int flipYAxis(int y){
+		return height - y;
 	}
 
+	/**
+	 * Identifies a street selected by the user.
+	 * Checks, for all segments of the map, whether the x and y coordinates of the mouse are inside of one, which sets the name of the street.
+	 * @param xMouse x coordinate of the mouse
+	 * @param yMouse y coordinate of the mouse
+	 */
 	public void identifyStreet(int xMouse, int yMouse){
 		for (Key value : segmentMap.keySet()) {
 			Segment segment = segmentMap.get(value);

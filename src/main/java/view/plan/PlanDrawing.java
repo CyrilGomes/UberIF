@@ -9,6 +9,10 @@ import java.awt.geom.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utility class used to draw data from the plan or the request on PlanPanel
+ * @see PlanPanel
+ */
 public class PlanDrawing {
 	private final Plan planData;
 	private final PlanPanel planPanel;
@@ -17,6 +21,13 @@ public class PlanDrawing {
 	private final Graphics g;
 	private final String selectedStreetName;
 
+	/**
+	 * Creates a new instance of PlanDrawing (called on a new execution of the pain function in PlanPanel)
+	 * @see PlanPanel
+	 * @param planData The data of the plan in the current context
+	 * @param panel The graphical component of the map
+	 * @param g The graphical object used to draw on panel
+	 */
 	public PlanDrawing(Plan planData, PlanPanel panel, Graphics g){
 		this.planData = planData;
 		this.planPanel = panel;
@@ -26,6 +37,10 @@ public class PlanDrawing {
 		selectedStreetName = this.planData.getSelectedStreetName();
 	}
 
+	/**
+	 * Draws the segments of the map in white.
+	 * If the user has selected a street, every segment composing it is drawn in blue.
+	 */
 	public void drawPlan(){
 		segmentMap.forEach((key, segment) -> {
 			if(!selectedStreetName.isEmpty() && segment.getName().equals(selectedStreetName)){
@@ -37,6 +52,9 @@ public class PlanDrawing {
 		});
 	}
 
+	/**
+	 * Draws every point of interest from the request of the current context
+	 */
 	public void drawPOI(){
 		PlanningRequest planningRequest = planData.getPlanningRequest();
 
@@ -74,6 +92,14 @@ public class PlanDrawing {
 		}
 	}
 
+	/**
+	 * Draws a delivery point
+	 * @param x x coordinate of the delivery point
+	 * @param y y coordinate of the delivery point
+	 * @param w width of the icon
+	 * @param h height of the icon
+	 * @param color color of the icon
+	 */
 	private void drawDeliveryPoint(int x, int y, int w, int h, Color color){
 		Graphics2D ga = (Graphics2D) g;
 
@@ -110,6 +136,14 @@ public class PlanDrawing {
 		ga.fill(square2);
 	}
 
+	/**
+	 * Draws a pickup point
+	 * @param x x coordinate of the delivery point
+	 * @param y y coordinate of the delivery point
+	 * @param w width of the icon
+	 * @param h height of the icon
+	 * @param color color of the icon
+	 */
 	private void drawPickupPoint(int x, int y, int w, int h, Color color){
 		Graphics2D ga = (Graphics2D) g;
 
@@ -138,6 +172,10 @@ public class PlanDrawing {
 		ga.fill(circle);
 	}
 
+	/**
+	 * Draws the best route in the current context
+	 * @param deliveryTour Data on the best route
+	 */
 	public void drawRequestsRoute(DeliveryTour deliveryTour){
 		List<Segment> segments = deliveryTour.getSegmentList();
 		float fullLength = deliveryTour.getGlobalTime();
@@ -154,6 +192,12 @@ public class PlanDrawing {
 		}
 	}
 
+	/**
+	 * Draws a segment on the graphical component
+	 * @param segment Data on the segment
+	 * @param color Color of the segment
+	 * @param stroke Width of the segment (used to determine if it is part of a best route or not)
+	 */
 	private void drawSegment(Segment segment, Color color, int stroke){
 		g.setColor(color);
 		Intersection origine = intersectionMap.get(segment.getOrigin());
