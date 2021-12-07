@@ -15,6 +15,10 @@ public class DeliveryTour {
         return segmentList;
     }
 
+    public void setSegmentList(List<Segment> segmentList) {
+        this.segmentList = segmentList;
+    }
+
     public float getGlobalTime() {
         return globalTime;
     }

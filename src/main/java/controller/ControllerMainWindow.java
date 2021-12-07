@@ -29,6 +29,7 @@ public class ControllerMainWindow {
     private MainWindow mainWindow;
     private Plan planData;
     private DeliveryTour deliveryTour;
+    private Graph graph;
 
     /**
      * The constructor of the class.
@@ -55,7 +56,7 @@ public class ControllerMainWindow {
 
         mainWindow.setPlanData(planData);
         TSP tsp = new SimulatedAnnealing(mainWindow);
-        Graph graph = Graph.generateCompleteGraphFromPlan(planData);
+        this.graph = Graph.generateCompleteGraphFromPlan(planData);
 
         // Calling TSP to calculate the best tour
         new Thread(new Runnable() {
@@ -89,11 +90,17 @@ public class ControllerMainWindow {
     /**
      * Method called when we remove a request
      * @param request the request to delete
+     * @param shouldChangeTour if we need to change the tour or not
      */
 
-    public void removeRequest(Request request){
+    public void removeRequest(Request request, boolean shouldChangeTour){
         PlanningRequest planningRequest = planData.getPlanningRequest();
-        planningRequest.removeRequest(request);
+        if(!shouldChangeTour){
+            planningRequest.removeRequest(request);
+        }
+        else{
+            planData.removeRequestAndChangeTour(request,graph);
+        }
         // Updates the map to not have icons of the removed request
         mainWindow.setPlanData(planData);
         // Recalculate times

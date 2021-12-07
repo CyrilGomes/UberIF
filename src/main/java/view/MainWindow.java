@@ -222,9 +222,13 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 requestLabel.setFont(new Font("Verdana",1,16));
                 container.add(requestLabel);
 
-                JButton deleteButton = new JButton("Delete request");
+                JButton deleteButton = new JButton("Remove request");
                 container.add(deleteButton);
-                deleteButton.addActionListener(new DeleteButtonListener(controller,request));
+                deleteButton.addActionListener(new DeleteButtonListener(controller,request,false));
+
+                JButton deleteAndChangeTourButton = new JButton("Remove request and change the tour");
+                container.add(deleteAndChangeTourButton);
+                deleteAndChangeTourButton.addActionListener(new DeleteButtonListener(controller,request,true));
 
                 JLabel timeLabel = new JLabel("PickupTime: "+pickUpTimePassage+"\t DeliveryTime: "+deliveryTimePassage);
                 timeLabel.setFont(new Font("Verdana",1,12));
