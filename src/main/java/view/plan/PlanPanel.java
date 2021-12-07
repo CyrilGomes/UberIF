@@ -3,7 +3,6 @@ package view.plan;
 import javafx.geometry.Point2D;
 import model.DeliveryTour;
 import model.Intersection;
-import model.PlanningRequest;
 import model.Segment;
 import model.graphs.Key;
 import model.graphs.Plan;
@@ -13,9 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
-
-import static view.plan.PlanDrawing.getCoordinate;
-import static view.plan.PlanDrawing.getCoordinateY;
 
 /**
  * The visualisation of the map. Updated when the data changes.
@@ -93,18 +89,35 @@ public class PlanPanel extends JPanel {
 
 	}
 
+	public void onMouseClicked(int xMouse, int yMouse){
+		identifyStreet(xMouse, yMouse);
+		repaint();
+	}
+
+	public int scaleXCoordinateToPlan(float x){
+		return (int)((width*(x-minLongitude)/(maxLongitude-minLongitude)));
+	}
+
+	public int scaleYCoordinateToPlan(float y){
+		return flipYAxis((int)((height*(y-minLatitude)/(maxLatitude-minLatitude))));
+	}
+
+	private int flipYAxis(int x){
+		return height - x;
+	}
+
 	private void identifyStreet(int xMouse, int yMouse){
 		for (Key value : segmentMap.keySet()) {
 			Segment segment = segmentMap.get(value);
 			Intersection origine = intersectionMap.get(segment.getOrigin());
 			Intersection destination = intersectionMap.get(segment.getDestination());
 
-			int yOrigine = getCoordinateY(origine.getLatitude(),0,height,minLatitude,maxLatitude);
-			int xOrigine = getCoordinate(origine.getLongitude(),0,width,minLongitude,maxLongitude);
+			int yOrigine = scaleYCoordinateToPlan(origine.getLatitude());
+			int xOrigine = scaleXCoordinateToPlan(origine.getLongitude());
 			Point2D pointOrigine = new Point2D(xOrigine, yOrigine);
 
-			int yDestination = getCoordinateY(destination.getLatitude(),0,height,minLatitude,maxLatitude);
-			int xDestination = getCoordinate(destination.getLongitude(),0,width,minLongitude,maxLongitude);
+			int yDestination = scaleYCoordinateToPlan(destination.getLatitude());
+			int xDestination = scaleXCoordinateToPlan(destination.getLongitude());
 			Point2D pointDestination = new Point2D(xDestination, yDestination);
 
 			Point2D pointMouse = new Point2D(xMouse, yMouse);
@@ -119,11 +132,6 @@ public class PlanPanel extends JPanel {
 				break;
 			}
 		}
-	}
-
-	public void onMouseClicked(int xMouse, int yMouse){
-		identifyStreet(xMouse, yMouse);
-		repaint();
 	}
 
 	@Override
