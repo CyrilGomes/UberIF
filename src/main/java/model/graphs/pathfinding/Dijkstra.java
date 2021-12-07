@@ -40,8 +40,13 @@ public class Dijkstra {
         }
     }
 
-
-
+    /** Execute Dijkstra between a point given and all the other point of interest to find the shortest
+     * path between the beginning point and all the other.
+     * @param graph the plan of the map
+     * @param sourceNodeId the point given
+     * @param newGraph the graph resulting between the points of interest
+     * @param pointsOfInterests the rest of the point.
+     */
     public void executeAlgorithm(Plan graph, String sourceNodeId, Graph newGraph, List<String> pointsOfInterests ){
         if(graph == null){
             System.out.println("BOOOBOO");

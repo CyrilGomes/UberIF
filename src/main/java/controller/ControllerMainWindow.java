@@ -100,6 +100,13 @@ public class ControllerMainWindow extends Observable {
         mainWindow.showSummary(planData.getPlanningRequest());
     }
 
+    /**
+     * Add a request to the planning request and update the delivery tour accordingly.
+     * @param pickupId the pickup place of the request.
+     * @param pickupDuration the duration of the pickup.
+     * @param deliveryId the delivery place of the request.
+     * @param deliveryDuration the duration of the delivery.
+     */
     public void addNewRequest(String pickupId, String pickupDuration, String deliveryId, String deliveryDuration) {
         try{
             int deliveryDurationInt = Integer.parseInt(deliveryDuration);
@@ -151,10 +158,10 @@ public class ControllerMainWindow extends Observable {
 
             }
             if(pickupPlace == null){
-                System.out.println("Yooo renseigne la pickup place man");
+                System.out.println("Pickup place not defined");
             }
             if(deliveryPlace== null){
-                System.out.println("Yooo renseigne la delivery place man");
+                System.out.println("Delivery place not defined");
             }
 
         }catch (Exception e){
