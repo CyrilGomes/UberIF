@@ -46,4 +46,7 @@ public class DeliveryTour {
         this.orderedIdIntersectionTour.add(idIntersection);
         this.lastIntersectionId = idIntersection;
     }
+    public void addListSegment(List<Segment> segmentListAdded){
+        segmentList.addAll(segmentListAdded);
+    }
 }

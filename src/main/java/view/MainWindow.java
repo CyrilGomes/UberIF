@@ -300,7 +300,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg){
-        if(o instanceof TSP){
+        if(o instanceof TSP || o instanceof ControllerMainWindow){
             DeliveryTour deliveryTour = (DeliveryTour) arg;
             PlanningRequest planningRequest = planPanel.getPlanData().getPlanningRequest();
             planPanel.getPlanData().setDeliveryTour(deliveryTour);
@@ -308,6 +308,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             planPanel.repaint();
             showSummary(planningRequest);
         }
+
 
     }
 
@@ -370,11 +371,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             container.revalidate();
             container.repaint();
     }
-
-
-
-
-
 
     /**
      * @param args the command line arguments

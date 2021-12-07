@@ -316,15 +316,22 @@ public class SimulatedAnnealing extends Observable implements TSP {
     public DeliveryTour getDeliveryTour() {
         List<Segment> segmentList = new ArrayList<>();
 
+        System.out.println("---- Delivery Tour Get ----");
+        DeliveryTour deliveryTour = new DeliveryTour(segmentList, bestSolCost);
+        for (String poi: bestSol) {
+            deliveryTour.addNextPoint(poi);
+            System.out.println("Last intersection : "+deliveryTour.getLastIntersectionId());
+        }
         int solutionSize = bestSol.length;
         for (int i = 1; i < solutionSize; i++) {
             Edge edge = g.getEdge(bestSol[i - 1], bestSol[i]);
             segmentList.addAll(edge.segmentList);
+            deliveryTour.addListSegment(edge.segmentList);
         }
         Edge edge = g.getEdge(bestSol[solutionSize - 1], bestSol[0]);
-        segmentList.addAll(edge.segmentList);
+        deliveryTour.addListSegment(edge.segmentList);
 
-        return new DeliveryTour(segmentList, bestSolCost);
+        return deliveryTour;
     }
 
 }

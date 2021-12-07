@@ -4,9 +4,8 @@ import javafx.util.Pair;
 import model.*;
 import model.graphs.Graph;
 import model.graphs.Plan;
-import model.graphs.pathfinding.SimulatedAnnealing;
-import model.graphs.pathfinding.TSP;
-import model.graphs.pathfinding.TSP1;
+import model.graphs.pathfinding.*;
+import observer.Observable;
 import util.XMLParser;
 import view.MainWindow;
 
@@ -22,11 +21,11 @@ import java.util.stream.Collectors;
  * The Controller of the MainWindow view. Receive information from the view
  * and compute the response.
  */
-public class ControllerMainWindow {
+public class ControllerMainWindow extends Observable {
     private MainWindow mainWindow;
     private Plan planData;
-    private DeliveryTour deliveryTour;
     private Graph graph;
+    private TSP tsp;
 
     /**
      * The constructor of the class.
@@ -35,8 +34,9 @@ public class ControllerMainWindow {
     public ControllerMainWindow(MainWindow mainWindow){
         this.mainWindow = mainWindow;
         planData = null;
-        deliveryTour = null;
         graph = null;
+        tsp = null;
+        addObserver(mainWindow);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ControllerMainWindow {
 
 
         mainWindow.setPlanData(planData);
-        TSP tsp = new SimulatedAnnealing(mainWindow);
+        tsp = new SimulatedAnnealing(mainWindow);
         Graph graph = Graph.generateCompleteGraphFromPlan(planData);
 
         // Calling TSP to calculate the best tour
@@ -105,21 +105,49 @@ public class ControllerMainWindow {
             int deliveryDurationInt = Integer.parseInt(deliveryDuration);
             int pickupDurationInt = Integer.parseInt(pickupDuration);
 
-
             Intersection pickupPlace = planData.getIntersectionMap().get(pickupId);
-            System.out.println(pickupPlace);
             Intersection deliveryPlace = planData.getIntersectionMap().get(deliveryId);
-            System.out.println(deliveryPlace);
+
             if (pickupPlace != null && deliveryPlace != null){
                 Request newRequest = new Request(pickupId, deliveryId,pickupDurationInt,deliveryDurationInt);
                 //TODO : create the planning request if it doesn't exist
-                planData.getPlanningRequest().addRequest(newRequest);
-                System.out.println(planData.getPlanningRequest());
-                mainWindow.setPlanningRequest(planData.getPlanningRequest());
-                mainWindow.showSummary(planData.getPlanningRequest());
+                PlanningRequest planningRequest = planData.getPlanningRequest();
+                planningRequest.addRequest(newRequest);
+                planData.setPlanningRequest(planningRequest);
+                System.out.println("Planning :"+planningRequest);
+                DeliveryTour deliveryTour = tsp.getDeliveryTour();
                 String lastIntersectionId = deliveryTour.getLastIntersectionId();
+                deliveryTour.addNextPoint(pickupId);
+                deliveryTour.addNextPoint(deliveryId);
+                Dijkstra dijkstra = new Dijkstra();
+                Graph newGraph = new Graph();
+                List<String> pointsOfInterests = new ArrayList<>();
+                pointsOfInterests.add(pickupId);
 
 
+
+                dijkstra.executeAlgorithm(planData,lastIntersectionId,newGraph,pointsOfInterests);
+
+                pointsOfInterests.remove(0);
+                pointsOfInterests.add(deliveryId);
+                dijkstra.executeAlgorithm(planData,pickupId,newGraph,pointsOfInterests);
+
+                pointsOfInterests.remove(0);
+                String startId = planningRequest.getStartId();
+                pointsOfInterests.add(startId);
+                dijkstra.executeAlgorithm(planData,deliveryId,newGraph,pointsOfInterests);
+
+                List<Edge> listEdges = new ArrayList<>();
+                listEdges.add(newGraph.getEdge(lastIntersectionId,pickupId));
+                listEdges.add(newGraph.getEdge(pickupId,deliveryId));
+                listEdges.add(newGraph.getEdge(deliveryId,startId));
+
+                for (Edge edge: listEdges) {
+                    deliveryTour.addListSegment(edge.getSegmentList());
+                }
+
+                planningRequest.calculateTimes(deliveryTour);
+                notifyObservers(deliveryTour);
 
             }
             if(pickupPlace == null){
