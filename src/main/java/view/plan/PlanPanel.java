@@ -3,7 +3,6 @@ package view.plan;
 import javafx.geometry.Point2D;
 import model.DeliveryTour;
 import model.Intersection;
-import model.PlanningRequest;
 import model.Segment;
 import model.graphs.Key;
 import model.graphs.Plan;
@@ -13,9 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
-
-import static view.plan.PlanDrawing.getCoordinate;
-import static view.plan.PlanDrawing.getCoordinateY;
 
 /**
  * The visualisation of the map. Updated when the data changes.
@@ -40,7 +36,10 @@ public class PlanPanel extends JPanel {
 	int width;
 	int height;
 
-
+	/**
+	 * Creates a new instance of the graphical component and initializes its listeners
+	 * @param infoLabel Label of the system info text
+	 */
 	public PlanPanel(JLabel infoLabel) {
 		super();
 		this.selectedStreetLabel = infoLabel;
@@ -52,10 +51,18 @@ public class PlanPanel extends JPanel {
 		setVisible(true);
 	}
 
+	/**
+	 * Sets a new context to the visualization of the map
+	 * @param planData The data of the new context
+	 */
 	public void setPlanData(Plan planData) {
 		this.planData = planData;
 		segmentMap = planData.getSegmentMap();
 		intersectionMap = planData.getIntersectionMap();
+		maxLatitude = planData.getMaxLatitude();
+		minLatitude = planData.getMinLatitude();
+		maxLongitude = planData.getMaxLongitude();
+		minLongitude = planData.getMinLongitude();
 		this.repaint();
 	}
 
@@ -63,6 +70,17 @@ public class PlanPanel extends JPanel {
 		return planData;
 	}
 
+	@Override
+	public void setSize(int width, int height) {
+		super.setSize(width, height);
+		this.width = width;
+		this.height = height;
+	}
+
+	/**
+	 * Detects if the user is zooming on the map
+	 * @param notches Amount of zoom applied
+	 */
 	public void onMouseWheel(int notches){
 		if((this.currentScale+notches)>=1){
 			this.currentScale += notches;
@@ -74,10 +92,13 @@ public class PlanPanel extends JPanel {
 		}
 	}
 
-	public void onMousePressed(int xMove, int yMove ){
-		
-	}
+	public void onMousePressed(int xMove, int yMove ){}
 
+	/**
+	 * Detects if the user is moving a zoomed map
+	 * @param xMove x coordinate of the mouse after the drag
+	 * @param yMove y coordinate of the mouse after the drag
+	 */
 	public void onMouseDragged(int xMove, int yMove ){
 		if(xPosition<0 && yPosition<0){
 			this.xPosition = xMove;
@@ -93,18 +114,67 @@ public class PlanPanel extends JPanel {
 
 	}
 
-	private void identifyStreet(int xMouse, int yMouse){
+	/**
+	 * Detects if the user has selected something on the map
+	 * @param xMouse x coordinate of the mouse
+	 * @param yMouse y coordinate of the mouse
+	 */
+	public void onMouseClicked(int xMouse, int yMouse){
+		identifyStreet(xMouse, yMouse);
+		repaint();
+	}
+
+	/**
+	 * Scales an x coordinate to the current size of the graphical component
+	 * @param x Coordinate to scale
+	 * @return the scaled x coordinate
+	 */
+	public int scaleXCoordinateToPlan(float x){
+		if(x < minLongitude || x > maxLongitude){
+			return -1;
+		}
+		return (int)Math.floor((width*(x-minLongitude)/(maxLongitude-minLongitude)));
+	}
+
+	/**
+	 * Scales and flips the y coordinate to fit the current size and orientation of the graphical component
+	 * @param y Coordinate to convert
+	 * @return the converted y coordinate
+	 */
+	public int scaleYCoordinateToPlan(float y){
+		if(y < minLatitude || y > maxLatitude){
+			return -1;
+		}
+		return flipYAxis((int)Math.floor((height*(y-minLatitude)/(maxLatitude-minLatitude))));
+	}
+
+	/**
+	 * Flips a y coordinate to fit the current orientation of the graphical component
+	 * @param y The coordinate to flip
+	 * @return the flipped coordinate
+	 */
+	private int flipYAxis(int y){
+		return height - y;
+	}
+
+	/**
+	 * Identifies a street selected by the user.
+	 * Checks, for all segments of the map, whether the x and y coordinates of the mouse are inside of one, which sets the name of the street.
+	 * @param xMouse x coordinate of the mouse
+	 * @param yMouse y coordinate of the mouse
+	 */
+	public void identifyStreet(int xMouse, int yMouse){
 		for (Key value : segmentMap.keySet()) {
 			Segment segment = segmentMap.get(value);
 			Intersection origine = intersectionMap.get(segment.getOrigin());
 			Intersection destination = intersectionMap.get(segment.getDestination());
 
-			int yOrigine = getCoordinateY(origine.getLatitude(),0,height,minLatitude,maxLatitude);
-			int xOrigine = getCoordinate(origine.getLongitude(),0,width,minLongitude,maxLongitude);
+			int yOrigine = scaleYCoordinateToPlan(origine.getLatitude());
+			int xOrigine = scaleXCoordinateToPlan(origine.getLongitude());
 			Point2D pointOrigine = new Point2D(xOrigine, yOrigine);
 
-			int yDestination = getCoordinateY(destination.getLatitude(),0,height,minLatitude,maxLatitude);
-			int xDestination = getCoordinate(destination.getLongitude(),0,width,minLongitude,maxLongitude);
+			int yDestination = scaleYCoordinateToPlan(destination.getLatitude());
+			int xDestination = scaleXCoordinateToPlan(destination.getLongitude());
 			Point2D pointDestination = new Point2D(xDestination, yDestination);
 
 			Point2D pointMouse = new Point2D(xMouse, yMouse);
@@ -119,11 +189,6 @@ public class PlanPanel extends JPanel {
 				break;
 			}
 		}
-	}
-
-	public void onMouseClicked(int xMouse, int yMouse){
-		identifyStreet(xMouse, yMouse);
-		repaint();
 	}
 
 	@Override
@@ -153,11 +218,6 @@ public class PlanPanel extends JPanel {
 		}
 
 		if(planData != null){
-			maxLatitude = planData.getMaxLatitude();
-			minLatitude = planData.getMinLatitude();
-			maxLongitude = planData.getMaxLongitude();
-			minLongitude = planData.getMinLongitude();
-
 			// Sélection et ordonnancement des logiques de dessin
 			PlanDrawing planDrawing = new PlanDrawing(planData, this, g);
 			planDrawing.drawPlan();
