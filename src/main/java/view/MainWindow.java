@@ -196,6 +196,10 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         return planPanel.getPlanData();
     }
 
+    /**
+     * Display summary information about the requests
+     * @param planningRequest
+     */
     public void showSummary(PlanningRequest planningRequest){
             String startTime = planningRequest.getDepartureTime();
             String finishTime = planningRequest.getFinishTime();
@@ -246,6 +250,15 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
             container.revalidate();
             container.repaint();
+    }
+
+    /**
+     * Clear the summary panel
+     */
+    public void clearPanels(){
+        jPanel6.removeAll();
+        jPanel6.revalidate();
+        jPanel6.repaint();
     }
 
 

@@ -85,6 +85,7 @@ public class ControllerMainWindow {
         Plan plan = parser.readMap(file.getAbsolutePath());
         planData = plan;
         mainWindow.setPlanData(plan);
+        mainWindow.clearPanels();
     }
 
     /**
