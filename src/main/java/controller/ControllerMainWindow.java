@@ -7,6 +7,7 @@ import model.Request;
 import model.Segment;
 import model.graphs.Graph;
 import model.graphs.Plan;
+import model.graphs.pathfinding.SimulatedAnnealing;
 import model.graphs.pathfinding.TSP;
 import model.graphs.pathfinding.TSP1;
 import util.XMLParser;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The Controller of the MainWindow view. Receive information from the view
@@ -50,17 +52,26 @@ public class ControllerMainWindow {
         PlanningRequest request = xmlParser.readRequests(xmlFile.getPath());
         planData.setPlanningRequest(request);
 
-        // Calling TSP to calculate the best tour
-        TSP tsp = new TSP1();
-        Graph graph = Graph.generateCompleteGraphFromPlan(planData);
-        tsp.searchSolution(20000,graph,request);
-        DeliveryTour deliveryTour = tsp.getDeliveryTour();
-        this.deliveryTour = deliveryTour;
-        mainWindow.setDeliveryTour(deliveryTour);
-        // System.out.println(request);
-        mainWindow.setPlanningRequest(request);
 
-        calculateTimes();
+        mainWindow.setPlanData(planData);
+        TSP tsp = new SimulatedAnnealing(mainWindow);
+        Graph graph = Graph.generateCompleteGraphFromPlan(planData);
+
+        // Calling TSP to calculate the best tour
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                tsp.searchSolution(100000,graph,request);
+            }
+        }).start();
+
+        //DeliveryTour deliveryTour = tsp.getDeliveryTour();
+        //this.deliveryTour = deliveryTour;
+        //mainWindow.setDeliveryTour(deliveryTour);
+        // System.out.println(request);
+
+
+
     }
 
     /**
@@ -76,53 +87,17 @@ public class ControllerMainWindow {
     }
 
     /**
-     * Method that calculate for each request(pickup and delivery) when it will pass
-     *
+     * Method called when we remove a request
+     * @param request the request to delete
      */
 
-    public void calculateTimes(){
+    public void removeRequest(Request request){
         PlanningRequest planningRequest = planData.getPlanningRequest();
-        List<Segment> segmentList = deliveryTour.getSegmentList();
-        String departureTime = planningRequest.getDepartureTime();
-        LocalTime currentTime = LocalTime.parse(formatDepartureTime(departureTime));
-        // Speed of the cyclist in m/s
-        float speed = (float)(15/3.6) ;
-
-        List<Request> requests = planningRequest.getRequests();
-
-        for (Segment segment: segmentList){
-            String origin = segment.getOrigin();
-
-            // The origin of the segment is a pickup
-            Request requestPick = requests.stream().filter(request->request.getPickupId().equals(origin)).findFirst().orElse(null);
-            if(requestPick!=null){
-                requestPick.setPickupTime(currentTime.toString());
-                currentTime = currentTime.plusSeconds(requestPick.getPickupDuration());
-            }
-
-            // The origin of the segment is a delivery
-            Request requestDelivery = requests.stream().filter(request->request.getDeliveryId().equals(origin)).findFirst().orElse(null);
-            if(requestDelivery!=null){
-                requestDelivery.setDeliveryTime(currentTime.toString());
-                currentTime = currentTime.plusSeconds(requestDelivery.getDeliveryDuration());
-            }
-
-
-            // Time needed in seconds to go through the segment
-            int segmentDuration = (int) (segment.getLength()/speed);
-            currentTime = currentTime.plusSeconds(segmentDuration);
-        }
-
-        String finishTime = currentTime.toString();
-        planningRequest.setFinishTime(finishTime);
-        System.out.println("<<<<<<< Showing times of each request");
-        for(Request request: planningRequest.getRequests()){
-            System.out.println("PickupTime: "+request.getPickupTime()+"  DeliveryTime: "+request.getDeliveryTime());
-        }
-        System.out.println("<<<Final time of return to depot: "+finishTime);
-    }
-
-    public String formatDepartureTime(String departureTime){
-        return "0" + departureTime.replaceAll(":",":0");
+        planningRequest.removeRequest(request);
+        // Updates the map to not have icons of the removed request
+        mainWindow.setPlanData(planData);
+        // Recalculate times
+        planningRequest.calculateTimes(planData.getDeliveryTour());
+        mainWindow.showSummary(planData.getPlanningRequest());
     }
 }

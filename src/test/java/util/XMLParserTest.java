@@ -4,14 +4,13 @@ import model.Intersection;
 import model.PlanningRequest;
 import model.Request;
 import model.Segment;
-import model.graphs.Graph;
 import model.graphs.Plan;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class XMLParserTest {
 
@@ -42,7 +41,7 @@ public class XMLParserTest {
     public void readRequests(){
         PlanningRequest planningRequest = xmlParser.readRequests("files/requestsSmall1.xml");
         assertEquals("342873658",planningRequest.getStartId());
-        assertEquals("8:0:0",planningRequest.getDepartureTime());
+        assertEquals("08:00:00",planningRequest.getDepartureTime());
 
         List<Request> requests = planningRequest.getRequests();
         assertEquals(1,requests.size());
@@ -58,8 +57,15 @@ public class XMLParserTest {
     @Test
     public void readLargeMap(){
         Plan plan = xmlParser.readMap("files/largeMap.xml");
-        for (Map.Entry<String, Intersection> entry : plan.getIntersectionMap().entrySet()) {
-            System.out.println(plan.getSegmentsFromIntersection(entry.getKey()));
-        }
+        assertEquals(3736,plan.getIntersectionMap().size());
+        plan.getIntersectionMap().forEach((key,value)->{
+            assertNotEquals("",key);
+            assertNotNull(value);
+        });
+    }
+
+    @Test
+    public void testGetMercatorY() {
+        assertEquals((float)0.01570860927, xmlParser.getMercatorY((float)0.9), 0.000001);
     }
 }
