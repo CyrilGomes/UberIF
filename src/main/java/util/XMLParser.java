@@ -59,7 +59,7 @@ public class XMLParser {
         return "0" + departureTime.replaceAll(":",":0");
     }
 
-    private float getMercatorY(float latitude){
+    public float getMercatorY(float latitude){
         // convert from degrees to radians
         float latRad = (float) ((latitude*Math.PI)/180);
 

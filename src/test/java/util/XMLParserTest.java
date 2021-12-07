@@ -4,7 +4,6 @@ import model.Intersection;
 import model.PlanningRequest;
 import model.Request;
 import model.Segment;
-import model.graphs.Graph;
 import model.graphs.Plan;
 import org.junit.Test;
 
@@ -61,5 +60,10 @@ public class XMLParserTest {
         for (Map.Entry<String, Intersection> entry : plan.getIntersectionMap().entrySet()) {
             System.out.println(plan.getSegmentsFromIntersection(entry.getKey()));
         }
+    }
+
+    @Test
+    public void testGetMercatorY() {
+        assertEquals((float)0.01570860927, xmlParser.getMercatorY((float)0.9), 0.000001);
     }
 }

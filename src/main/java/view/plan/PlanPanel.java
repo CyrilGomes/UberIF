@@ -52,11 +52,22 @@ public class PlanPanel extends JPanel {
 		this.planData = planData;
 		segmentMap = planData.getSegmentMap();
 		intersectionMap = planData.getIntersectionMap();
+		maxLatitude = planData.getMaxLatitude();
+		minLatitude = planData.getMinLatitude();
+		maxLongitude = planData.getMaxLongitude();
+		minLongitude = planData.getMinLongitude();
 		this.repaint();
 	}
 
 	public Plan getPlanData() {
 		return planData;
+	}
+
+	@Override
+	public void setSize(int width, int height) {
+		super.setSize(width, height);
+		this.width = width;
+		this.height = height;
 	}
 
 	public void onMouseWheel(int notches){
@@ -95,18 +106,24 @@ public class PlanPanel extends JPanel {
 	}
 
 	public int scaleXCoordinateToPlan(float x){
-		return (int)((width*(x-minLongitude)/(maxLongitude-minLongitude)));
+		if(x < minLongitude || x > maxLongitude){
+			return -1;
+		}
+		return (int)Math.floor((width*(x-minLongitude)/(maxLongitude-minLongitude)));
 	}
 
 	public int scaleYCoordinateToPlan(float y){
-		return flipYAxis((int)((height*(y-minLatitude)/(maxLatitude-minLatitude))));
+		if(y < minLatitude || y > maxLatitude){
+			return -1;
+		}
+		return flipYAxis((int)Math.floor((height*(y-minLatitude)/(maxLatitude-minLatitude))));
 	}
 
 	private int flipYAxis(int x){
 		return height - x;
 	}
 
-	private void identifyStreet(int xMouse, int yMouse){
+	public void identifyStreet(int xMouse, int yMouse){
 		for (Key value : segmentMap.keySet()) {
 			Segment segment = segmentMap.get(value);
 			Intersection origine = intersectionMap.get(segment.getOrigin());
@@ -161,11 +178,6 @@ public class PlanPanel extends JPanel {
 		}
 
 		if(planData != null){
-			maxLatitude = planData.getMaxLatitude();
-			minLatitude = planData.getMinLatitude();
-			maxLongitude = planData.getMaxLongitude();
-			minLongitude = planData.getMinLongitude();
-
 			// Sélection et ordonnancement des logiques de dessin
 			PlanDrawing planDrawing = new PlanDrawing(planData, this, g);
 			planDrawing.drawPlan();
