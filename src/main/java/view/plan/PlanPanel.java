@@ -1,6 +1,7 @@
 package view.plan;
 
 import javafx.geometry.Point2D;
+import javafx.util.Pair;
 import model.DeliveryTour;
 import model.Intersection;
 import model.Segment;
@@ -11,6 +12,8 @@ import view.MouseListenerPlanPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +39,9 @@ public class PlanPanel extends JPanel {
 	int width;
 	int height;
 
+	Map<Tuple2<Intersection, Integer>, Tuple2<Intersection, Intersection>> clickablePOIMap;
+	Tuple2<Intersection, Intersection> highlightedPath;
+
 	/**
 	 * Creates a new instance of the graphical component and initializes its listeners
 	 * @param infoLabel Label of the system info text
@@ -48,6 +54,9 @@ public class PlanPanel extends JPanel {
 		this.addMouseListener(mouseEvent);
 		this.addMouseWheelListener(mouseEvent);
 		this.addMouseMotionListener(mouseEvent);
+		clickablePOIMap = new HashMap<>();
+		highlightedPath = null;
+
 		setVisible(true);
 	}
 
@@ -120,7 +129,17 @@ public class PlanPanel extends JPanel {
 	 * @param yMouse y coordinate of the mouse
 	 */
 	public void onMouseClicked(int xMouse, int yMouse){
-		identifyStreet(xMouse, yMouse);
+		highlightedPath = null;
+
+		for (Tuple2<Intersection, Integer> t : clickablePOIMap.keySet()) {
+			if(Math.sqrt(Math.pow(yMouse - scaleYCoordinateToPlan(t._1.getLatitude()), 2D) + Math.pow(xMouse - scaleXCoordinateToPlan(t._1.getLongitude()), 2D)) <= t._2) {
+				highlightedPath = clickablePOIMap.get(t);
+			}
+		}
+
+		if(highlightedPath==null)
+			identifyStreet(xMouse, yMouse);
+
 		repaint();
 	}
 
@@ -221,13 +240,25 @@ public class PlanPanel extends JPanel {
 			// Sélection et ordonnancement des logiques de dessin
 			PlanDrawing planDrawing = new PlanDrawing(planData, this, g);
 			planDrawing.drawPlan();
-			DeliveryTour deliveryTour = planData.getDeliveryTour();
+
+			final DeliveryTour deliveryTour = planData.getDeliveryTour();
+
 			if(deliveryTour != null) {
-				planDrawing.drawRequestsRoute(deliveryTour);
+				planDrawing.drawRequestsRoute(deliveryTour, highlightedPath);
 			}
 			if(planData.getPlanningRequest() != null){
-				planDrawing.drawPOI();
+				planDrawing.drawPOI(new ClickablePOI() {
+					@Override
+					public void updateTrack(Intersection origin, int radiusOrigin, Intersection destination, int radiusDestination) {
+						if(deliveryTour != null) { //beatriz
+							clickablePOIMap.put(new Tuple2<Intersection, Integer>(origin, radiusOrigin), new Tuple2<Intersection, Intersection>(origin, destination));
+							clickablePOIMap.put(new Tuple2<Intersection, Integer>(destination, radiusDestination), new Tuple2<Intersection, Intersection>(origin, destination));
+						}
+					}
+				});
 			}
 		}
+
+		highlightedPath = null;
 	}
 }
