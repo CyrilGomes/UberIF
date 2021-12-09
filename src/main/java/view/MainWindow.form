@@ -24,7 +24,7 @@
             <Property name="text" type="java.lang.String" value="Map"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+            <MenuItem class="javax.swing.JMenuItem" name="btImportMap">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Import map"/>
               </Properties>
@@ -39,7 +39,7 @@
             <Property name="text" type="java.lang.String" value="Delivery"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="btImportTour">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Import tour"/>
               </Properties>
@@ -47,7 +47,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="btAddDelivery">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ajouter livraison"/>
               </Properties>

@@ -15,6 +15,10 @@ import model.graphs.pathfinding.TSP;
 import observer.Observable;
 import observer.Observer;
 import view.plan.PlanPanel;
+import view.state.CalculatingTimesState;
+import view.state.CalculatingTourState;
+import view.state.ReadyState;
+import view.state.State;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +32,7 @@ import java.awt.*;
 public class MainWindow extends javax.swing.JFrame implements Observer {
     private final PlanPanel planPanel;
     private final ControllerMainWindow controller;
+    private State currentState;
 
     /**
      * Creates new form MainWindow.
@@ -36,7 +41,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         controller = new ControllerMainWindow(this);
         buttonListenerMainWindow = new ButtonListenerMainWindow(controller, this);
         initComponents();
-        planPanel = new PlanPanel(infoLabel);
+        planPanel = new PlanPanel(this);
 
         jPanel1.add(planPanel);
         pack();
@@ -61,10 +66,10 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        btImportMap = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        btImportTour = new javax.swing.JMenuItem();
+        btAddDelivery = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(720, 576));
@@ -121,33 +126,33 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         jMenu1.setText("Map");
 
-        jMenuItem3.setText("Import map");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        btImportMap.setText("Import map");
+        btImportMap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        jMenu1.add(btImportMap);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Delivery");
 
-        jMenuItem1.setText("Import tour");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        btImportTour.setText("Import tour");
+        btImportTour.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        jMenu2.add(btImportTour);
 
-        jMenuItem2.setText("Ajouter livraison");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        btAddDelivery.setText("Ajouter livraison");
+        btAddDelivery.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem2);
+        jMenu2.add(btAddDelivery);
 
         jMenuBar1.add(jMenu2);
 
@@ -163,13 +168,24 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      * @see ButtonListenerMainWindow
      */
     private void jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActionPerformed
-        // TODO add your handling code here:
         System.out.println(evt.getActionCommand());
         buttonListenerMainWindow.actionPerformed(evt);
 
     }//GEN-LAST:event_jMenuItemActionPerformed
 
+    public void setModifyPlanData(final boolean state) {
+        btAddDelivery.setEnabled(state);
+        btImportMap.setEnabled(state);
+        btImportTour.setEnabled(state);
+    }
 
+    public void setSystemInfoText(final String text) {
+        infoLabel.setText(text);
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
 
     @Override
     public void update(Observable o, Object arg){
@@ -177,11 +193,14 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             DeliveryTour deliveryTour = (DeliveryTour) arg;
             PlanningRequest planningRequest = planPanel.getPlanData().getPlanningRequest();
             planPanel.getPlanData().setDeliveryTour(deliveryTour);
+            State calculatingTimesState = new CalculatingTimesState();
+            calculatingTimesState.execute(this);
             planningRequest.calculateTimes(deliveryTour);
+            State readyState = new ReadyState();
+            readyState.execute(this);
             planPanel.repaint();
             showSummary(planningRequest);
         }
-
     }
 
     /**
@@ -304,14 +323,14 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btAddDelivery;
+    private javax.swing.JMenuItem btImportMap;
+    private javax.swing.JMenuItem btImportTour;
     private javax.swing.JLabel infoLabel;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

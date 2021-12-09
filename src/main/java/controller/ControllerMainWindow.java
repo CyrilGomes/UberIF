@@ -11,6 +11,7 @@ import model.graphs.pathfinding.TSP;
 import model.graphs.pathfinding.TwoOpt;
 import util.XMLParser;
 import view.MainWindow;
+import view.state.*;
 
 import java.io.File;
 import java.sql.SQLOutput;
@@ -43,7 +44,8 @@ public class ControllerMainWindow {
      *
      */
     public void importTour(File xmlFile){
-        System.out.println("read requests");
+        State loadingFileState = new LoadingFileState();
+        loadingFileState.execute(mainWindow);
         XMLParser xmlParser = new XMLParser();
         PlanningRequest request;
         try{
@@ -58,10 +60,10 @@ public class ControllerMainWindow {
 
         if(request!=null) {
             planData.setPlanningRequest(request);
-
-
             mainWindow.setPlanData(planData);
-            TSP tsp = new SimulatedAnnealing(mainWindow);
+            State calculatingTourState = new CalculatingTourState();
+            calculatingTourState.execute(mainWindow);
+            TSP tsp = new BranchAndBound(mainWindow);
             this.graph = Graph.generateCompleteGraphFromPlan(planData);
 
             // Calling TSP to calculate the best tour
@@ -90,6 +92,8 @@ public class ControllerMainWindow {
      * @param file the file read.
      */
     public void importMap(File file){
+        State loadingFileState = new LoadingFileState();
+        loadingFileState.execute(mainWindow);
         XMLParser parser = new XMLParser();
         try {
             Plan plan = parser.readMap(file.getAbsolutePath());
@@ -103,6 +107,8 @@ public class ControllerMainWindow {
             System.out.println(msg);
             showMessageDialog(mainWindow,msg);
         }
+        State readyState = new ReadyState();
+        readyState.execute(mainWindow);
     }
 
     /**
@@ -126,5 +132,7 @@ public class ControllerMainWindow {
         // Recalculate times
         planningRequest.calculateTimes(planData.getDeliveryTour());
         mainWindow.showSummary(planData.getPlanningRequest());
+        State readyState = new ReadyState();
+        readyState.execute(mainWindow);
     }
 }

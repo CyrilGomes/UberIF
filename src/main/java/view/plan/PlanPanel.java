@@ -6,6 +6,8 @@ import model.Intersection;
 import model.Segment;
 import model.graphs.Key;
 import model.graphs.Plan;
+import sun.applet.Main;
+import view.MainWindow;
 import view.MouseListenerPlanPanel;
 
 import javax.swing.JLabel;
@@ -19,8 +21,8 @@ import java.util.Map;
  * The visualisation of the map. Updated when the data changes.
  */
 public final class PlanPanel extends JPanel {
-    /** Graphical component to display the selected street name. **/
-    private final JLabel selectedStreetLabel;
+    /** Parent component of the panel. **/
+    private final MainWindow parent;
     /** Data of the current context. **/
     private Plan planData;
     /** Data structure containing the segments of the map. **/
@@ -54,11 +56,11 @@ public final class PlanPanel extends JPanel {
      * Creates a new instance of the graphical component and initializes its
      * listeners.
      *
-     * @param infoLabel Label of the system info text
+     * @param parent Parent component of the panel
      */
-    public PlanPanel(final JLabel infoLabel) {
+    public PlanPanel(final MainWindow parent) {
         super();
-        this.selectedStreetLabel = infoLabel;
+        this.parent = parent;
         this.setBackground(Color.LIGHT_GRAY);
         MouseListenerPlanPanel mouseEvent = new MouseListenerPlanPanel(this);
         this.addMouseListener(mouseEvent);
@@ -226,10 +228,10 @@ public final class PlanPanel extends JPanel {
             if ((int) (pointOrigine.distance(pointMouse))
                     + (int) (pointDestination.distance(pointMouse))
                     == (int) (pointDestination.distance(pointOrigine))
-                    && !selectedStreetLabel.getText().equals(segment.getName())
+                    && !planData.getSelectedStreetName().equals(segment.getName())
             ) {
                 planData.setSelectedStreetName(segment.getName());
-                selectedStreetLabel.setText(segment.getName());
+                parent.setSystemInfoText(segment.getName());
                 break;
             }
         }
