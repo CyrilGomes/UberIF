@@ -73,6 +73,9 @@ public class XMLParser {
      * @return the graph resulting of the parsing. (to change to Plan)
      */
     public Plan readMap(String filePath) throws Exception {
+        if(!filePath.contains(".xml")){
+            throw new Exception("Please only select .xml files");
+        }
         Document doc = parseXMLFile(filePath);
         Map<String, Intersection> intersectionMap = new HashMap<>();
         Map<String, List<String>> adjacentsMap = new HashMap<>();
@@ -161,9 +164,13 @@ public class XMLParser {
     /**Read a requests file.
      *
      * @param filePath the path to the file to read.
+     * @param intersectionMap the intersection map containing all intersections loaded in the map
      * @return
      */
-    public PlanningRequest readRequests (String filePath) throws Exception{
+    public PlanningRequest readRequests (String filePath, Map<String,Intersection> intersectionMap) throws Exception{
+        if(!filePath.contains(".xml")){
+            throw new Exception("Please only select .xml files");
+        }
         Document doc = parseXMLFile(filePath);
 
         // Get depot
@@ -212,6 +219,17 @@ public class XMLParser {
 
         if(planningRequest.getRequests().isEmpty()){
             throw new Exception("All requests in file lack important data");
+        }
+
+        // We check that all the requests are actually present in the map (sometimes the map may be too small for the incoming requests) else we throw an error
+        if(intersectionMap!=null){
+            List<Request> finalRequests = planningRequest.getRequests();
+            for(Request request:finalRequests){
+                if(!intersectionMap.containsKey(request.getPickupId()) || intersectionMap.containsKey(request.getDeliveryId())){
+                    throw new Exception("The map is too small for the requests imported, please use a bigger map.");
+                }
+            }
+
         }
 
         return planningRequest;

@@ -54,7 +54,7 @@ public class ControllerMainWindow {
         XMLParser xmlParser = new XMLParser();
         PlanningRequest request;
         try{
-            request = xmlParser.readRequests(xmlFile.getPath());
+            request = xmlParser.readRequests(xmlFile.getPath(),planData.getIntersectionMap());
         }
         catch(Exception e){
             request = null;

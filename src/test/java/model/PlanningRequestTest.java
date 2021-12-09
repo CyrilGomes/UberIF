@@ -31,7 +31,7 @@ public class PlanningRequestTest{
     private void setUp(String requestPath){
         PlanningRequest planningRequest;
         try {
-            planningRequest = xmlParser.readRequests(requestPath);
+            planningRequest = xmlParser.readRequests(requestPath,null);
         }
         catch(Exception e){
             planningRequest =null;

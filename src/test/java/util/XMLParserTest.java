@@ -47,7 +47,7 @@ public class XMLParserTest {
     public void readRequests(){
         PlanningRequest planningRequest;
         try {
-            planningRequest = xmlParser.readRequests("files/requestsSmall1.xml");
+            planningRequest = xmlParser.readRequests("files/requestsSmall1.xml",null);
         }
         catch(Exception e){
             planningRequest=null;
