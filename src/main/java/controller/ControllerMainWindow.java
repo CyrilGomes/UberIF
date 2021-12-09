@@ -67,7 +67,7 @@ public class ControllerMainWindow extends Observable {
         if(request!=null) {
             planData.setPlanningRequest(request);
             mainWindow.setPlanData(planData);
-            TSP tsp = new SimulatedAnnealing(mainWindow);
+            tsp = new SimulatedAnnealing(mainWindow);
             this.graph = Graph.generateCompleteGraphFromPlan(planData);
 
             // Calling TSP to calculate the best tour
@@ -76,6 +76,8 @@ public class ControllerMainWindow extends Observable {
                 @Override
                 public void run() {
                     tsp.searchSolution(100000, graph, finalRequest);
+                    history.registerCurrentState(planData);
+                    System.out.println(history);
                 }
             }).start();
         }
@@ -103,6 +105,8 @@ public class ControllerMainWindow extends Observable {
             planData = plan;
             mainWindow.setPlanData(plan);
             mainWindow.clearPanels();
+            history.registerCurrentState(planData);
+            System.out.println(history);
         }
         // Case where we fail to read the map
         catch(Exception e){
@@ -131,6 +135,8 @@ public class ControllerMainWindow extends Observable {
         // Recalculate times
         planningRequest.calculateTimes(planData.getDeliveryTour());
         mainWindow.showSummary(planData.getPlanningRequest());
+        history.registerCurrentState(planData);
+        System.out.println(history);
     }
 
     /**
@@ -188,6 +194,8 @@ public class ControllerMainWindow extends Observable {
 
                 planningRequest.calculateTimes(deliveryTour);
                 notifyObservers(deliveryTour);
+                history.registerCurrentState(planData);
+                System.out.println(history);
 
             }
             if(pickupPlace == null){

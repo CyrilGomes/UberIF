@@ -33,4 +33,12 @@ public class History {
         }
         return this.listPlan.get(this.position);
     }
+
+    @Override
+    public String toString() {
+        return "History{" +
+                "position=" + position +
+                "\nplanSelected="+ this.listPlan.get(position).getPlanningRequest()+
+                '}';
+    }
 }

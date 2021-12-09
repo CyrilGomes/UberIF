@@ -18,6 +18,8 @@ import view.plan.PlanPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * The main class, displaying the HMI and starting the application.
@@ -25,7 +27,7 @@ import java.awt.*;
  * @author Thibaud Martin
  * @author Aurelia Inard
  */
-public class MainWindow extends javax.swing.JFrame implements Observer {
+public class MainWindow extends javax.swing.JFrame implements Observer, KeyListener {
     private final PlanPanel planPanel;
     private final ControllerMainWindow controller;
 
@@ -35,6 +37,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     public MainWindow() {
         controller = new ControllerMainWindow(this);
         buttonListenerMainWindow = new ButtonListenerMainWindow(controller, this);
+        addKeyListener(this);
         initComponents();
         planPanel = new PlanPanel(infoLabel);
 
@@ -474,4 +477,20 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     // End of variables declaration//GEN-END:variables
 
     private ButtonListenerMainWindow buttonListenerMainWindow;
+    private KeyboardListenerMainWindow keyboardListenerMainWindow;
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println("bouh");
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("bouh");
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println("bouh");
+    }
 }
