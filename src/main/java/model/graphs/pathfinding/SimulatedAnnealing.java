@@ -17,14 +17,13 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
 
 
     private float t0;
-    private final float alpha = 0.95f;
+    private final float alpha = 0.96f;
     private final float beta = 1.001f;
     private final float beta0 = 0.0001f;
     private List<String> deliveryPoints;
     private List<String> pickupPoints;
     private String[] permutation;
 
-    private Set<Integer> currentTempHistory;
 
     private int lastI;
     private int lastJ;
@@ -44,7 +43,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         rejected = 0;
         deliveryPoints = new ArrayList<>();
         pickupPoints = new ArrayList<>();
-        currentTempHistory = new HashSet<>();
+
         List<Request> requests = planningRequest.getRequests();
         for (Request request : requests) {
             deliveryPoints.add(request.getDeliveryId());
@@ -61,8 +60,8 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         float curCost = randomPermutation(planningRequest.getStartId());
 
 
-        heat();
-        //t0 = 100000;
+        //heat();
+        t0 = 200000;
         float temp = t0;
         System.out.println("Trouvé :" + t0);
 
@@ -82,28 +81,14 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
                 totalRejected+=rejected;
                 timer--;
             }
-            //curCost = saStep(curCost,temp);
             //System.out.println(Arrays.toString(permutation) + "\tCost : " + curCost + "\tTemp : " +temp +"\tTime : "+m + "\tRejected :" +totalRejected);
 
-            currentTempHistory.clear();
             temp*=alpha;
             m = (int) Math.floor(beta*m);
             timer = m;
             nbIter++;
-            /*
-            if(curCost < bestSolCost){
-                bestSolCost = curCost;
-            }*/
-/*
-            if(curCost < bestSolCost){
-                bestSol = Arrays.copyOf(permutation,permutation.length);
-                bestSolCost = getPermutationCost();
-
-            }*/
-
 
         }
-        notifyObservers(getDeliveryTour());
         System.out.println("FINITO");
 
 
@@ -138,12 +123,9 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
             curCost = newCost;
             //System.out.println(curCost);
             if(curCost < bestSolCost){
-
                 bestSolCost = curCost;
                 bestSol = Arrays.copyOf(permutation,permutation.length);
                 rejected = 0;
-
-
             }
         }else{
             Random rd = new Random();
@@ -158,11 +140,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
 
             }
         }
-
-
-
         return curCost;
-
     }
 
     private void heat(){
@@ -173,10 +151,9 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         int timer = 100;
         int nbReject;
         int i,k;
-        int maxIter = 1000;
+        int maxIter = 200;
 
         for (k=0;k<maxIter && prctReject>rejectionThreshold;k++) {
-            currentTempHistory.clear();
             nbReject = 0;
             for (i=0;i<timer;i++) {
                 curCost = saStep(curCost, temp);
@@ -196,8 +173,8 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         permutation[b] = tmp;
     }
 
-    // Method to add element at position
-    private static void addElement(
+    // Method to move element at position
+    private static void moveElement(
             String[] arr, int source,
             int dest)
     {
@@ -225,7 +202,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
             lastI = rd.nextInt(size-1)+1;
             lastJ = rd.nextInt(size-1)+1;
 
-            addElement(permutation,lastI,lastJ);
+            moveElement(permutation,lastI,lastJ);
             if(checkIsValid()){
                 isValid = true;
             }
@@ -249,16 +226,6 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
     }
 
 
-    public void undo(String[] permutation){
-
-
-        addElement(permutation,lastJ,lastI);
-
-
-
-        //swap(lastI,lastJ,permutation);
-        //reverseRoute(permutation);
-    }
 
     private void reverseRoute(String[] permutation) {
         int randLength = Math.abs(lastI-lastJ);
@@ -328,8 +295,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
                 for (int k = 0; k < permutation.length; k++) {
 
                     if (permutation[k].equals(pickup)) {
-                        int pickupIndex = k;
-                        if (pickupIndex > deliveryIndex) {
+                        if (k > deliveryIndex) {
                             swap(k, j, permutation);
                         }
 
@@ -345,21 +311,26 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
 
     }
 
-    private void greedyPermutation(String startNode){
 
+
+    private void greedyPermutation(String startNode){
         int size = g.getNbVertices();
         permutation = new String[size];
-
         permutation[0] = startNode;
-
         Set<String> vertices = g.getVertices();
-
 
         for (int i = 1; i < size; i++) {
             vertices.remove(permutation[i-1]);
             permutation[i] = getNearestNodeFromNode(permutation[i-1],vertices);
         }
     }
+
+
+    /**
+     * @param node the current node to check nieghbors of
+     * @param vertices all the vertices of the graph
+     * @return the nearest node of the currentNode
+     */
     private String getNearestNodeFromNode(String node, Set<String>  vertices ){
 
         float minCost = Float.MAX_VALUE;

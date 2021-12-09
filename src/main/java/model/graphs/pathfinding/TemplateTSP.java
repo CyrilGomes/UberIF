@@ -36,6 +36,7 @@ public abstract class TemplateTSP extends Observable implements TSP {
 
     @Override
     public DeliveryTour getDeliveryTour() {
+
         List<Segment> segmentList = new ArrayList<>();
 
         int solutionSize = bestSol.length;
@@ -49,9 +50,9 @@ public abstract class TemplateTSP extends Observable implements TSP {
         System.out.println(bestSolCost);
         return new DeliveryTour(segmentList, bestSolCost);
     }
+
     @Override
     public String[] getSolution() {
-
         return bestSol;
     }
 

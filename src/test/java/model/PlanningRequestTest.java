@@ -35,7 +35,12 @@ public class PlanningRequestTest{
         catch(Exception e){
             planningRequest =null;
         }
-        plan.setPlanningRequest(planningRequest);
+
+        try {
+            plan.setPlanningRequest(planningRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Calling TSP to calculate the best tour
         TSP tsp = new BranchAndBound();
