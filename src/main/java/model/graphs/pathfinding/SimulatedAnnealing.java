@@ -324,7 +324,7 @@ public class SimulatedAnnealing extends Observable implements TSP {
         Edge edge = g.getEdge(bestSol[solutionSize - 1], bestSol[0]);
         segmentList.addAll(edge.segmentList);
 
-        return new DeliveryTour(segmentList, bestSolCost);
+        return new DeliveryTour(segmentList, bestSolCost,bestSol);
     }
 
 }

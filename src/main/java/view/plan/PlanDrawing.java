@@ -70,9 +70,6 @@ public class PlanDrawing {
 		int allLength = planningRequest.getRequests().size();
 		int i = 0;
 		for(Request request: planningRequest.getRequests()){
-			// Random color
-			Color color = new Color((int)(Math.random() * 0x1000000));
-			g.setColor(color);
 			Intersection pickup = intersectionMap.get(request.getPickupId());
 			Intersection delivery = intersectionMap.get(request.getDeliveryId());
 
@@ -82,12 +79,14 @@ public class PlanDrawing {
 			int xDelivery  = planPanel.scaleXCoordinateToPlan(delivery.getLongitude());
 
 			// Draw pickup as a map bullet point
-			g.setColor(Color.getHSBColor((float)i/(float)allLength,1,1));
-			drawPickupPoint(xPickup, yPickup, 25, 25,  Color.getHSBColor((float)i/(float)allLength,1,1));
+			Color pickupColor = Color.getHSBColor((float)i/(float)allLength,1,1);
+			if(request.getColor()==null){
+				request.setColor(pickupColor);
+			}
+			drawPickupPoint(xPickup, yPickup, 25, 25,  request.getColor());
 
 			// Draw delivery as house icon
-			g.setColor(Color.getHSBColor((float)i/(float)allLength,0.5f,1));
-			drawDeliveryPoint(xDelivery,yDelivery,30,30, Color.getHSBColor((float)i/(float)allLength,1,1));
+			drawDeliveryPoint(xDelivery,yDelivery,30,30, request.getColor());
 			i++;
 		}
 	}
