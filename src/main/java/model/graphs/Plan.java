@@ -121,25 +121,8 @@ public class Plan {
         return planningRequest;
     }
 
-    public boolean setPlanningRequest(PlanningRequest planningRequest) throws Exception{
-
-        if(planningRequest == null)
-            this.planningRequest = null;
-
-        for (Request request:planningRequest.getRequests()) {
-            if (!intersectionMap.containsKey(request.getDeliveryId())) {
-                throw new Exception("This intersection is out of plan range : "+request.getDeliveryId());
-
-            }
-            if (!intersectionMap.containsKey(request.getPickupId())) {
-                throw new Exception("This intersection is out of plan range : "+request.getPickupId());
-
-            }
-
-        }
-
+    public void setPlanningRequest(PlanningRequest planningRequest){
         this.planningRequest = planningRequest;
-        return true;
     }
 
 

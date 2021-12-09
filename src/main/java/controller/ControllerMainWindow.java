@@ -54,36 +54,25 @@ public class ControllerMainWindow {
             String msg = "Error importing tour: "+e.getMessage();
             System.out.println(msg);
             showMessageDialog(mainWindow,msg);
-            return;
         }
 
-
         if(request!=null) {
-            try {
-                planData.setPlanningRequest(request);
-            } catch (Exception e) {
-                String msg = "Error importing tour: "+e.getMessage();
-                System.out.println(msg);
-                showMessageDialog(mainWindow,msg);
-                return;
-            }
-
-
+            planData.setPlanningRequest(request);
 
 
             mainWindow.setPlanData(planData);
             TSP tsp = new SimulatedAnnealing(mainWindow);
             this.graph = Graph.generateCompleteGraphFromPlan(planData);
+
             // Calling TSP to calculate the best tour
             PlanningRequest finalRequest = request;
-            if(graph != null){
-                // Calling TSP to calculate the best tour
-                new Thread(() -> tsp.searchSolution(100000,graph,finalRequest)).start();
-            }
-
-
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    tsp.searchSolution(100000, graph, finalRequest);
+                }
+            }).start();
         }
-
 
         //DeliveryTour deliveryTour = tsp.getDeliveryTour();
         //this.deliveryTour = deliveryTour;
