@@ -225,7 +225,7 @@ public class XMLParser {
         if(intersectionMap!=null){
             List<Request> finalRequests = planningRequest.getRequests();
             for(Request request:finalRequests){
-                if(!intersectionMap.containsKey(request.getPickupId()) || intersectionMap.containsKey(request.getDeliveryId())){
+                if(!intersectionMap.containsKey(request.getPickupId()) || !intersectionMap.containsKey(request.getDeliveryId())){
                     throw new Exception("The map is too small for the requests imported, please use a bigger map.");
                 }
             }
