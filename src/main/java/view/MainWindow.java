@@ -58,7 +58,9 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jPanel6 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         infoLabel = new javax.swing.JLabel();
@@ -76,6 +78,8 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -87,7 +91,11 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             .addGap(0, 332, Short.MAX_VALUE)
         );
 
-        jTabbedPane2.addTab("Summary", jPanel6);
+        jScrollPane1.setViewportView(jPanel6);
+
+        jTabbedPane2.addTab("Summary", jScrollPane1);
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -100,9 +108,12 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             .addGap(0, 332, Short.MAX_VALUE)
         );
 
-        jTabbedPane2.addTab("Deliveries", jPanel2);
+        jScrollPane2.setViewportView(jPanel2);
+
+        jTabbedPane2.addTab("Deliveries", jScrollPane2);
 
         jPanel1.add(jTabbedPane2);
+        jTabbedPane2.getAccessibleContext().setAccessibleName("Deliveries");
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -336,6 +347,8 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane2;
     // End of variables declaration//GEN-END:variables
 
