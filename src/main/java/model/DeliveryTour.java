@@ -10,7 +10,6 @@ public class DeliveryTour {
     List<Segment> segmentList;
     float globalTime;
 
-    
     public List<Segment> getSegmentList() {
         return segmentList;
     }

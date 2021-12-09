@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
-public class TSP1Test {
+public class BranchAndBoundTest {
     Graph g = new Graph();
 
     @Before
@@ -46,7 +44,7 @@ public class TSP1Test {
 
     @Test
     public void searchSol() {
-        TSP sa = new TSP1();
+        TSP sa = new BranchAndBound();
         PlanningRequest planningRequest = new PlanningRequest("1","0202");
 
         sa.searchSolution(20000,g,planningRequest);

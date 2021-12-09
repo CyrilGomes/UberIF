@@ -1,25 +1,19 @@
 package controller;
 
-import javafx.util.Pair;
 import model.DeliveryTour;
 import model.PlanningRequest;
 import model.Request;
-import model.Segment;
 import model.graphs.Graph;
 import model.graphs.Plan;
+import model.graphs.pathfinding.BranchAndBound;
 import model.graphs.pathfinding.SimulatedAnnealing;
 import model.graphs.pathfinding.TSP;
-import model.graphs.pathfinding.TSP1;
+import model.graphs.pathfinding.TwoOpt;
 import util.XMLParser;
 import view.MainWindow;
 
 import java.io.File;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.sql.SQLOutput;
 
 /**
  * The Controller of the MainWindow view. Receive information from the view
@@ -57,13 +51,10 @@ public class ControllerMainWindow {
         TSP tsp = new SimulatedAnnealing(mainWindow);
         Graph graph = Graph.generateCompleteGraphFromPlan(planData);
 
+
         // Calling TSP to calculate the best tour
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                tsp.searchSolution(100000,graph,request);
-            }
-        }).start();
+        new Thread(() -> tsp.searchSolution(100000,graph,request)).start();
+
 
         //DeliveryTour deliveryTour = tsp.getDeliveryTour();
         //this.deliveryTour = deliveryTour;
@@ -90,7 +81,6 @@ public class ControllerMainWindow {
      * Method called when we remove a request
      * @param request the request to delete
      */
-
     public void removeRequest(Request request){
         PlanningRequest planningRequest = planData.getPlanningRequest();
         planningRequest.removeRequest(request);
