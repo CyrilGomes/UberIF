@@ -1,8 +1,10 @@
 package model.graphs;
 
 import model.*;
+import model.graphs.pathfinding.Edge;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -186,121 +188,4 @@ public class Plan {
                 '}';
     }
 
-    public void removeRequestAndChangeTour(Request request, Graph graph){
-        String pickupId = request.getPickupId();
-        String deliveryId = request.getDeliveryId();
-        List<Request> requests = planningRequest.getRequests();
-
-        if(requests.size()== 1){
-            deliveryTour.setSegmentList(new ArrayList<>());
-        }
-        else {
-
-            // Get all points of interests from the requests ( the depot start, each pickup and each delivery)
-            List<String> pointsOfInterest = new ArrayList<>();
-            pointsOfInterest.add(planningRequest.getStartId());
-            for (Request req : requests) {
-                pointsOfInterest.add(req.getPickupId());
-                pointsOfInterest.add(req.getDeliveryId());
-            }
-
-            String beforePickupPoint = null;
-            String afterPickupPoint = null;
-            String beforeDeliveryPoint = null;
-            String afterDeliveryPoint = null;
-
-            int beforePickupIndex = -1;
-            int afterPickupIndex = -1;
-            int beforeDeliveryIndex = -1;
-            int afterDeliveryIndex = -1;
-
-            String before = null;
-            int beforeIndex = -1;
-            int pickupIndex = -1;
-            int deliveryIndex = -1;
-
-
-            List<Segment> segmentList = deliveryTour.getSegmentList();
-
-            // Get before and after points of pickupPoint
-            for (int i = 0; i < segmentList.size(); i++) {
-                Segment segment = segmentList.get(i);
-                String origin = segment.getOrigin();
-                if (beforePickupPoint == null && pointsOfInterest.contains(origin) && !origin.equals(pickupId)) {
-                    before = origin;
-                    beforeIndex = i;
-                }
-
-                if (origin.equals(pickupId) && beforePickupPoint == null) {
-                    beforePickupPoint = before;
-                    beforePickupIndex = beforeIndex;
-                    pickupIndex = i;
-                    continue;
-                }
-
-                if (afterPickupPoint == null && beforePickupPoint != null && pointsOfInterest.contains(origin)) {
-                    afterPickupPoint = origin;
-                    afterPickupIndex = i;
-                    break;
-                }
-            }
-
-            // Get before and after points of deliveryPoint
-            for (int i = 0; i < segmentList.size(); i++) {
-                Segment segment = segmentList.get(i);
-                String origin = segment.getOrigin();
-                if (beforeDeliveryPoint == null && pointsOfInterest.contains(origin) && !origin.equals(deliveryId)) {
-                    before = origin;
-                    beforeIndex = i;
-                }
-
-                if (origin.equals(deliveryId) && beforeDeliveryPoint == null) {
-                    beforeDeliveryPoint = before;
-                    beforeDeliveryIndex = beforeIndex;
-                    deliveryIndex = i;
-                    continue;
-                }
-
-                if (afterDeliveryPoint == null && beforeDeliveryPoint != null && pointsOfInterest.contains(origin)) {
-                    afterDeliveryPoint = origin;
-                    afterDeliveryIndex = i;
-                    break;
-                }
-            }
-
-            // Case where there is no point of interest after the deliveryPoint
-            if (afterDeliveryPoint == null) {
-                afterDeliveryPoint = deliveryId;
-                afterDeliveryIndex = deliveryIndex;
-            }
-
-            System.out.println("beforePickupPoint: " + beforePickupPoint + "  afterPickupPoint: " + afterPickupPoint + " pickupIndex: " + pickupIndex + " beforepickupIndex: " + beforePickupIndex + " afterpickupIndex: " + afterPickupIndex);
-            System.out.println("beforeDeliveryPoint: " + beforeDeliveryPoint + "  afterDeliveryPoint: " + afterDeliveryPoint + " deliveryIndex: " + deliveryIndex + " beforeDeliveryIndex: " + beforeDeliveryIndex + " afterDeliveryIndex: " + afterDeliveryIndex);
-            System.out.println("pointsOfInterests: " + pointsOfInterest);
-
-            // Subtract from the list the segments between beforePickupIndex and afterPickupIndex and between beforeDeliveryIndex and afterDeliveryIndex
-            List<Segment> finalSegmentList = segmentList.subList(0, beforePickupIndex);
-            int indexWhereToAdd1 = finalSegmentList.size();
-            finalSegmentList.addAll(segmentList.subList(afterPickupIndex, beforeDeliveryIndex));
-            int indexWhereToAdd2 = finalSegmentList.size();
-            finalSegmentList.addAll(segmentList.subList(afterDeliveryIndex + 1, segmentList.size()));
-
-            // Get best route from beforePickupPoint and afterPickupPoint, add at the right position in the segmentList
-            List<Segment> segmentsToAddPickup = graph.getEdge(beforePickupPoint, afterPickupPoint).getSegmentList();
-            finalSegmentList.addAll(indexWhereToAdd1, segmentsToAddPickup);
-            // Since we change finalSegment the index2 should be updated
-            indexWhereToAdd2 += segmentsToAddPickup.size();
-
-            // Get best route from beforeDeliveryPoint and afterDeliveryPoint, add at the right position in the segmentList
-            List<Segment> segmentsToAddDelivery = graph.getEdge(beforeDeliveryPoint, afterDeliveryPoint).getSegmentList();
-            finalSegmentList.addAll(indexWhereToAdd2, segmentsToAddDelivery);
-
-            // Update the delivery tour with the new list of segments
-            deliveryTour.setSegmentList(finalSegmentList);
-        }
-
-        // Remove the request
-        planningRequest.removeRequest(request);
-
-    }
 }

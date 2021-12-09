@@ -24,7 +24,6 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class ControllerMainWindow {
     private MainWindow mainWindow;
     private Plan planData;
-    private DeliveryTour deliveryTour;
     private Graph graph;
 
     /**
@@ -34,7 +33,6 @@ public class ControllerMainWindow {
     public ControllerMainWindow(MainWindow mainWindow){
         this.mainWindow = mainWindow;
         planData = null;
-        deliveryTour = null;
     }
 
     /**
@@ -48,7 +46,7 @@ public class ControllerMainWindow {
         XMLParser xmlParser = new XMLParser();
         PlanningRequest request;
         try{
-            request = xmlParser.readRequests(xmlFile.getPath());
+            request = xmlParser.readRequests(xmlFile.getPath(),planData.getIntersectionMap());
         }
         catch(Exception e){
             request = null;
@@ -125,12 +123,14 @@ public class ControllerMainWindow {
 
     public void removeRequest(Request request, boolean shouldChangeTour){
         PlanningRequest planningRequest = planData.getPlanningRequest();
-        if(!shouldChangeTour){
-            planningRequest.removeRequest(request);
+        if (shouldChangeTour) {
+            if (planningRequest.getRequests().size() == 1) {
+                planData.getDeliveryTour().setSegmentList(new ArrayList<>());
+            } else {
+                planData.getDeliveryTour().removeRequestAndChangeTour(request, graph);
+            }
         }
-        else{
-            planData.removeRequestAndChangeTour(request,graph);
-        }
+        planningRequest.removeRequest(request);
         // Updates the map to not have icons of the removed request
         mainWindow.setPlanData(planData);
         // Recalculate times

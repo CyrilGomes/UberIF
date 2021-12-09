@@ -1,4 +1,7 @@
 package model;
+
+import java.awt.*;
+
 /**
  * class Request, a request from a client. Object constituted from
  * the id of the pickup intersection, the id of the delivery intersection,
@@ -15,6 +18,9 @@ public class Request {
     // The time the cyclist arrive to this delivery in the tour
     private String deliveryTimePassage;
 
+    // Color of the icons in the map
+    private Color color;
+
 
     /**
      * The constructor of a request object.
@@ -28,6 +34,7 @@ public class Request {
         this.deliveryId = deliveryId;
         this.pickupDuration = pickupDuration;
         this.deliveryDuration = deliveryDuration;
+        this.color = null;
     }
 
     /**
@@ -83,5 +90,13 @@ public class Request {
 
     public void setDeliveryTimePassage(String deliveryTimePassage) {
         this.deliveryTimePassage = deliveryTimePassage;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }
