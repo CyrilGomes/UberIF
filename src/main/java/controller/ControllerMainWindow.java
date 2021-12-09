@@ -66,12 +66,7 @@ public class ControllerMainWindow {
 
             // Calling TSP to calculate the best tour
             PlanningRequest finalRequest = request;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    tsp.searchSolution(100000, graph, finalRequest);
-                }
-            }).start();
+            new Thread(() -> tsp.searchSolution(100000, graph, finalRequest)).start();
         }
 
         //DeliveryTour deliveryTour = tsp.getDeliveryTour();
