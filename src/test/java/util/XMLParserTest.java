@@ -86,4 +86,24 @@ public class XMLParserTest {
     public void testGetMercatorY() {
         assertEquals((float)0.01570860927, xmlParser.getMercatorY((float)0.9), 0.000001);
     }
+
+    @Test
+    public void testBadMap(){
+        try{
+            xmlParser.readMap("files/requestsSmall1.xml");
+        }
+        catch(Exception e){
+            assertEquals("No intersections found in file",e.getMessage());
+        }
+    }
+
+    @Test
+    public void testBadRequests(){
+        try{
+            xmlParser.readRequests("files/largeMap.xml",null);
+        }
+        catch(Exception e){
+            assertEquals("Depot not found",e.getMessage());
+        }
+    }
 }
