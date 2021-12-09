@@ -28,6 +28,7 @@ public class ControllerMainWindow extends Observable {
     private Plan planData;
     private Graph graph;
     private TSP tsp;
+    private History history;
     private DeliveryTour deliveryTour;
 
     /**
@@ -37,6 +38,7 @@ public class ControllerMainWindow extends Observable {
     public ControllerMainWindow(MainWindow mainWindow){
         this.mainWindow = mainWindow;
         planData = null;
+        history = new History();
         graph = null;
         tsp = null;
         addObserver(mainWindow);
