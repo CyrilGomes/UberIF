@@ -9,15 +9,24 @@ import java.awt.event.ActionListener;
 public class DeleteButtonListener implements ActionListener {
     private ControllerMainWindow controllerMainWindow;
     private Request request;
+    private boolean shouldChangeTour;
 
-    public DeleteButtonListener(ControllerMainWindow controllerMainWindow, Request request) {
+    public DeleteButtonListener(ControllerMainWindow controllerMainWindow, Request request, boolean shouldChangeTour) {
         this.controllerMainWindow = controllerMainWindow;
         this.request = request;
+        this.shouldChangeTour = shouldChangeTour;
     }
 
     @Override
     public void actionPerformed(ActionEvent e){
-        System.out.println("Removing request...");
-        controllerMainWindow.removeRequest(request);
+        // Remove request without changing tour
+        if(!shouldChangeTour) {
+            System.out.println("Removing request without changing tour...");
+            controllerMainWindow.removeRequest(request,false);
+        }
+        else{
+            System.out.println("Removing request with changing the tour...");
+            controllerMainWindow.removeRequest(request,true);
+        }
     }
 }

@@ -9,35 +9,38 @@ import java.awt.geom.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utility class used to draw data from the plan or the request on PlanPanel
+ * @see PlanPanel
+ */
 public class PlanDrawing {
 	private final Plan planData;
+	private final PlanPanel planPanel;
 	private final Map<Key, Segment> segmentMap;
 	private final Map<String, Intersection> intersectionMap;
 	private final Graphics g;
 	private final String selectedStreetName;
 
-	private final float maxLatitude;
-	private final float minLatitude;
-	private final float maxLongitude;
-	private final float minLongitude;
-	private final int width;
-	private final int height;
-
+	/**
+	 * Creates a new instance of PlanDrawing (called on a new execution of the pain function in PlanPanel)
+	 * @see PlanPanel
+	 * @param planData The data of the plan in the current context
+	 * @param panel The graphical component of the map
+	 * @param g The graphical object used to draw on panel
+	 */
 	public PlanDrawing(Plan planData, PlanPanel panel, Graphics g){
 		this.planData = planData;
+		this.planPanel = panel;
 		this.g = g;
 		segmentMap = this.planData.getSegmentMap();
 		intersectionMap = this.planData.getIntersectionMap();
 		selectedStreetName = this.planData.getSelectedStreetName();
-
-		maxLatitude = this.planData.getMaxLatitude();
-		minLatitude = this.planData.getMinLatitude();
-		maxLongitude = this.planData.getMaxLongitude();
-		minLongitude = this.planData.getMinLongitude();
-		width = panel.getWidth();
-		height = panel.getHeight();
 	}
 
+	/**
+	 * Draws the segments of the map in white.
+	 * If the user has selected a street, every segment composing it is drawn in blue.
+	 */
 	public void drawPlan(){
 		segmentMap.forEach((key, segment) -> {
 			if(!selectedStreetName.isEmpty() && segment.getName().equals(selectedStreetName)){
@@ -49,13 +52,16 @@ public class PlanDrawing {
 		});
 	}
 
+	/**
+	 * Draws every point of interest from the request of the current context
+	 */
 	public void drawPOI(){
 		PlanningRequest planningRequest = planData.getPlanningRequest();
 
 		// Drawing the depot
 		Intersection depot = intersectionMap.get(planningRequest.getStartId());
-		int yDepot = getCoordinateY(depot.getLatitude(),0,height,minLatitude,maxLatitude);
-		int xDepot = getCoordinate(depot.getLongitude(),0,width,minLongitude,maxLongitude);
+		int yDepot = planPanel.scaleYCoordinateToPlan(depot.getLatitude());
+		int xDepot = planPanel.scaleXCoordinateToPlan(depot.getLongitude());
 		System.out.println("xDepot: "+xDepot+" yDepot: "+yDepot);
 		g.setColor(Color.BLACK);
 		g.fillRect(xDepot,yDepot,20,20);
@@ -70,10 +76,10 @@ public class PlanDrawing {
 			Intersection pickup = intersectionMap.get(request.getPickupId());
 			Intersection delivery = intersectionMap.get(request.getDeliveryId());
 
-			int yPickup = getCoordinateY(pickup.getLatitude(),0,height,minLatitude,maxLatitude);
-			int xPickup = getCoordinate(pickup.getLongitude(),0,width,minLongitude,maxLongitude);
-			int yDelivery = getCoordinateY(delivery.getLatitude(),0,height,minLatitude,maxLatitude);
-			int xDelivery  = getCoordinate(delivery.getLongitude(),0,width,minLongitude,maxLongitude);
+			int yPickup = planPanel.scaleYCoordinateToPlan(pickup.getLatitude());
+			int xPickup = planPanel.scaleXCoordinateToPlan(pickup.getLongitude());
+			int yDelivery = planPanel.scaleYCoordinateToPlan(delivery.getLatitude());
+			int xDelivery  = planPanel.scaleXCoordinateToPlan(delivery.getLongitude());
 
 			// Draw pickup as a map bullet point
 			g.setColor(Color.getHSBColor((float)i/(float)allLength,1,1));
@@ -86,6 +92,14 @@ public class PlanDrawing {
 		}
 	}
 
+	/**
+	 * Draws a delivery point
+	 * @param x x coordinate of the delivery point
+	 * @param y y coordinate of the delivery point
+	 * @param w width of the icon
+	 * @param h height of the icon
+	 * @param color color of the icon
+	 */
 	private void drawDeliveryPoint(int x, int y, int w, int h, Color color){
 		Graphics2D ga = (Graphics2D) g;
 
@@ -122,6 +136,14 @@ public class PlanDrawing {
 		ga.fill(square2);
 	}
 
+	/**
+	 * Draws a pickup point
+	 * @param x x coordinate of the delivery point
+	 * @param y y coordinate of the delivery point
+	 * @param w width of the icon
+	 * @param h height of the icon
+	 * @param color color of the icon
+	 */
 	private void drawPickupPoint(int x, int y, int w, int h, Color color){
 		Graphics2D ga = (Graphics2D) g;
 
@@ -150,6 +172,10 @@ public class PlanDrawing {
 		ga.fill(circle);
 	}
 
+	/**
+	 * Draws the best route in the current context
+	 * @param deliveryTour Data on the best route
+	 */
 	public void drawRequestsRoute(DeliveryTour deliveryTour){
 		List<Segment> segments = deliveryTour.getSegmentList();
 		float fullLength = deliveryTour.getGlobalTime();
@@ -166,27 +192,25 @@ public class PlanDrawing {
 		}
 	}
 
+	/**
+	 * Draws a segment on the graphical component
+	 * @param segment Data on the segment
+	 * @param color Color of the segment
+	 * @param stroke Width of the segment (used to determine if it is part of a best route or not)
+	 */
 	private void drawSegment(Segment segment, Color color, int stroke){
 		g.setColor(color);
 		Intersection origine = intersectionMap.get(segment.getOrigin());
 		Intersection destination = intersectionMap.get(segment.getDestination());
 
-		int yOrigine = getCoordinateY(origine.getLatitude(),0,height,minLatitude,maxLatitude);
-		int xOrigine = getCoordinate(origine.getLongitude(),0,width,minLongitude,maxLongitude);
+		int yOrigine = planPanel.scaleYCoordinateToPlan(origine.getLatitude());
+		int xOrigine = planPanel.scaleXCoordinateToPlan(origine.getLongitude());
 
-		int yDestination = getCoordinateY(destination.getLatitude(),0,height,minLatitude,maxLatitude);
-		int xDestination = getCoordinate(destination.getLongitude(),0,width,minLongitude,maxLongitude);
+		int yDestination = planPanel.scaleYCoordinateToPlan(destination.getLatitude());
+		int xDestination = planPanel.scaleXCoordinateToPlan(destination.getLongitude());
 
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(stroke));
 		g2.draw(new Line2D.Float(xOrigine, yOrigine, xDestination, yDestination));
-	}
-
-	public static int getCoordinate (float x ,int a, int b, float min , float max){
-		return (int)(((b-a)*(x-min)/(max-min)) + a);
-	}
-
-	public static int getCoordinateY(float x,int a ,int b , float min,float max){
-		return b - getCoordinate(x,a,b,min,max);
 	}
 }

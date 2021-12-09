@@ -1,12 +1,11 @@
 package util;
 
+import model.Intersection;
 import model.PlanningRequest;
 import model.Request;
 import model.Segment;
-import model.Intersection;
-import model.graphs.Plan;
 import model.graphs.Key;
-
+import model.graphs.Plan;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -60,12 +59,20 @@ public class XMLParser {
         return "0" + departureTime.replaceAll(":",":0");
     }
 
+    public float getMercatorY(float latitude){
+        // convert from degrees to radians
+        float latRad = (float) ((latitude*Math.PI)/180);
+
+        // get y value
+        return (float) Math.log(Math.tan((Math.PI/4)+(latRad/2)));
+    }
+
     /** Read a map xml file composed of intersections and segments.
      *
      * @param filePath the path of the file to read
      * @return the graph resulting of the parsing. (to change to Plan)
      */
-    public Plan readMap(String filePath) {
+    public Plan readMap(String filePath) throws Exception {
         Document doc = parseXMLFile(filePath);
         Map<String, Intersection> intersectionMap = new HashMap<>();
         Map<String, List<String>> adjacentsMap = new HashMap<>();
@@ -78,13 +85,24 @@ public class XMLParser {
 
         // Get all intersections
         NodeList intersections = doc.getElementsByTagName("intersection");
+        if(intersections.getLength() ==0){
+            throw new Exception("No intersections found in file");
+        }
         for (int i = 0; i < intersections.getLength(); i++) {
             Node node = intersections.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) node;
                 String id = element.getAttribute("id");
-                float latitude = Float.parseFloat(element.getAttribute("latitude"));
-                float longitude = Float.parseFloat(element.getAttribute("longitude"));
+                String latitudeString = element.getAttribute("latitude");
+                String longitudeString = element.getAttribute("longitude");
+
+                // If we lack important data we ignore the intersection
+                if(id.isEmpty() || latitudeString.isEmpty() || longitudeString.isEmpty()){
+                    continue;
+                }
+                float latitude = getMercatorY(Float.parseFloat(latitudeString));
+                float longitude = Float.parseFloat(longitudeString);
+
 
                 maxLatitude = Math.max(maxLatitude,latitude);
                 minLatitude = Math.min(minLatitude,latitude);
@@ -97,17 +115,31 @@ public class XMLParser {
             }
         }
 
+        if(intersectionMap.isEmpty()){
+            throw new Exception ("All intersections in the file lack important data");
+        }
+
         // Get all segments
         NodeList segments = doc.getElementsByTagName("segment");
+        if(segments.getLength()==0){
+            throw new Exception("No segments found in file");
+        }
+
         for (int i = 0; i < segments.getLength(); i++) {
             Node node = segments.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) node;
                 String origin = element.getAttribute("origin");
                 String destination = element.getAttribute("destination");
-                float length = Float.parseFloat(element.getAttribute("length"));
-                String name = element.getAttribute("name");
+                String lengthString = element.getAttribute("length");
+                String name = element.getAttribute("name").isEmpty() ? "Unspecified" : element.getAttribute("name");
 
+                // If we lack important data we ignore the segment
+                if(origin.isEmpty() || destination.isEmpty() || lengthString.isEmpty()){
+                    continue;
+                }
+
+                float length = Float.parseFloat(lengthString);
                 Segment segment = new Segment(origin,destination, length, name);
                 adjacentsMap.get(origin).add(destination);
 
@@ -115,6 +147,10 @@ public class XMLParser {
                 segmentMap.put(key,segment);
             }
 
+        }
+
+        if(segmentMap.isEmpty()){
+            throw new Exception("All segments in the file lack important data");
         }
         
         Plan plan = new Plan(intersectionMap,adjacentsMap,segmentMap,maxLatitude,minLatitude,maxLongitude,minLongitude);
@@ -127,31 +163,55 @@ public class XMLParser {
      * @param filePath the path to the file to read.
      * @return
      */
-    public PlanningRequest readRequests (String filePath){
+    public PlanningRequest readRequests (String filePath) throws Exception{
         Document doc = parseXMLFile(filePath);
 
         // Get depot
         Element depot = (Element) doc.getElementsByTagName("depot").item(0);
+        if(depot==null){
+            throw new Exception("Depot not found");
+        }
         String startId = depot.getAttribute("address");
         String departureTime = formatDepartureTime(depot.getAttribute("departureTime"));
+
+        if(startId.isEmpty()){
+            throw  new Exception("Depot address not specified");
+        }
+        if(depot.getAttribute("departureTime").isEmpty()){
+            throw new Exception("Departure time not specified");
+        }
 
         PlanningRequest planningRequest = new PlanningRequest(startId,departureTime);
 
         // Get all requests
         NodeList requests = doc.getElementsByTagName("request");
+        if(requests.getLength()==0){
+            throw new Exception("No requests found in file");
+        }
         for (int i = 0; i < requests.getLength(); i++) {
             Node node = requests.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) node;
                 String pickupId = element.getAttribute("pickupAddress");
                 String deliveryId = !element.getAttribute("deliveryAddress").isEmpty() ? element.getAttribute("deliveryAddress") : element.getAttribute("adresseLivraison");
-                int pickupDuration = Integer.parseInt(element.getAttribute("pickupDuration"));
-                int deliveryDuration = Integer.parseInt(element.getAttribute("deliveryDuration"));
+
+                // If we lack important data we ignore the request
+                if(pickupId.isEmpty() || deliveryId.isEmpty()){
+                    continue;
+                }
+
+                // If pickup or delivery duration is not specified we assume that it's 0
+                int pickupDuration = element.getAttribute("pickupDuration").isEmpty()  ? 0 : Integer.parseInt(element.getAttribute("pickupDuration"));
+                int deliveryDuration = element.getAttribute("deliveryDuration").isEmpty() ? 0 : Integer.parseInt(element.getAttribute("deliveryDuration"));
 
                 Request request = new Request(pickupId,deliveryId,pickupDuration,deliveryDuration);
                 planningRequest.addRequest(request);
 
             }
+        }
+
+        if(planningRequest.getRequests().isEmpty()){
+            throw new Exception("All requests in file lack important data");
         }
 
         return planningRequest;

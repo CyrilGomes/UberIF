@@ -1,2 +1,3 @@
 util\XMLParserTest.class
+view\plan\PlanPanelTest.class
 model\graphs\pathfinding\DijkstraTest.class
