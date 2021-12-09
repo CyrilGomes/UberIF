@@ -31,6 +31,11 @@ import java.util.Map;
  */
 public class XMLParser {
 
+    /**
+     * Parse the document into a DOM document
+     * @param filePath the filepath of the file to parse
+     * @return
+     */
     private Document parseXMLFile(String filePath) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 

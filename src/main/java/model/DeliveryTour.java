@@ -43,6 +43,11 @@ public class DeliveryTour {
         }
     }
 
+    /**
+     * Remove request and updates the tour
+     * @param request the request to be removed
+     * @param graph the already calculated graph
+     */
     public void removeRequestAndChangeTour(Request request, Graph graph) {
         String pickupId = request.getPickupId();
         String deliveryId = request.getDeliveryId();
