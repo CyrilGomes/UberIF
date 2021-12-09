@@ -19,6 +19,7 @@ C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\pathfind
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\observer\Observable.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\util\XMLParser.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\ButtonListenerMainWindow.java
+C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\plan\Tuple2.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\PlanningRequest.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\plan\PlanPanel.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\pathfinding\TSP.java
@@ -26,6 +27,7 @@ C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\Request.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\pathfinding\BranchAndBound.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\MouseListenerPlanPanel.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\Key.java
+C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\plan\ClickablePOI.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\controller\ControllerMainWindow.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\state\ReadyState.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\Segment.java
