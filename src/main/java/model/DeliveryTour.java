@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class DeliveryTour {
     List<Segment> segmentList;
+    String[] bestTour;
+
     float globalTime;
     List<String> pointsOfInterest;
 

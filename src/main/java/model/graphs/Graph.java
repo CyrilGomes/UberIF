@@ -27,7 +27,13 @@ public class Graph {
 
         for (String currentPoint:pointsOfInterests) {
 
-            dijkstra.executeAlgorithm(plan,currentPoint,newGraph,pointsOfInterests );
+            try{
+                dijkstra.executeAlgorithm(plan,currentPoint,newGraph,pointsOfInterests );
+
+            }catch (Exception e){
+                System.err.println("Erreur lors de la création du graphe complet :"+ e.getMessage());
+                return null;
+            }
         }
 
 

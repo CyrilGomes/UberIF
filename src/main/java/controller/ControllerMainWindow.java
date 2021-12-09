@@ -1,26 +1,21 @@
 package controller;
 
-import javafx.util.Pair;
 import model.DeliveryTour;
 import model.PlanningRequest;
 import model.Request;
-import model.Segment;
 import model.graphs.Graph;
 import model.graphs.Plan;
+import model.graphs.pathfinding.BranchAndBound;
 import model.graphs.pathfinding.SimulatedAnnealing;
 import model.graphs.pathfinding.TSP;
-import model.graphs.pathfinding.TSP1;
+import model.graphs.pathfinding.TwoOpt;
 import util.XMLParser;
 import view.MainWindow;
 import view.state.*;
 
 import java.io.File;
-import java.time.LocalTime;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -80,7 +75,6 @@ public class ControllerMainWindow {
                 }
             }).start();
         }
-
 
         //DeliveryTour deliveryTour = tsp.getDeliveryTour();
         //this.deliveryTour = deliveryTour;

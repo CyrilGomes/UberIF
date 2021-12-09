@@ -3,8 +3,7 @@ package model;
 import model.graphs.Graph;
 import model.graphs.Plan;
 import model.graphs.pathfinding.TSP;
-import model.graphs.pathfinding.TSP1;
-import org.junit.Before;
+import model.graphs.pathfinding.BranchAndBound;
 import org.junit.Test;
 import util.XMLParser;
 
@@ -36,10 +35,15 @@ public class PlanningRequestTest{
         catch(Exception e){
             planningRequest =null;
         }
-        plan.setPlanningRequest(planningRequest);
+
+        try {
+            plan.setPlanningRequest(planningRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Calling TSP to calculate the best tour
-        TSP tsp = new TSP1();
+        TSP tsp = new BranchAndBound();
         Graph graph = Graph.generateCompleteGraphFromPlan(plan);
         tsp.searchSolution(20000,graph,planningRequest);
         deliveryTour = tsp.getDeliveryTour();

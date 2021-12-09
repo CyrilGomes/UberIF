@@ -42,9 +42,10 @@ public class Dijkstra {
 
 
 
-    public void executeAlgorithm(Plan graph, String sourceNodeId, Graph newGraph, List<String> pointsOfInterests ){
+    public void executeAlgorithm(Plan graph, String sourceNodeId, Graph newGraph, List<String> pointsOfInterests ) throws Exception{
         if(graph == null){
             System.out.println("BOOOBOO");
+            return;
         }
         poids = new HashMap<>();
         precedence = new HashMap<>();
@@ -85,6 +86,8 @@ public class Dijkstra {
                 }
                 Edge edge = new Edge(sourceNodeId,poi,segments,poids.get(poi));
                 newGraph.addEdge(sourceNodeId, poi,edge);
+            }else{
+                throw new Exception("No route has been found from "+ sourceNodeId + " to "+ poi +" !");
             }
         }
 

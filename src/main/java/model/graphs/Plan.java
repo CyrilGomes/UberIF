@@ -121,9 +121,10 @@ public class Plan {
         return planningRequest;
     }
 
-    public void setPlanningRequest(PlanningRequest planningRequest) {
+    public void setPlanningRequest(PlanningRequest planningRequest){
         this.planningRequest = planningRequest;
     }
+
 
     public Segment getSegment(String origin, String destination) {
         return segmentMap.get(new Key(origin,destination));
