@@ -3,5 +3,5 @@ view\plan\PlanPanelTest.class
 model\graphs\pathfinding\DijkstraTest.class
 model\graphs\pathfinding\TemplateTSPTest.class
 model\PlanningRequestTest.class
-model\graphs\pathfinding\TSP1Test.class
+model\graphs\pathfinding\BranchAndBoundTest.class
 model\graphs\pathfinding\SimulatedAnnealingTest.class

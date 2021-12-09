@@ -63,7 +63,7 @@ public class ControllerMainWindow {
             mainWindow.setPlanData(planData);
             State calculatingTourState = new CalculatingTourState();
             calculatingTourState.execute(mainWindow);
-            TSP tsp = new SimulatedAnnealing(mainWindow);
+            TSP tsp = new BranchAndBound(mainWindow);
             this.graph = Graph.generateCompleteGraphFromPlan(planData);
 
             // Calling TSP to calculate the best tour

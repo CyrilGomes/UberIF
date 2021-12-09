@@ -1,11 +1,11 @@
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\state\State.java
-C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\pathfinding\TSP1.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\MainWindow.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\Plan.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\state\CalculatingTourState.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\pathfinding\Dijkstra.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\state\CalculatingTimesState.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\plan\PlanDrawing.java
+C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\pathfinding\TwoOpt.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\Graph.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\DeleteButtonListener.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\pathfinding\SimulatedAnnealing.java
@@ -23,6 +23,7 @@ C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\PlanningRequest
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\plan\PlanPanel.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\pathfinding\TSP.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\Request.java
+C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\pathfinding\BranchAndBound.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\view\MouseListenerPlanPanel.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\model\graphs\Key.java
 C:\Users\creep\OneDrive\4IF\PLD Agile\UberIF\src\main\java\controller\ControllerMainWindow.java

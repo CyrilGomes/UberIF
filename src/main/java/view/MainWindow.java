@@ -15,6 +15,9 @@ import model.graphs.pathfinding.TSP;
 import observer.Observable;
 import observer.Observer;
 import view.plan.PlanPanel;
+import view.state.CalculatingTimesState;
+import view.state.CalculatingTourState;
+import view.state.ReadyState;
 import view.state.State;
 
 import javax.swing.*;
@@ -38,7 +41,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         controller = new ControllerMainWindow(this);
         buttonListenerMainWindow = new ButtonListenerMainWindow(controller, this);
         initComponents();
-        planPanel = new PlanPanel(infoLabel);
+        planPanel = new PlanPanel(this);
 
         jPanel1.add(planPanel);
         pack();
@@ -178,13 +181,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
     public void setSystemInfoText(final String text) {
         infoLabel.setText(text);
-        this.repaint();
-        infoLabel.repaint();
-        pack();
-    }
-
-    public State getCurrentState() {
-        return currentState;
     }
 
     public void setCurrentState(State currentState) {
@@ -197,11 +193,14 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             DeliveryTour deliveryTour = (DeliveryTour) arg;
             PlanningRequest planningRequest = planPanel.getPlanData().getPlanningRequest();
             planPanel.getPlanData().setDeliveryTour(deliveryTour);
+            State calculatingTimesState = new CalculatingTimesState();
+            calculatingTimesState.execute(this);
             planningRequest.calculateTimes(deliveryTour);
+            State readyState = new ReadyState();
+            readyState.execute(this);
             planPanel.repaint();
             showSummary(planningRequest);
         }
-
     }
 
     /**

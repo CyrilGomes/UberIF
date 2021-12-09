@@ -3,6 +3,7 @@ package view.plan;
 import junit.framework.TestCase;
 import model.graphs.Plan;
 import util.XMLParser;
+import view.MainWindow;
 
 import javax.swing.*;
 import java.io.File;
@@ -13,7 +14,7 @@ public class PlanPanelTest extends TestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		planPanel = new PlanPanel(new JLabel(""));
+		planPanel = new PlanPanel(new MainWindow());
 		XMLParser parser = new XMLParser();
 		planData = parser.readMap(new File("files/largeMap.xml").getAbsolutePath());
 		planPanel.setPlanData(planData);
