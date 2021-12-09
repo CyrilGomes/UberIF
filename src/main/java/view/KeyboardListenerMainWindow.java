@@ -13,18 +13,17 @@ public class KeyboardListenerMainWindow implements KeyListener {
     }
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("key pressed");
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
         if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
             System.out.println("Go back !");
 
         }else if((e.getKeyCode() == KeyEvent.VK_Y) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
             System.out.println("Go forward !");
         }
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
     }
 
     @Override

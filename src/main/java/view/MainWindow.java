@@ -27,7 +27,7 @@ import java.awt.event.KeyListener;
  * @author Thibaud Martin
  * @author Aurelia Inard
  */
-public class MainWindow extends javax.swing.JFrame implements Observer, KeyListener {
+public class MainWindow extends javax.swing.JFrame implements Observer {
     private final PlanPanel planPanel;
     private final ControllerMainWindow controller;
 
@@ -37,9 +37,11 @@ public class MainWindow extends javax.swing.JFrame implements Observer, KeyListe
     public MainWindow() {
         controller = new ControllerMainWindow(this);
         buttonListenerMainWindow = new ButtonListenerMainWindow(controller, this);
-        addKeyListener(this);
+
         initComponents();
         planPanel = new PlanPanel(infoLabel);
+        addKeyListener(new KeyboardListenerMainWindow(controller));
+        this.setFocusable(true);
 
         jPanel1.add(planPanel);
         pack();
@@ -479,18 +481,4 @@ public class MainWindow extends javax.swing.JFrame implements Observer, KeyListe
     private ButtonListenerMainWindow buttonListenerMainWindow;
     private KeyboardListenerMainWindow keyboardListenerMainWindow;
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        System.out.println("bouh");
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println("bouh");
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        System.out.println("bouh");
-    }
 }
