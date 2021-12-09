@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 /**
  * The Controller of the MainWindow view. Receive information from the view
  * and compute the response.
@@ -50,26 +52,41 @@ public class ControllerMainWindow {
     public void importTour(File xmlFile){
         System.out.println("read requests");
         XMLParser xmlParser = new XMLParser();
-        PlanningRequest request = xmlParser.readRequests(xmlFile.getPath());
-        planData.setPlanningRequest(request);
+        PlanningRequest request;
+        try{
+            request = xmlParser.readRequests(xmlFile.getPath());
+        }
+        catch(Exception e){
+            request = null;
+            String msg = "Error importing tour: "+e.getMessage();
+            System.out.println(msg);
+            showMessageDialog(mainWindow,msg);
+        }
+
+        if(request!=null) {
+            planData.setPlanningRequest(request);
 
 
-        mainWindow.setPlanData(planData);
-        TSP tsp = new SimulatedAnnealing(mainWindow);
-        this.graph = Graph.generateCompleteGraphFromPlan(planData);
+            mainWindow.setPlanData(planData);
+            TSP tsp = new SimulatedAnnealing(mainWindow);
+            this.graph = Graph.generateCompleteGraphFromPlan(planData);
 
-        // Calling TSP to calculate the best tour
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                tsp.searchSolution(100000,graph,request);
-            }
-        }).start();
+            // Calling TSP to calculate the best tour
+            PlanningRequest finalRequest = request;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    tsp.searchSolution(100000, graph, finalRequest);
+                }
+            }).start();
+        }
+
 
         //DeliveryTour deliveryTour = tsp.getDeliveryTour();
         //this.deliveryTour = deliveryTour;
         //mainWindow.setDeliveryTour(deliveryTour);
         // System.out.println(request);
+
 
 
 
@@ -82,10 +99,18 @@ public class ControllerMainWindow {
      */
     public void importMap(File file){
         XMLParser parser = new XMLParser();
-        Plan plan = parser.readMap(file.getAbsolutePath());
-        planData = plan;
-        mainWindow.setPlanData(plan);
-        mainWindow.clearPanels();
+        try {
+            Plan plan = parser.readMap(file.getAbsolutePath());
+            planData = plan;
+            mainWindow.setPlanData(plan);
+            mainWindow.clearPanels();
+        }
+        // Case where we fail to read the map
+        catch(Exception e){
+            String msg = "Error importing map: "+e.getMessage();
+            System.out.println(msg);
+            showMessageDialog(mainWindow,msg);
+        }
     }
 
     /**

@@ -15,11 +15,27 @@ import static org.junit.Assert.*;
 
 public class PlanningRequestTest{
     XMLParser xmlParser = new XMLParser();
-    Plan plan = xmlParser.readMap("files/largeMap.xml");
+    Plan plan = readMap("files/largeMap.xml");
     DeliveryTour deliveryTour;
 
+    private Plan readMap(String mapPath){
+        Plan plan;
+        try{
+            plan = xmlParser.readMap(mapPath);
+        }
+        catch(Exception e){
+            plan = null;
+        }
+        return plan;
+    }
     private void setUp(String requestPath){
-        PlanningRequest planningRequest = xmlParser.readRequests(requestPath);
+        PlanningRequest planningRequest;
+        try {
+            planningRequest = xmlParser.readRequests(requestPath);
+        }
+        catch(Exception e){
+            planningRequest =null;
+        }
         plan.setPlanningRequest(planningRequest);
 
         // Calling TSP to calculate the best tour
