@@ -148,7 +148,7 @@ public class DijkstraTest {
         System.out.println(newGraph.getEdges());
         assert(newGraph.getNbVertices() == 5);
 
-        assert(newGraph.getNbEdges() == 4);
+        assert(newGraph.getNbEdges() == 20);
         assert(Objects.equals(newGraph.getVertices(), correctValues));
 
 

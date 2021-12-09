@@ -174,10 +174,11 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
     }
 
     // Method to move element at position
-    private static void moveElement(
+    private void moveElement(
             String[] arr, int source,
             int dest)
     {
+
         // Converting array to ArrayList
         List<String> list = new ArrayList<>(
                 Arrays.asList(arr));
@@ -187,6 +188,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
 
         // Converting the list back to array
         arr = list.toArray(arr);
+
 
 
     }
@@ -203,7 +205,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
             lastJ = rd.nextInt(size-1)+1;
 
             moveElement(permutation,lastI,lastJ);
-            if(checkIsValid()){
+            if(checkIsValid() && lastJ != lastI){
                 isValid = true;
             }
 
@@ -212,7 +214,6 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
             //swap(lastI,lastJ,permutation);
 
         }
-
 
 
         /**

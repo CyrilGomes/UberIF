@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class BranchAndBoundTest {
     Graph g = new Graph();
@@ -49,6 +50,8 @@ public class BranchAndBoundTest {
 
         sa.searchSolution(20000,g,planningRequest);
         System.out.println(Arrays.toString(sa.getSolution()));
+        String[] solution =  {"1","7","6","4","2"};
+        assert(Arrays.equals(sa.getSolution(), solution));
         System.out.println(sa.getSolutionCost());
     }
 }

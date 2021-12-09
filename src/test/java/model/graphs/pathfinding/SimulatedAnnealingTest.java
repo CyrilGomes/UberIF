@@ -46,10 +46,12 @@ public class SimulatedAnnealingTest {
 
     @Test
     public void searchSol() {
-        SimulatedAnnealing sa = new SimulatedAnnealing(null);
+        SimulatedAnnealing sa = new SimulatedAnnealing();
         PlanningRequest planningRequest = new PlanningRequest("1","0202");
 
+
         sa.searchSolution(20000,g,planningRequest);
+        assert (Math.abs(sa.getSolutionCost() - 19.5)/19.5 < 0.1);
         System.out.println(Arrays.toString(sa.getSolution()));
         System.out.println(sa.getSolutionCost());
     }

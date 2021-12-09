@@ -36,7 +36,7 @@ public class BranchAndBound extends TemplateTSP{
             deliveryPoints.add(request.getDeliveryId());
             pickupPoints.add(request.getPickupId());
         }
-        bestSolCost = Integer.MAX_VALUE;
+        bestSolCost = Float.MAX_VALUE;
         branchAndBound(sourceVertex, sourceVertex, unvisited, visited, pickupPoints, deliveryPoints, 0);
         System.out.println("Completed in :" + (System.currentTimeMillis() - startTime));
     }
@@ -62,9 +62,11 @@ public class BranchAndBound extends TemplateTSP{
                     bestSolCost = currentCost + g.getCost(currentVertex, sourceVertex);
                 }
             }
-        } else if (currentCost + bound(currentVertex, unvisited) < bestSolCost) {
+
+        } else if (currentCost + bound(currentVertex, unvisited) < bestSolCost) { //Si la sousestimation du chemin est supérieur, on coupe
             Iterator<String> it = iterator(currentVertex, unvisited, g);
             while (it.hasNext()) {
+
                 String nextVertex = it.next();
                 if (deliveryPoints.contains(nextVertex)) {
                     int id = deliveryPoints.indexOf(nextVertex);
@@ -84,11 +86,6 @@ public class BranchAndBound extends TemplateTSP{
 
 
 
-
-
-
-
-
     /**
      * Method that must be defined in TemplateTSP subclasses
      *
@@ -101,15 +98,11 @@ public class BranchAndBound extends TemplateTSP{
 
 
         float min = Float.MAX_VALUE;
-        int size = unvisited.size();
         for (String nextVertex:unvisited) {
             float cost = g.getCost(currentVertex,nextVertex);
             min = Math.min(cost,min);
             currentVertex = nextVertex;
         }
-
-
-
         return unvisited.size()*min;
     }
 

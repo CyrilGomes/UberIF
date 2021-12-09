@@ -46,6 +46,11 @@ public class Graph {
 
     public float getCost(String origin, String destination){
         Edge edge = edges.get(new Key(origin,destination));
+        if(edge == null) {
+            System.out.println(origin + " " + destination);
+
+            return 0;
+        }
         return edge.getDuration();
     }
     public Graph(Set<String> vertices, HashMap<Key, Edge> edges) {
