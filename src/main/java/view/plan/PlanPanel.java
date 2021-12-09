@@ -207,6 +207,7 @@ public final class PlanPanel extends JPanel {
      * @param yMouse y coordinate of the mouse
      */
     public void identifyStreet(final int xMouse, final int yMouse) {
+        planData.setSelectedStreetName("");
         for (Key value : segmentMap.keySet()) {
             Segment segment = segmentMap.get(value);
             Intersection origine = intersectionMap.get(segment.getOrigin());
