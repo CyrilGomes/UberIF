@@ -4,7 +4,6 @@ import model.Intersection;
 import model.PlanningRequest;
 import model.Request;
 import model.Segment;
-import model.graphs.Graph;
 import model.graphs.Plan;
 import org.junit.Test;
 
@@ -19,13 +18,19 @@ public class XMLParserTest {
 
     @Test
     public void readMap() {
-        Plan plan = xmlParser.readMap("files/map.xml");
+        Plan plan = null;
+        try{
+            plan = xmlParser.readMap("files/map.xml");
+        }
+        catch(Exception e){
+
+        }
 
         Map<String, Intersection> map = plan.getIntersectionMap();
         assertEquals(2,map.size());
         Intersection intersection = map.get("1");
         assertEquals("1",intersection.getId());
-        assertEquals(45.7,intersection.getLatitude(),0.1);
+        assertEquals(xmlParser.getMercatorY((float)45.7),intersection.getLatitude(),0.1);
         assertEquals(4.8,intersection.getLongitude(),0.1);
 
 
@@ -40,7 +45,13 @@ public class XMLParserTest {
 
     @Test
     public void readRequests(){
-        PlanningRequest planningRequest = xmlParser.readRequests("files/requestsSmall1.xml");
+        PlanningRequest planningRequest;
+        try {
+            planningRequest = xmlParser.readRequests("files/requestsSmall1.xml");
+        }
+        catch(Exception e){
+            planningRequest=null;
+        }
         assertEquals("342873658",planningRequest.getStartId());
         assertEquals("08:00:00",planningRequest.getDepartureTime());
 
@@ -57,11 +68,22 @@ public class XMLParserTest {
 
     @Test
     public void readLargeMap(){
-        Plan plan = xmlParser.readMap("files/largeMap.xml");
+        Plan plan = null;
+        try{
+            plan = xmlParser.readMap("files/largeMap.xml");
+        }
+        catch(Exception e){
+
+        }
         assertEquals(3736,plan.getIntersectionMap().size());
         plan.getIntersectionMap().forEach((key,value)->{
             assertNotEquals("",key);
             assertNotNull(value);
         });
+    }
+
+    @Test
+    public void testGetMercatorY() {
+        assertEquals((float)0.01570860927, xmlParser.getMercatorY((float)0.9), 0.000001);
     }
 }
