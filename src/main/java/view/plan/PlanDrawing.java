@@ -180,9 +180,10 @@ public class PlanDrawing {
 	/**
 	 * Draws the best route in the current context
 	 * @param deliveryTour Data on the best route
-	 * @param deliveryPath A delivery path to be highlighted
+	 * @param selectedPOI The POI that is currently selected in the route
 	 */
-	public void drawRequestsRoute(DeliveryTour deliveryTour, Tuple2<Intersection, Intersection> deliveryPath){
+	public void drawRequestsRoute(DeliveryTour deliveryTour,
+	                              Intersection selectedPOI){
 		List<Segment> segments = deliveryTour.getSegmentList();
 		float fullLength = deliveryTour.getGlobalTime();
 		float lengthCounter = 0;
@@ -194,16 +195,18 @@ public class PlanDrawing {
 				drawSegment(segment,Color.BLUE,3);
 			}
 			else {
-				Color color = Color.getHSBColor(0f,1,lengthCounter/fullLength);
-
-				if(deliveryPath != null) {
-					if(intersectionMap.get(segment.getOrigin()) == deliveryPath._2 || intersectionMap.get(segment.getDestination()) == deliveryPath._1) {
+				Color color = Color.getHSBColor(0f,1,lengthCounter/fullLength);;
+				if(selectedPOI != null) {
+					if(selectedPOI == intersectionMap.get(segment.getOrigin())) {
 						startHighlighting = !startHighlighting;
 					}
+					if(startHighlighting){
+						color = Color.YELLOW;
+					}
+					else{
+						color = Color.GRAY;
+					}
 				}
-
-				if(startHighlighting)
-					color = Color.YELLOW;
 
 				drawSegment(segment, color,3);
 			}

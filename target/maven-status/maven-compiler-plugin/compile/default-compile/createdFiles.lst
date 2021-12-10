@@ -14,6 +14,7 @@ view\MainWindow$5.class
 model\graphs\pathfinding\TemplateTSP.class
 model\graphs\pathfinding\TSP.class
 model\graphs\Plan.class
+view\plan\PlanPanel$1.class
 model\graphs\pathfinding\TwoOpt.class
 model\DeliveryTour.class
 view\MainWindow$3.class
