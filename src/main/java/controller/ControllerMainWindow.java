@@ -1,6 +1,7 @@
 package controller;
 
 import model.DeliveryTour;
+import model.Intersection;
 import model.PlanningRequest;
 import model.Request;
 import model.graphs.Graph;
@@ -116,7 +117,12 @@ public class ControllerMainWindow {
         // Recalculate times
         planningRequest.calculateTimes(planData.getDeliveryTour());
         mainWindow.showDelivery(planData.getPlanningRequest());
+        mainWindow.showSummary(planData.getPlanningRequest(),planData.getDeliveryTour());
         State readyState = new ReadyState();
         readyState.execute(mainWindow);
+    }
+
+    public Intersection getIntersectionFromId(String id){
+        return planData.getIntersectionMap().get(id);
     }
 }

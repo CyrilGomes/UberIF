@@ -45,6 +45,10 @@ public class DeliveryTour {
         }
     }
 
+    public List<String> getPointsOfInterest() {
+        return pointsOfInterest;
+    }
+
     /**
      * Remove request and updates the tour
      * @param request the request to be removed
@@ -69,5 +73,7 @@ public class DeliveryTour {
 
         this.segmentList = segmentList;
     }
+
+
 
 }

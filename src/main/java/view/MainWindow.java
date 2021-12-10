@@ -8,6 +8,7 @@ package view;
 import com.formdev.flatlaf.FlatLightLaf;
 import controller.ControllerMainWindow;
 import model.DeliveryTour;
+import model.Intersection;
 import model.PlanningRequest;
 import model.Request;
 import model.graphs.Plan;
@@ -22,6 +23,11 @@ import view.state.State;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The main class, displaying the HMI and starting the application.
@@ -33,6 +39,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private final PlanPanel planPanel;
     private final ControllerMainWindow controller;
     private State currentState;
+    private PointOfInterestPanel highleted;
 
     /**
      * Creates new form MainWindow.
@@ -237,6 +244,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             readyState.execute(this);
             planPanel.repaint();
             showDelivery(planningRequest);
+            showSummary(planningRequest,deliveryTour);
         }
     }
 
@@ -314,6 +322,70 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
             container.revalidate();
             container.repaint();
+    }
+
+    public void showSummary(PlanningRequest planningRequest, DeliveryTour deliveryTour){
+        // Add information to jPanel
+        JPanel container = jPanel6;
+        container.removeAll();
+        container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+
+        String startTime = planningRequest.getDepartureTime();
+        String finishTime = planningRequest.getFinishTime();
+
+        JLabel startLabel = new JLabel("Start time: "+startTime);
+        startLabel.setFont(new Font("Verdana",1,20));
+        startLabel.setForeground(new Color(20,100,10));
+        container.add(startLabel);
+        // Adding space between components
+        container.add(Box.createVerticalStrut(10));
+
+        List<Request> requests = planningRequest.getRequests();
+        int i =0;
+
+        MouseListener ml = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                PointOfInterestPanel poiPanel = (PointOfInterestPanel) e.getSource();
+                String id = poiPanel.isPickUp() ? poiPanel.getRequest().getPickupId() : poiPanel.getRequest().getDeliveryId();
+                Intersection intersection  = controller.getIntersectionFromId(id);
+                if(highleted!=null){
+                    highleted.setBackground(jPanel6.getBackground());
+                }
+                poiPanel.setBackground(Color.LIGHT_GRAY);
+                highleted = poiPanel;
+                planPanel.setSelectedPOI(intersection);
+
+            }
+        };
+
+        for(String pointOfIntersest : deliveryTour.getPointsOfInterest()){
+            for(Request request: requests){
+                if(request.getPickupId().equals(pointOfIntersest)){
+                    PointOfInterestPanel poiPanel = new PointOfInterestPanel(true,request.getPickupTimePassage(),request,i);
+                    poiPanel.addMouseListener(ml);
+                    container.add(poiPanel);
+                    break;
+                }
+                if(request.getDeliveryId().equals(pointOfIntersest)){
+                    PointOfInterestPanel poiPanel = new PointOfInterestPanel(false,request.getDeliveryTimePassage(),request,i);
+                    poiPanel.addMouseListener(ml);
+                    container.add(poiPanel);
+                    break;
+                }
+            }
+            i++;
+        }
+        container.add(Box.createVerticalStrut(10));
+
+        JLabel finishLabel = new JLabel("Finish time: "+finishTime);
+        finishLabel.setFont(new Font("Verdana",1,20));
+        finishLabel.setForeground(Color.BLUE);
+        container.add(finishLabel);
+
+        container.revalidate();
+        container.repaint();
+
     }
 
     /**
