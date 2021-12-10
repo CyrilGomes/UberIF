@@ -58,9 +58,10 @@ public class ControllerMainWindow {
                 TSP tsp = new SimulatedAnnealing(mainWindow);
                 this.graph = Graph.generateCompleteGraphFromPlan(planData);
 
-            // Calling TSP to calculate the best tour
-            PlanningRequest finalRequest = request;
-            new Thread(() -> tsp.searchSolution(100000, graph, finalRequest)).start();
+                // Calling TSP to calculate the best tour
+                PlanningRequest finalRequest = request;
+                new Thread(() -> tsp.searchSolution(100000, graph, finalRequest)).start();
+            }
         }
         catch(Exception e){
             String msg = "Error importing tour: "+e.getMessage();

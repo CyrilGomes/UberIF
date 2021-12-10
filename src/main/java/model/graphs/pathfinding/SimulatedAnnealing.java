@@ -291,10 +291,14 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
 
         Random rd = new Random();
 
-        int b = rd.nextInt(size-1)+1;
-        for (int j = 1; j < permutation.length; j++) {
-            swap(j,b,permutation);
-        }
+        do{
+            int b = rd.nextInt(size-1)+1;
+            for (int j = 1; j < permutation.length; j++) {
+                swap(j,b,permutation);
+            }
+        }while(!checkIsValid());
+
+        /*
         for (int j = 0; j < permutation.length; j++) {
             if (deliveryPoints.contains(permutation[j])) {
                 int deliveryIndex = deliveryPoints.indexOf(permutation[j]);
@@ -310,7 +314,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
                 }
 
             }
-        }
+        }*/
 
     return getPermutationCost();
 
