@@ -53,17 +53,21 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         startTime = System.currentTimeMillis();
         this.timeLimit = timeLimit;
         this.g = g;
-        bestSolCost = Float.MAX_VALUE;
+
+        //bestSolCost = Float.MAX_VALUE;
 
 
         //greedyPermutation(planningRequest.getStartId());
         float curCost = randomPermutation(planningRequest.getStartId());
 
+        bestSol = Arrays.copyOf(permutation,permutation.length);
+        bestSolCost = getPermutationCost();
+
 
         //heat();
         t0 = 200000;
         float temp = t0;
-        System.out.println("Trouvé :" + t0);
+        //System.out.println("Trouvé :" + t0);
 
 
 
@@ -89,7 +93,9 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
             nbIter++;
 
         }
-        System.out.println("FINITO");
+
+
+        //System.out.println("FINITO");
 
 
     }
@@ -285,10 +291,14 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
 
         Random rd = new Random();
 
-        int b = rd.nextInt(size-1)+1;
-        for (int j = 1; j < permutation.length; j++) {
-            swap(j,b,permutation);
-        }
+        do{
+            int b = rd.nextInt(size-1)+1;
+            for (int j = 1; j < permutation.length; j++) {
+                swap(j,b,permutation);
+            }
+        }while(!checkIsValid());
+
+        /*
         for (int j = 0; j < permutation.length; j++) {
             if (deliveryPoints.contains(permutation[j])) {
                 int deliveryIndex = deliveryPoints.indexOf(permutation[j]);
@@ -304,7 +314,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
                 }
 
             }
-        }
+        }*/
 
     return getPermutationCost();
 

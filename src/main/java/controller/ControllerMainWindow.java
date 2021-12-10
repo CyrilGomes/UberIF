@@ -51,16 +51,18 @@ public class ControllerMainWindow {
         PlanningRequest request;
         try{
             request = xmlParser.readRequests(xmlFile.getPath(),planData.getIntersectionMap());
-            planData.setPlanningRequest(request);
-            mainWindow.setPlanData(planData);
-            State calculatingTourState = new CalculatingTourState();
-            calculatingTourState.execute(mainWindow);
-            TSP tsp = new BranchAndBound(mainWindow);
-            this.graph = Graph.generateCompleteGraphFromPlan(planData);
+            if(request!=null) {
+                planData.setPlanningRequest(request);
+                mainWindow.setPlanData(planData);
+                State calculatingTourState = new CalculatingTourState();
+                calculatingTourState.execute(mainWindow);
+                TSP tsp = new SimulatedAnnealing(mainWindow);
+                this.graph = Graph.generateCompleteGraphFromPlan(planData);
 
-            // Calling TSP to calculate the best tour
-            PlanningRequest finalRequest = request;
-            new Thread(() -> tsp.searchSolution(100000, graph, finalRequest)).start();
+                // Calling TSP to calculate the best tour
+                PlanningRequest finalRequest = request;
+                new Thread(() -> tsp.searchSolution(100000, graph, finalRequest)).start();
+            }
         }
         catch(Exception e){
             String msg = "Error importing tour: "+e.getMessage();

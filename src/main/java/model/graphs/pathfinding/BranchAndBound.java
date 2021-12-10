@@ -38,7 +38,7 @@ public class BranchAndBound extends TemplateTSP{
         }
         bestSolCost = Float.MAX_VALUE;
         branchAndBound(sourceVertex, sourceVertex, unvisited, visited, pickupPoints, deliveryPoints, 0);
-        System.out.println("Completed in :" + (System.currentTimeMillis() - startTime));
+        //System.out.println("Completed in :" + (System.currentTimeMillis() - startTime));
     }
 
 
@@ -63,7 +63,7 @@ public class BranchAndBound extends TemplateTSP{
                 }
             }
 
-        } else if (currentCost + bound(currentVertex, unvisited) < bestSolCost) { //Si la sousestimation du chemin est supérieur, on coupe
+        } else if (currentCost + bound(sourceVertex,currentVertex, unvisited) < bestSolCost) { //Si la sousestimation du chemin est supérieur, on coupe
             Iterator<String> it = iterator(currentVertex, unvisited, g);
             while (it.hasNext()) {
 
@@ -94,16 +94,15 @@ public class BranchAndBound extends TemplateTSP{
      * @return a lower bound of the cost of paths in <code>g</code> starting from <code>currentVertex</code>, visiting
      * every vertex in <code>unvisited</code> exactly once, and returning back to vertex <code>0</code>.
      */
-    protected float bound(String currentVertex, Collection<String> unvisited) {
+    protected float bound(String sourceVertex, String currentVertex, Collection<String> unvisited) {
 
+        List<String> subGraph = new ArrayList<>(unvisited);
+        subGraph.add(currentVertex);
+        subGraph.add(sourceVertex);
 
-        float min = Float.MAX_VALUE;
-        for (String nextVertex:unvisited) {
-            float cost = g.getCost(currentVertex,nextVertex);
-            min = Math.min(cost,min);
-            currentVertex = nextVertex;
-        }
-        return unvisited.size()*min;
+        float min = g.getMinCost(subGraph);
+
+        return (unvisited.size() + 1)*min;
     }
 
     /**

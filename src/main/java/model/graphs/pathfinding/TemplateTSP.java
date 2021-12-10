@@ -65,8 +65,8 @@ public abstract class TemplateTSP extends Observable implements TSP {
         if(edge.segmentList != null)
             segmentList.addAll(edge.segmentList);
 
-        System.out.println(bestSolCost);
-        System.out.println(Arrays.toString(bestSol));
+        //System.out.println(bestSolCost);
+        //System.out.println(Arrays.toString(bestSol));
         return new DeliveryTour(segmentList, bestSolCost, bestSol);
     }
 
