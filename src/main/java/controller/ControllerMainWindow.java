@@ -50,35 +50,27 @@ public class ControllerMainWindow {
         PlanningRequest request;
         try{
             request = xmlParser.readRequests(xmlFile.getPath(),planData.getIntersectionMap());
+            if(request!=null) {
+                planData.setPlanningRequest(request);
+                mainWindow.setPlanData(planData);
+                State calculatingTourState = new CalculatingTourState();
+                calculatingTourState.execute(mainWindow);
+                TSP tsp = new BranchAndBound(mainWindow);
+                this.graph = Graph.generateCompleteGraphFromPlan(planData);
+
+                // Calling TSP to calculate the best tour
+                PlanningRequest finalRequest = request;
+                new Thread(() -> tsp.searchSolution(100000, graph, finalRequest)).start();
+            }
         }
         catch(Exception e){
             request = null;
             String msg = "Error importing tour: "+e.getMessage();
             System.out.println(msg);
             showMessageDialog(mainWindow,msg);
+            State readyState = new ReadyState();
+            readyState.execute(mainWindow);
         }
-
-        if(request!=null) {
-            planData.setPlanningRequest(request);
-            mainWindow.setPlanData(planData);
-            State calculatingTourState = new CalculatingTourState();
-            calculatingTourState.execute(mainWindow);
-            TSP tsp = new BranchAndBound(mainWindow);
-            this.graph = Graph.generateCompleteGraphFromPlan(planData);
-
-            // Calling TSP to calculate the best tour
-            PlanningRequest finalRequest = request;
-            new Thread(() -> tsp.searchSolution(100000, graph, finalRequest)).start();
-        }
-
-        //DeliveryTour deliveryTour = tsp.getDeliveryTour();
-        //this.deliveryTour = deliveryTour;
-        //mainWindow.setDeliveryTour(deliveryTour);
-        // System.out.println(request);
-
-
-
-
     }
 
     /**

@@ -55,7 +55,7 @@ public class PlanDrawing {
 	/**
 	 * Draws every point of interest from the request of the current context
 	 */
-	public void drawPOI(){
+	public void drawPOI(ClickablePOI clickablePOI){
 		PlanningRequest planningRequest = planData.getPlanningRequest();
 
 		// Drawing the depot
@@ -79,15 +79,13 @@ public class PlanDrawing {
 			int xDelivery  = planPanel.scaleXCoordinateToPlan(delivery.getLongitude());
 
 			// Draw pickup as a map bullet point
-			Color pickupColor = Color.getHSBColor((float)i/(float)allLength,1,1);
-			if(request.getColor()==null){
-				request.setColor(pickupColor);
-			}
-			drawPickupPoint(xPickup, yPickup, 25, 25,  request.getColor());
+			Color color = Color.getHSBColor((float)i++/(float)allLength,1,1);
+			g.setColor(color);
+			drawPickupPoint(xPickup, yPickup, 25, 25, color);
 
 			// Draw delivery as house icon
-			drawDeliveryPoint(xDelivery,yDelivery,30,30, request.getColor());
-			i++;
+			drawDeliveryPoint(xDelivery,yDelivery,30,30, color);
+			clickablePOI.updateTrack(pickup, 25/2, delivery, 30/2);
 		}
 	}
 
@@ -175,16 +173,39 @@ public class PlanDrawing {
 	 * Draws the best route in the current context
 	 * @param deliveryTour Data on the best route
 	 */
-	public void drawRequestsRoute(DeliveryTour deliveryTour){
+	public void drawRequestsRoute(DeliveryTour deliveryTour) {
+		drawRequestsRoute(deliveryTour, null);
+	}
+
+	/**
+	 * Draws the best route in the current context
+	 * @param deliveryTour Data on the best route
+	 * @param deliveryPath A delivery path to be highlighted
+	 */
+	public void drawRequestsRoute(DeliveryTour deliveryTour, Tuple2<Intersection, Intersection> deliveryPath){
 		List<Segment> segments = deliveryTour.getSegmentList();
 		float fullLength = deliveryTour.getGlobalTime();
 		float lengthCounter = 0;
+
+		boolean startHighlighting = false;
+
 		for (Segment segment:segments) {
 			if(!selectedStreetName.isEmpty() && segment.getName().equals(selectedStreetName)){
 				drawSegment(segment,Color.BLUE,3);
 			}
-			else{
-				drawSegment(segment,Color.getHSBColor(0f,1,lengthCounter/fullLength),3);
+			else {
+				Color color = Color.getHSBColor(0f,1,lengthCounter/fullLength);
+
+				if(deliveryPath != null) {
+					if(intersectionMap.get(segment.getOrigin()) == deliveryPath._2 || intersectionMap.get(segment.getDestination()) == deliveryPath._1) {
+						startHighlighting = !startHighlighting;
+					}
+				}
+
+				if(startHighlighting)
+					color = Color.YELLOW;
+
+				drawSegment(segment, color,3);
 			}
 
 			lengthCounter+=segment.getLength();
