@@ -254,6 +254,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
                 JLabel requestLabel = new JLabel("Request number "+i+":");
                 requestLabel.setFont(new Font("Verdana",1,16));
+                requestLabel.setForeground(request.getColor());
                 container.add(requestLabel);
 
                 JButton deleteButton = new JButton("Remove request");
@@ -287,8 +288,11 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      */
     public void clearPanels(){
         jPanel6.removeAll();
+        jPanel2.removeAll();
         jPanel6.revalidate();
         jPanel6.repaint();
+        jPanel2.revalidate();
+        jPanel2.repaint();
     }
 
 
