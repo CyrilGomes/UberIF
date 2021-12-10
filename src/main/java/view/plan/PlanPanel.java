@@ -78,6 +78,15 @@ public final class PlanPanel extends JPanel {
         setVisible(true);
     }
 
+    public Intersection getSelectedPOI() {
+        return selectedPOI;
+    }
+
+    public void setSelectedPOI(final Intersection selectedPOI) {
+        this.selectedPOI = selectedPOI;
+        repaint();
+    }
+
     /**
      * Returns the data of the current context.
      *
