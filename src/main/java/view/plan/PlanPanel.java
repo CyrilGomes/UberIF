@@ -55,6 +55,7 @@ public final class PlanPanel extends JPanel {
 
     Map<Tuple2<Intersection, Integer>, Tuple2<Intersection, Intersection>> clickablePOIMap;
     Tuple2<Intersection, Intersection> highlightedPath;
+    private Intersection selectedPOI;
 
     /**
      * Creates a new instance of the graphical component and initializes its
@@ -72,8 +73,18 @@ public final class PlanPanel extends JPanel {
         this.addMouseMotionListener(mouseEvent);
         clickablePOIMap = new HashMap<>();
         highlightedPath = null;
+        selectedPOI = null;
 
         setVisible(true);
+    }
+
+    public Intersection getSelectedPOI() {
+        return selectedPOI;
+    }
+
+    public void setSelectedPOI(final Intersection selectedPOI) {
+        this.selectedPOI = selectedPOI;
+        repaint();
     }
 
     /**
@@ -156,6 +167,7 @@ public final class PlanPanel extends JPanel {
 
         for (Tuple2<Intersection, Integer> t : clickablePOIMap.keySet()) {
             if(Math.sqrt(Math.pow(yMouse - scaleYCoordinateToPlan(t._1.getLatitude()), 2D) + Math.pow(xMouse - scaleXCoordinateToPlan(t._1.getLongitude()), 2D)) <= t._2) {
+                selectedPOI = t._1;
                 highlightedPath = clickablePOIMap.get(t);
             }
         }
@@ -286,7 +298,7 @@ public final class PlanPanel extends JPanel {
             planDrawing.drawPlan();
             final DeliveryTour deliveryTour = planData.getDeliveryTour();
             if (deliveryTour != null) {
-                planDrawing.drawRequestsRoute(deliveryTour, highlightedPath);
+                planDrawing.drawRequestsRoute(deliveryTour, selectedPOI);
             }
             if (planData.getPlanningRequest() != null) {
                 planDrawing.drawPOI(new ClickablePOI() {
