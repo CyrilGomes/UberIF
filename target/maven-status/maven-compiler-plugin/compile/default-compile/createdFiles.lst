@@ -1,9 +1,9 @@
 view\MouseListenerPlanPanel.class
-controller\ControllerMainWindow$1.class
 view\MainWindow.class
 view\state\CalculatingTimesState.class
 view\MainWindow$2.class
 view\plan\PlanPanel.class
+view\MainWindow$7.class
 observer\Observer.class
 view\state\CalculatingTourState.class
 model\graphs\pathfinding\SimulatedAnnealing.class
@@ -14,6 +14,7 @@ view\MainWindow$5.class
 model\graphs\pathfinding\TemplateTSP.class
 model\graphs\pathfinding\TSP.class
 model\graphs\Plan.class
+view\plan\PlanPanel$1.class
 model\graphs\pathfinding\TwoOpt.class
 model\DeliveryTour.class
 view\MainWindow$3.class
@@ -27,6 +28,7 @@ view\DeleteButtonListener.class
 view\state\ReadyState.class
 model\Request.class
 model\Intersection.class
+view\MainWindow$6.class
 view\state\LoadingFileState.class
 view\state\State.class
 view\plan\PlanDrawing.class
