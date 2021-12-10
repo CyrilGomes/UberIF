@@ -238,6 +238,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             JPanel container = jPanel2;
             container.removeAll();
             container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+
             JLabel startLabel = new JLabel("Start time: "+startTime);
             startLabel.setFont(new Font("Verdana",1,20));
             startLabel.setForeground(new Color(20,100,10));
@@ -256,19 +257,25 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 requestLabel.setFont(new Font("Verdana",1,16));
                 requestLabel.setForeground(request.getColor());
                 container.add(requestLabel);
+                container.add(Box.createVerticalStrut(10));
 
-                JButton deleteButton = new JButton("Remove request");
-                container.add(deleteButton);
-                deleteButton.addActionListener(new DeleteButtonListener(controller,request,false));
 
-                JButton deleteAndChangeTourButton = new JButton("Remove request and change the tour");
-                container.add(deleteAndChangeTourButton);
-                deleteAndChangeTourButton.addActionListener(new DeleteButtonListener(controller,request,true));
 
                 JLabel timeLabel = new JLabel("PickupTime: "+pickUpTimePassage+"\t DeliveryTime: "+deliveryTimePassage);
                 timeLabel.setFont(new Font("Verdana",1,12));
                 container.add(timeLabel);
                 container.add(Box.createVerticalStrut(5));
+
+                JButton deleteButton = new JButton("Remove request");
+                container.add(deleteButton);
+                deleteButton.addActionListener(new DeleteButtonListener(controller,request,false));
+                container.add(Box.createVerticalStrut(5));
+
+                JButton deleteAndChangeTourButton = new JButton("Remove request and change the tour");
+                container.add(deleteAndChangeTourButton);
+                deleteAndChangeTourButton.addActionListener(new DeleteButtonListener(controller,request,true));
+                container.add(Box.createVerticalStrut(20));
+
                 i++;
             }
 
