@@ -37,6 +37,15 @@ public class DeliveryTour {
         this.lastIntersectionId = null;
 
     }
+    public DeliveryTour(DeliveryTour deliverCopy){
+        this.segmentList = new ArrayList<>();
+        for(Segment s : deliverCopy.getSegmentList()){
+            this.segmentList.add(new Segment(s));
+        }
+        this.globalTime = deliverCopy.globalTime;
+        this.orderedIdIntersectionTour = new ArrayList<>(deliverCopy.orderedIdIntersectionTour);
+        this.lastIntersectionId = deliverCopy.lastIntersectionId;
+    }
 
     public String getLastIntersectionId() {
         return lastIntersectionId;

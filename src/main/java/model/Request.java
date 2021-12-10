@@ -30,6 +30,15 @@ public class Request {
         this.deliveryDuration = deliveryDuration;
     }
 
+    public Request(Request reqCopy){
+        this.pickupId = reqCopy.pickupId;
+        this.deliveryId = reqCopy.deliveryId;
+        this.pickupDuration = reqCopy.pickupDuration;
+        this.deliveryDuration = reqCopy.deliveryDuration;
+        this.pickupTimePassage = reqCopy.pickupTimePassage;
+        this.deliveryTimePassage = reqCopy.deliveryTimePassage;
+    }
+
     /**
      * Getter of pickupId.
      * @return the id of the pickup address.

@@ -23,6 +23,13 @@ public class Segment {
         this.name = name;
     }
 
+    public Segment(Segment segCopy){
+        this.origin = segCopy.origin;
+        this.destination = segCopy.destination;
+        this.length = segCopy.length;
+        this.name = segCopy.name;
+    }
+
     @Override
     public String toString() {
         return "Segment{" +

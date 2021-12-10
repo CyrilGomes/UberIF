@@ -37,6 +37,18 @@ public class Graph {
         vertices = new HashSet<>();
         edges = new HashMap<>();
     }
+    public Graph(Graph graphCopy){
+        if(graphCopy.vertices != null){
+            vertices = new HashSet<>(graphCopy.vertices);
+        }
+        if(graphCopy.edges != null){
+            edges = new HashMap<>();
+            graphCopy.edges.forEach(((key, edge) -> {
+                this.edges.put(new Key(key), new Edge(edge));
+            }));
+        }
+
+    }
 
     public float getCost(String origin, String destination){
         Edge edge = edges.get(new Key(origin,destination));

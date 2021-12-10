@@ -26,6 +26,17 @@ public class PlanningRequest {
         requests = new ArrayList<>();
     }
 
+    public PlanningRequest(PlanningRequest planningCopy){
+        this.startId = planningCopy.startId;
+        this.departureTime = planningCopy.departureTime;
+        this.requests = new ArrayList<>();
+        for(Request r : planningCopy.getRequests()){
+            this.requests.add(new Request(r));
+        }
+        this.finishTime = planningCopy.finishTime;
+
+    }
+
     /**
      * Add a request to the planning.
      * @param request the request added.

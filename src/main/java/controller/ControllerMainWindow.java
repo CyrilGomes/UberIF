@@ -76,7 +76,7 @@ public class ControllerMainWindow extends Observable {
                 @Override
                 public void run() {
                     tsp.searchSolution(100000, graph, finalRequest);
-                    history.registerCurrentState(planData);
+                    history.registerCurrentState(planData, graph);
                     System.out.println(history);
                 }
             }).start();
@@ -105,7 +105,7 @@ public class ControllerMainWindow extends Observable {
             planData = plan;
             mainWindow.setPlanData(plan);
             mainWindow.clearPanels();
-            history.registerCurrentState(planData);
+            history.registerCurrentState(planData, graph);
             System.out.println(history);
         }
         // Case where we fail to read the map
@@ -135,7 +135,7 @@ public class ControllerMainWindow extends Observable {
         // Recalculate times
         planningRequest.calculateTimes(planData.getDeliveryTour());
         mainWindow.showSummary(planData.getPlanningRequest());
-        history.registerCurrentState(planData);
+        history.registerCurrentState(planData, graph);
         System.out.println(history);
     }
 
@@ -195,7 +195,7 @@ public class ControllerMainWindow extends Observable {
                 planningRequest.calculateTimes(deliveryTour);
                 notifyObservers(deliveryTour);
                 planData.setDeliveryTour(deliveryTour);
-                history.registerCurrentState(planData);
+                history.registerCurrentState(planData, graph);
                 System.out.println(history);
 
             }

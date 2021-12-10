@@ -2,6 +2,7 @@ package model.graphs.pathfinding;
 
 import model.Segment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Edge {
@@ -41,5 +42,19 @@ public class Edge {
         this.destination = destination;
         this.segmentList = segmentList;
         this.duration = duration;
+    }
+
+    public Edge(Edge edgeCopy){
+        this.origin = edgeCopy.origin;
+        this.destination = edgeCopy.destination;
+        this.segmentList = new ArrayList<>();
+        if(edgeCopy.segmentList != null){
+            edgeCopy.segmentList.forEach(segment -> {
+                this.segmentList.add(new Segment(segment));
+            });
+        }
+
+        this.duration = edgeCopy.duration;
+
     }
 }
