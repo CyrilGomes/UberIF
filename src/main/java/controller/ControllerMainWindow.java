@@ -118,7 +118,7 @@ public class ControllerMainWindow {
         mainWindow.setPlanData(planData);
         // Recalculate times
         planningRequest.calculateTimes(planData.getDeliveryTour());
-        mainWindow.showSummary(planData.getPlanningRequest());
+        mainWindow.showDelivery(planData.getPlanningRequest());
         State readyState = new ReadyState();
         readyState.execute(mainWindow);
     }

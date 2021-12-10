@@ -210,7 +210,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             State readyState = new ReadyState();
             readyState.execute(this);
             planPanel.repaint();
-            showSummary(planningRequest);
+            showDelivery(planningRequest);
         }
     }
 
@@ -230,12 +230,12 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      * Display summary information about the requests
      * @param planningRequest
      */
-    public void showSummary(PlanningRequest planningRequest){
+    public void showDelivery(PlanningRequest planningRequest){
             String startTime = planningRequest.getDepartureTime();
             String finishTime = planningRequest.getFinishTime();
 
             // Add information to jPanel
-            JPanel container = jPanel6;
+            JPanel container = jPanel2;
             container.removeAll();
             container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
             JLabel startLabel = new JLabel("Start time: "+startTime);
