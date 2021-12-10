@@ -117,7 +117,9 @@ public class ControllerMainWindow {
         // Updates the map to not have icons of the removed request
         mainWindow.setPlanData(planData);
         // Recalculate times
-        planningRequest.calculateTimes(planData.getDeliveryTour());
+        if(shouldChangeTour) {
+            planningRequest.calculateTimes(planData.getDeliveryTour());
+        }
         mainWindow.showDelivery(planData.getPlanningRequest());
         mainWindow.showSummary(planData.getPlanningRequest(),planData.getDeliveryTour());
         State readyState = new ReadyState();

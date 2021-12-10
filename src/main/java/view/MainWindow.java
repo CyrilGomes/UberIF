@@ -17,7 +17,6 @@ import observer.Observable;
 import observer.Observer;
 import view.plan.PlanPanel;
 import view.state.CalculatingTimesState;
-import view.state.CalculatingTourState;
 import view.state.ReadyState;
 import view.state.State;
 
@@ -26,7 +25,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +37,8 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private final PlanPanel planPanel;
     private final ControllerMainWindow controller;
     private State currentState;
-    private PointOfInterestPanel highleted;
+    // The currently highlighted on the summary panel
+    private PointOfInterestPanel highlighted;
 
     /**
      * Creates new form MainWindow.
@@ -349,25 +348,25 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 PointOfInterestPanel poiPanel = (PointOfInterestPanel) e.getSource();
                 String id = poiPanel.isPickUp() ? poiPanel.getRequest().getPickupId() : poiPanel.getRequest().getDeliveryId();
                 Intersection intersection  = controller.getIntersectionFromId(id);
-                if(highleted!=null){
-                    highleted.setBackground(jPanel6.getBackground());
+                if(highlighted !=null){
+                    highlighted.setBackground(jPanel6.getBackground());
                 }
                 poiPanel.setBackground(Color.LIGHT_GRAY);
-                highleted = poiPanel;
+                highlighted = poiPanel;
                 planPanel.setSelectedPOI(intersection);
 
             }
         };
 
-        for(String pointOfIntersest : deliveryTour.getPointsOfInterest()){
+        for(String pointOfInterest : deliveryTour.getPointsOfInterest()){
             for(Request request: requests){
-                if(request.getPickupId().equals(pointOfIntersest)){
+                if(request.getPickupId().equals(pointOfInterest)){
                     PointOfInterestPanel poiPanel = new PointOfInterestPanel(true,request.getPickupTimePassage(),request,i);
                     poiPanel.addMouseListener(ml);
                     container.add(poiPanel);
                     break;
                 }
-                if(request.getDeliveryId().equals(pointOfIntersest)){
+                if(request.getDeliveryId().equals(pointOfInterest)){
                     PointOfInterestPanel poiPanel = new PointOfInterestPanel(false,request.getDeliveryTimePassage(),request,i);
                     poiPanel.addMouseListener(ml);
                     container.add(poiPanel);
