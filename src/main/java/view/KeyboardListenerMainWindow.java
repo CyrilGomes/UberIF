@@ -20,9 +20,11 @@ public class KeyboardListenerMainWindow implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
             System.out.println("Go back !");
+            controller.undo();
 
         }else if((e.getKeyCode() == KeyEvent.VK_Y) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
             System.out.println("Go forward !");
+            controller.redo();
         }
     }
 

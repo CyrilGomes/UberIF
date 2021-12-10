@@ -306,10 +306,14 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg){
         if(o instanceof TSP || o instanceof ControllerMainWindow){
-            DeliveryTour deliveryTour = (DeliveryTour) arg;
             PlanningRequest planningRequest = planPanel.getPlanData().getPlanningRequest();
-            planPanel.getPlanData().setDeliveryTour(deliveryTour);
-            planningRequest.calculateTimes(deliveryTour);
+            if(arg != null){
+                DeliveryTour deliveryTour = (DeliveryTour) arg;
+                planPanel.getPlanData().setDeliveryTour(deliveryTour);
+                planningRequest.calculateTimes(deliveryTour);
+            }else{
+                planPanel.getPlanData().setDeliveryTour(null);
+            }
             planPanel.repaint();
             showSummary(planningRequest);
         }
@@ -334,41 +338,43 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      * @param planningRequest
      */
     public void showSummary(PlanningRequest planningRequest){
+
+        if(planningRequest != null) {
             String startTime = planningRequest.getDepartureTime();
             String finishTime = planningRequest.getFinishTime();
 
             // Add information to jPanel
             JPanel container = jPanel6;
             container.removeAll();
-            container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
-            JLabel startLabel = new JLabel("Start time: "+startTime);
-            startLabel.setFont(new Font("Verdana",1,20));
-            startLabel.setForeground(new Color(20,100,10));
+            container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+            JLabel startLabel = new JLabel("Start time: " + startTime);
+            startLabel.setFont(new Font("Verdana", 1, 20));
+            startLabel.setForeground(new Color(20, 100, 10));
             container.add(startLabel);
             // Adding space between components
             container.add(Box.createVerticalStrut(10));
 
 
             // For each request we get the time of passage of the pickup and the delivery
-            int i = 1 ;
-            for(Request request : planningRequest.getRequests()){
+            int i = 1;
+            for (Request request : planningRequest.getRequests()) {
                 String pickUpTimePassage = request.getPickupTimePassage();
                 String deliveryTimePassage = request.getDeliveryTimePassage();
 
-                JLabel requestLabel = new JLabel("Request number "+i+":");
-                requestLabel.setFont(new Font("Verdana",1,16));
+                JLabel requestLabel = new JLabel("Request number " + i + ":");
+                requestLabel.setFont(new Font("Verdana", 1, 16));
                 container.add(requestLabel);
 
                 JButton deleteButton = new JButton("Remove request");
                 container.add(deleteButton);
-                deleteButton.addActionListener(new DeleteButtonListener(controller,request,false));
+                deleteButton.addActionListener(new DeleteButtonListener(controller, request, false));
 
                 JButton deleteAndChangeTourButton = new JButton("Remove request and change the tour");
                 container.add(deleteAndChangeTourButton);
-                deleteAndChangeTourButton.addActionListener(new DeleteButtonListener(controller,request,true));
+                deleteAndChangeTourButton.addActionListener(new DeleteButtonListener(controller, request, true));
 
-                JLabel timeLabel = new JLabel("PickupTime: "+pickUpTimePassage+"\t DeliveryTime: "+deliveryTimePassage);
-                timeLabel.setFont(new Font("Verdana",1,12));
+                JLabel timeLabel = new JLabel("PickupTime: " + pickUpTimePassage + "\t DeliveryTime: " + deliveryTimePassage);
+                timeLabel.setFont(new Font("Verdana", 1, 12));
                 container.add(timeLabel);
                 container.add(Box.createVerticalStrut(5));
                 i++;
@@ -376,13 +382,16 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
             container.add(Box.createVerticalStrut(10));
 
-            JLabel finishLabel = new JLabel("Finish time: "+finishTime);
-            finishLabel.setFont(new Font("Verdana",1,20));
+            JLabel finishLabel = new JLabel("Finish time: " + finishTime);
+            finishLabel.setFont(new Font("Verdana", 1, 20));
             finishLabel.setForeground(Color.BLUE);
             container.add(finishLabel);
 
             container.revalidate();
             container.repaint();
+        }else{
+            clearPanels();
+        }
     }
 
     /**

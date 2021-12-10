@@ -43,7 +43,17 @@ public class Plan {
         this.segmentMap = segmentMap;
     }
 
-
+    public Plan(Plan planCopy){
+        this.intersectionMap = planCopy.getIntersectionMap();
+        this.adjacentsMap = planCopy.getAdjacentsMap();
+        this.segmentMap = planCopy.getSegmentMap();
+        this.planningRequest = planCopy.getPlanningRequest();
+        this.deliveryTour = planCopy.getDeliveryTour();
+        this.maxLatitude = planCopy.maxLatitude;
+        this.minLatitude = planCopy.minLatitude;
+        this.maxLongitude = planCopy.maxLongitude;
+        this.minLongitude = planCopy.minLongitude;
+    }
 
     public Map<String, List<String>> getAdjacentsMap() {
         return adjacentsMap;
@@ -159,9 +169,6 @@ public class Plan {
     @Override
     public String toString() {
         return "Plan{" +
-                "intersectionMap=" + intersectionMap +
-                ", adjacentsMap=" + adjacentsMap +
-                ", segmentMap=" + segmentMap +
                 ", planningRequest=" + planningRequest +
                 ", maxLatitude=" + maxLatitude +
                 ", minLatitude=" + minLatitude +

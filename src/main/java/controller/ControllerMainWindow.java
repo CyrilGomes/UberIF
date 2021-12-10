@@ -194,6 +194,7 @@ public class ControllerMainWindow extends Observable {
 
                 planningRequest.calculateTimes(deliveryTour);
                 notifyObservers(deliveryTour);
+                planData.setDeliveryTour(deliveryTour);
                 history.registerCurrentState(planData);
                 System.out.println(history);
 
@@ -209,5 +210,27 @@ public class ControllerMainWindow extends Observable {
             //TODO : manage different exceptions like conversion or not found id
             System.out.println(e);
         }
+    }
+    public void undo(){
+        Plan plan = history.undo();
+        this.planData = plan;
+        System.out.println(planData);
+        System.out.println(plan);
+        System.out.println(history);
+        mainWindow.setPlanData(plan);
+        mainWindow.showSummary(plan.getPlanningRequest());
+        notifyObservers(plan.getDeliveryTour());
+
+
+    }
+    public void redo(){
+        Plan plan = history.redo();
+        this.planData = plan;
+        System.out.println(planData);
+        System.out.println(plan);
+        System.out.println(history);
+        mainWindow.setPlanData(plan);
+        mainWindow.showSummary(plan.getPlanningRequest());
+        notifyObservers(plan.getDeliveryTour());
     }
 }
