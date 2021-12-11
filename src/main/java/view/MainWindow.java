@@ -25,7 +25,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The main class, displaying the HMI and starting the application.
@@ -39,6 +41,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private State currentState;
     // The currently highlighted on the summary panel
     private PointOfInterestPanel highlighted;
+    private Map<String,PointOfInterestPanel> pointOfInterestsPanelMap;
 
     /**
      * Creates new form MainWindow.
@@ -48,6 +51,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         buttonListenerMainWindow = new ButtonListenerMainWindow(controller, this);
         initComponents();
         planPanel = new PlanPanel(this);
+        pointOfInterestsPanelMap = new HashMap<>();
 
         jPanel1.add(planPanel);
         pack();
@@ -362,12 +366,14 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             for(Request request: requests){
                 if(request.getPickupId().equals(pointOfInterest)){
                     PointOfInterestPanel poiPanel = new PointOfInterestPanel(true,request.getPickupTimePassage(),request,i);
+                    pointOfInterestsPanelMap.put(request.getPickupId(),poiPanel);
                     poiPanel.addMouseListener(ml);
                     container.add(poiPanel);
                     break;
                 }
                 if(request.getDeliveryId().equals(pointOfInterest)){
                     PointOfInterestPanel poiPanel = new PointOfInterestPanel(false,request.getDeliveryTimePassage(),request,i);
+                    pointOfInterestsPanelMap.put(request.getDeliveryId(),poiPanel);
                     poiPanel.addMouseListener(ml);
                     container.add(poiPanel);
                     break;
@@ -385,6 +391,17 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         container.revalidate();
         container.repaint();
 
+    }
+
+    /**
+     * Method called to highlight a point on interest, called when we click on a point on the map
+     * @param pointOfInterestId the id of the pointOfInterest to highlight
+     */
+    public void setHighlighted(String pointOfInterestId){
+        PointOfInterestPanel toHighlight = pointOfInterestsPanelMap.get(pointOfInterestId);
+        highlighted.setBackground(jPanel6.getBackground());
+        highlighted = toHighlight;
+        highlighted.setBackground(Color.LIGHT_GRAY);
     }
 
     /**
