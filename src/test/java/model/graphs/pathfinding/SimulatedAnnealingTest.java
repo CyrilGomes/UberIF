@@ -49,7 +49,7 @@ public class SimulatedAnnealingTest {
         edgeList.add( new Edge("6","4",null,1.0f));
 
         for (Edge e:edgeList ) {
-            g.addEdge(e.origin, e.destination, e);
+            g.addEdge(e.getOrigin(), e.getDestination(), e);
         }
     }
 

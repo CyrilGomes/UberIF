@@ -1,45 +1,72 @@
 package model.graphs;
 
-import model.*;
-import model.graphs.pathfinding.Edge;
+import model.DeliveryTour;
+import model.Intersection;
+import model.PlanningRequest;
+import model.Segment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Class Plan. It represents the plan currently opened by the user.
- * @// TODO: 25/11/2021 Allow the deliveries and pickup points to be null and adjust later. Fusing it with graph.
+ * TODO: 25/11/2021 Allow the deliveries and pickup points to be null and adjust later. Fusing it with graph.
  */
 public class Plan {
-    java.util.Map<String, Intersection> intersectionMap;
-    java.util.Map<String, List<String>> adjacentsMap;
-    java.util.Map<Key, Segment> segmentMap;
-    PlanningRequest planningRequest = null;
-    String selectedStreetName = "";
+    /**
+     *  the intersection map.
+     */
+    private final Map<String, Intersection> intersectionMap;
+    /**
+     *  the adjacents map.
+     */
+    private final Map<String, List<String>> adjacentsMap;
+    /**
+     *  the segment map, for a pair of intersection give an intersection.
+     */
+    private final Map<Key, Segment> segmentMap;
+    /**
+     * the planning request
+     */
+    private PlanningRequest planningRequest = null;
+    /**
+     * the currently selected street name
+     */
+    private String selectedStreetName = "";
+    /**
+     * the delivery tour
+     */
     private DeliveryTour deliveryTour = null;
-    float maxLatitude;
-    float minLatitude;
-    float maxLongitude;
-    float minLongitude;
+
+    private float maxLatitude;
+    private float minLatitude;
+    private float maxLongitude;
+    private float minLongitude;
 
 
 
 
 
-     /**
+    /**
      * the constructor of the class Plan.
-     * @param intersectionMap where the string is the id of the intersection object.
-     * @param adjacentsMap where the string is the id of an intersection object.
-     *                     the list<String> is the list of all the id of the adjacent intersections.
-     * @param segmentMap where the key is composed of the id of origin and the id of destination.
-     *                   the segment object is representing the line between the two intersections.
+     * @param intersectionMap where the string is the id of
+     *                        the intersection object.
+     * @param adjacentsMap where the string is the id of
+     *                     an intersection object.
+     *                      the list<String> is the list of all the id of
+     *                     the adjacent intersections.
+     * @param segmentMap where the key is composed of the id of
+     *                   origin and the id of destination.
+     *                    the segment object is representing the line between
+     *                   the two intersections.
      * @see Key
      * @see Intersection
      * @see Segment
      */
-    public Plan(java.util.Map<String, Intersection> intersectionMap, java.util.Map<String, List<String>> adjacentsMap, java.util.Map<Key, Segment> segmentMap) {
+    public Plan(final Map<String, Intersection> intersectionMap,
+                final Map<String, List<String>> adjacentsMap,
+                final Map<Key, Segment> segmentMap) {
         this.intersectionMap = intersectionMap;
         this.adjacentsMap = adjacentsMap;
         this.segmentMap = segmentMap;
@@ -52,7 +79,13 @@ public class Plan {
         return adjacentsMap;
     }
 
-    public Plan(Map<String, Intersection> intersectionMap, Map<String, List<String>> adjacentsMap, Map<Key, Segment> segmentMap,float maxLatitude, float minLatitude, float maxLongitude, float minLongitude) {
+    public Plan(final Map<String, Intersection> intersectionMap,
+                final Map<String, List<String>> adjacentsMap,
+                final Map<Key, Segment> segmentMap,
+                final float maxLatitude,
+                final float minLatitude,
+                final float maxLongitude,
+                final float minLongitude) {
         this.intersectionMap = intersectionMap;
         this.adjacentsMap = adjacentsMap;
         this.segmentMap = segmentMap;
@@ -83,7 +116,8 @@ public class Plan {
      * @param intersection the intersection object representing it.
      * @see Intersection
      */
-    public void addIntersection(String id, Intersection intersection){
+    public void addIntersection(final String id,
+                                final Intersection intersection) {
         intersectionMap.put(id, intersection);
     }
 
@@ -93,7 +127,7 @@ public class Plan {
      * @return a list of adjacent intersections.
      * @see Intersection
      */
-    public List<String> getAdjacentsNodes(String node){
+    public List<String> getAdjacentsNodes(final String node) {
         return adjacentsMap.get(node);
 
     }
@@ -105,7 +139,8 @@ public class Plan {
      * @return the length of the segment
      * @see Segment
      */
-    public float getSegmentWeight(String origin, String destination){
+    public float getSegmentWeight(final String origin,
+                                  final String destination) {
         Segment segment = segmentMap.get(new Key(origin, destination));
         return segment.getLength();
     }
@@ -130,20 +165,20 @@ public class Plan {
         return planningRequest;
     }
 
-    public void setPlanningRequest(PlanningRequest planningRequest){
+    public void setPlanningRequest(final PlanningRequest planningRequest) {
         this.planningRequest = planningRequest;
     }
 
 
-    public Segment getSegment(String origin, String destination) {
-        return segmentMap.get(new Key(origin,destination));
+    public Segment getSegment(final String origin, final String destination) {
+        return segmentMap.get(new Key(origin, destination));
     }
 
     public String getSelectedStreetName() {
         return selectedStreetName;
     }
 
-    public void setSelectedStreetName(String selectedStreetName) {
+    public void setSelectedStreetName(final String selectedStreetName) {
         this.selectedStreetName = selectedStreetName;
     }
 
@@ -151,7 +186,7 @@ public class Plan {
         return deliveryTour;
     }
 
-    public void setDeliveryTour(DeliveryTour deliveryTour) {
+    public void setDeliveryTour(final DeliveryTour deliveryTour) {
         this.deliveryTour = deliveryTour;
     }
 
@@ -159,11 +194,11 @@ public class Plan {
      * @param origin the concerned vertex
      * @return       the adjacent segments of the vertex
      */
-    public List<Segment> getSegmentsFromIntersection(String origin) {
+    public List<Segment> getSegmentsFromIntersection(final String origin) {
         List<String> adjacents = adjacentsMap.get(origin);
         List<Segment> segments = new ArrayList<>();
         for (String destination: adjacents) {
-            Segment segment = segmentMap.get(new Key(origin,destination));
+            Segment segment = segmentMap.get(new Key(origin, destination));
             segments.add(segment);
         }
 
@@ -172,16 +207,16 @@ public class Plan {
 
     @Override
     public String toString() {
-        return "Plan{" +
-                "intersectionMap=" + intersectionMap +
-                ", adjacentsMap=" + adjacentsMap +
-                ", segmentMap=" + segmentMap +
-                ", planningRequest=" + planningRequest +
-                ", maxLatitude=" + maxLatitude +
-                ", minLatitude=" + minLatitude +
-                ", maxLongitude=" + maxLongitude +
-                ", minLongitude=" + minLongitude +
-                '}';
+        return "Plan{"
+                + "intersectionMap=" + intersectionMap
+                + ", adjacentsMap=" + adjacentsMap
+                + ", segmentMap=" + segmentMap
+                + ", planningRequest=" + planningRequest
+                + ", maxLatitude=" + maxLatitude
+                + ", minLatitude=" + minLatitude
+                + ", maxLongitude=" + maxLongitude
+                + ", minLongitude=" + minLongitude
+                + '}';
     }
 
 }
