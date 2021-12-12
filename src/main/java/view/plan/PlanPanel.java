@@ -169,6 +169,7 @@ public final class PlanPanel extends JPanel {
             if(Math.sqrt(Math.pow(yMouse - scaleYCoordinateToPlan(t._1.getLatitude()), 2D) + Math.pow(xMouse - scaleXCoordinateToPlan(t._1.getLongitude()), 2D)) <= t._2) {
                 selectedPOI = t._1;
                 highlightedPath = clickablePOIMap.get(t);
+                parent.setHighlighted(selectedPOI.getId());
             }
         }
 
