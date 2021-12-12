@@ -8,10 +8,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
-import static org.junit.Assert.*;
-
-public class TSP1Test {
+public class BranchAndBoundTest {
     Graph g = new Graph();
 
     @Before
@@ -46,11 +45,13 @@ public class TSP1Test {
 
     @Test
     public void searchSol() {
-        TSP sa = new TSP1();
+        TSP sa = new BranchAndBound();
         PlanningRequest planningRequest = new PlanningRequest("1","0202");
 
         sa.searchSolution(20000,g,planningRequest);
         System.out.println(Arrays.toString(sa.getSolution()));
+        String[] solution =  {"1","7","6","4","2"};
+        assert(Arrays.equals(sa.getSolution(), solution));
         System.out.println(sa.getSolutionCost());
     }
 }

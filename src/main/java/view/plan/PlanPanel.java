@@ -6,6 +6,8 @@ import model.Intersection;
 import model.Segment;
 import model.graphs.Key;
 import model.graphs.Plan;
+import sun.applet.Main;
+import view.MainWindow;
 import view.MouseListenerPlanPanel;
 
 import javax.swing.JLabel;
@@ -13,14 +15,15 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * The visualisation of the map. Updated when the data changes.
  */
 public final class PlanPanel extends JPanel {
-    /** Graphical component to display the selected street name. **/
-    private final JLabel selectedStreetLabel;
+    /** Parent component of the panel. **/
+    private final MainWindow parent;
     /** Data of the current context. **/
     private Plan planData;
     /** Data structure containing the segments of the map. **/
@@ -50,21 +53,38 @@ public final class PlanPanel extends JPanel {
     /** Height of the component. **/
     private int height;
 
+    Map<Tuple2<Intersection, Integer>, Tuple2<Intersection, Intersection>> clickablePOIMap;
+    Tuple2<Intersection, Intersection> highlightedPath;
+    private Intersection selectedPOI;
+
     /**
      * Creates a new instance of the graphical component and initializes its
      * listeners.
      *
-     * @param infoLabel Label of the system info text
+     * @param parent Parent component of the panel
      */
-    public PlanPanel(final JLabel infoLabel) {
+    public PlanPanel(final MainWindow parent) {
         super();
-        this.selectedStreetLabel = infoLabel;
+        this.parent = parent;
         this.setBackground(Color.LIGHT_GRAY);
         MouseListenerPlanPanel mouseEvent = new MouseListenerPlanPanel(this);
         this.addMouseListener(mouseEvent);
         this.addMouseWheelListener(mouseEvent);
         this.addMouseMotionListener(mouseEvent);
+        clickablePOIMap = new HashMap<>();
+        highlightedPath = null;
+        selectedPOI = null;
+
         setVisible(true);
+    }
+
+    public Intersection getSelectedPOI() {
+        return selectedPOI;
+    }
+
+    public void setSelectedPOI(final Intersection selectedPOI) {
+        this.selectedPOI = selectedPOI;
+        repaint();
     }
 
     /**
@@ -143,7 +163,17 @@ public final class PlanPanel extends JPanel {
      * @param yMouse y coordinate of the mouse
      */
     public void onMouseClicked(final int xMouse, final int yMouse) {
-        identifyStreet(xMouse, yMouse);
+        highlightedPath = null;
+
+        for (Tuple2<Intersection, Integer> t : clickablePOIMap.keySet()) {
+            if(Math.sqrt(Math.pow(yMouse - scaleYCoordinateToPlan(t._1.getLatitude()), 2D) + Math.pow(xMouse - scaleXCoordinateToPlan(t._1.getLongitude()), 2D)) <= t._2) {
+                selectedPOI = t._1;
+                highlightedPath = clickablePOIMap.get(t);
+            }
+        }
+
+        if(highlightedPath==null)
+            identifyStreet(xMouse, yMouse);
         repaint();
     }
 
@@ -205,6 +235,7 @@ public final class PlanPanel extends JPanel {
      * @param yMouse y coordinate of the mouse
      */
     public void identifyStreet(final int xMouse, final int yMouse) {
+        planData.setSelectedStreetName("");
         for (Key value : segmentMap.keySet()) {
             Segment segment = segmentMap.get(value);
             Intersection origine = intersectionMap.get(segment.getOrigin());
@@ -226,10 +257,10 @@ public final class PlanPanel extends JPanel {
             if ((int) (pointOrigine.distance(pointMouse))
                     + (int) (pointDestination.distance(pointMouse))
                     == (int) (pointDestination.distance(pointOrigine))
-                    && !selectedStreetLabel.getText().equals(segment.getName())
+                    && !planData.getSelectedStreetName().equals(segment.getName())
             ) {
                 planData.setSelectedStreetName(segment.getName());
-                selectedStreetLabel.setText(segment.getName());
+                parent.setSystemInfoText(segment.getName());
                 break;
             }
         }
@@ -265,13 +296,22 @@ public final class PlanPanel extends JPanel {
             // Sélection et ordonnancement des logiques de dessin
             PlanDrawing planDrawing = new PlanDrawing(planData, this, g);
             planDrawing.drawPlan();
-            DeliveryTour deliveryTour = planData.getDeliveryTour();
+            final DeliveryTour deliveryTour = planData.getDeliveryTour();
             if (deliveryTour != null) {
-                planDrawing.drawRequestsRoute(deliveryTour);
+                planDrawing.drawRequestsRoute(deliveryTour, selectedPOI);
             }
             if (planData.getPlanningRequest() != null) {
-                planDrawing.drawPOI();
+                planDrawing.drawPOI(new ClickablePOI() {
+                    @Override
+                    public void updateTrack(Intersection origin, int radiusOrigin, Intersection destination, int radiusDestination) {
+                        if(deliveryTour != null) { //beatriz
+                            clickablePOIMap.put(new Tuple2<Intersection, Integer>(origin, radiusOrigin), new Tuple2<Intersection, Intersection>(origin, destination));
+                            clickablePOIMap.put(new Tuple2<Intersection, Integer>(destination, radiusDestination), new Tuple2<Intersection, Intersection>(origin, destination));
+                        }
+                    }
+                });
             }
         }
+        highlightedPath = null;
     }
 }

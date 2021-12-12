@@ -35,6 +35,14 @@ public class Key {
         return x.equals(key.x)  && y.equals(key.y) ;
     }
 
+    public String getX() {
+        return x;
+    }
+
+    public String getY() {
+        return y;
+    }
+
     @Override
     public String toString() {
         return "Key{" +

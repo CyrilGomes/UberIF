@@ -55,7 +55,7 @@ public class PlanDrawing {
 	/**
 	 * Draws every point of interest from the request of the current context
 	 */
-	public void drawPOI(){
+	public void drawPOI(ClickablePOI clickablePOI){
 		PlanningRequest planningRequest = planData.getPlanningRequest();
 
 		// Drawing the depot
@@ -70,9 +70,6 @@ public class PlanDrawing {
 		int allLength = planningRequest.getRequests().size();
 		int i = 0;
 		for(Request request: planningRequest.getRequests()){
-			// Random color
-			Color color = new Color((int)(Math.random() * 0x1000000));
-			g.setColor(color);
 			Intersection pickup = intersectionMap.get(request.getPickupId());
 			Intersection delivery = intersectionMap.get(request.getDeliveryId());
 
@@ -82,13 +79,15 @@ public class PlanDrawing {
 			int xDelivery  = planPanel.scaleXCoordinateToPlan(delivery.getLongitude());
 
 			// Draw pickup as a map bullet point
-			g.setColor(Color.getHSBColor((float)i/(float)allLength,1,1));
-			drawPickupPoint(xPickup, yPickup, 25, 25,  Color.getHSBColor((float)i/(float)allLength,1,1));
+			Color color = Color.getHSBColor((float)i++/(float)allLength,1,1);
+			if(request.getColor()==null){
+				request.setColor(color);
+			}
+			drawPickupPoint(xPickup, yPickup, 25, 25, request.getColor());
 
 			// Draw delivery as house icon
-			g.setColor(Color.getHSBColor((float)i/(float)allLength,0.5f,1));
-			drawDeliveryPoint(xDelivery,yDelivery,30,30, Color.getHSBColor((float)i/(float)allLength,1,1));
-			i++;
+			drawDeliveryPoint(xDelivery,yDelivery,30,30, request.getColor());
+			clickablePOI.updateTrack(pickup, 25/2, delivery, 30/2);
 		}
 	}
 
@@ -176,16 +175,42 @@ public class PlanDrawing {
 	 * Draws the best route in the current context
 	 * @param deliveryTour Data on the best route
 	 */
-	public void drawRequestsRoute(DeliveryTour deliveryTour){
+	public void drawRequestsRoute(DeliveryTour deliveryTour) {
+		drawRequestsRoute(deliveryTour, null);
+	}
+
+	/**
+	 * Draws the best route in the current context
+	 * @param deliveryTour Data on the best route
+	 * @param selectedPOI The POI that is currently selected in the route
+	 */
+	public void drawRequestsRoute(DeliveryTour deliveryTour,
+	                              Intersection selectedPOI){
 		List<Segment> segments = deliveryTour.getSegmentList();
 		float fullLength = deliveryTour.getGlobalTime();
 		float lengthCounter = 0;
+
+		boolean startHighlighting = false;
+
 		for (Segment segment:segments) {
 			if(!selectedStreetName.isEmpty() && segment.getName().equals(selectedStreetName)){
 				drawSegment(segment,Color.BLUE,3);
 			}
-			else{
-				drawSegment(segment,Color.getHSBColor(0f,1,lengthCounter/fullLength),3);
+			else {
+				Color color = Color.getHSBColor(0f,1,lengthCounter/fullLength);;
+				if(selectedPOI != null) {
+					if(selectedPOI == intersectionMap.get(segment.getOrigin())) {
+						startHighlighting = !startHighlighting;
+					}
+					if(startHighlighting){
+						color = Color.YELLOW;
+					}
+					else{
+						color = Color.GRAY;
+					}
+				}
+
+				drawSegment(segment, color,3);
 			}
 
 			lengthCounter+=segment.getLength();

@@ -10,6 +10,7 @@ import java.util.*;
 public class Graph {
     private Set<String> vertices;
     private HashMap<Key, Edge> edges;
+    private float minCost;
 
     public static Graph generateCompleteGraphFromPlan(Plan plan){
         Dijkstra dijkstra = new Dijkstra();
@@ -27,11 +28,26 @@ public class Graph {
 
         for (String currentPoint:pointsOfInterests) {
 
-            dijkstra.executeAlgorithm(plan,currentPoint,newGraph,pointsOfInterests );
+            try{
+                dijkstra.executeAlgorithm(plan,currentPoint,newGraph,pointsOfInterests );
+
+            }catch (Exception e){
+                System.err.println("Erreur lors de la création du graphe complet :"+ e.getMessage());
+                return null;
+            }
         }
 
-
+        newGraph.calculateMinCost();
         return newGraph;
+    }
+
+    public float calculateMinCost(){
+        minCost = Float.MAX_VALUE;
+        for (Map.Entry<Key, Edge> entry : edges.entrySet()) {
+            float duration = entry.getValue().getDuration();
+            minCost = Math.min(minCost,duration);
+        }
+        return minCost;
     }
     public Graph() {
         vertices = new HashSet<>();
@@ -52,7 +68,29 @@ public class Graph {
 
     public float getCost(String origin, String destination){
         Edge edge = edges.get(new Key(origin,destination));
+        if(edge == null) {
+            System.out.println(origin + " " + destination);
+
+            return 0;
+        }
         return edge.getDuration();
+    }
+
+    public float getMinCost(){
+        return minCost;
+    }
+
+    public float getMinCost(List<String> subGraph){
+        float subGraphMinCost = Float.MAX_VALUE;
+        for (Map.Entry<Key, Edge> entry : edges.entrySet()) {
+            String x = entry.getKey().getX();
+            String y = entry.getKey().getY();
+            if(subGraph.contains(x) || subGraph.contains(y)){
+                float duration = entry.getValue().getDuration();
+                subGraphMinCost = Math.min(subGraphMinCost,duration);
+            }
+        }
+        return subGraphMinCost;
     }
     public Graph(Set<String> vertices, HashMap<Key, Edge> edges) {
 

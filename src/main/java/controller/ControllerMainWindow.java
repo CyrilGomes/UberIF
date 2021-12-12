@@ -1,21 +1,24 @@
 package controller;
 
-import javafx.util.Pair;
+
 import model.*;
 import model.graphs.Graph;
 import model.graphs.Plan;
 import model.graphs.pathfinding.*;
 import observer.Observable;
+import model.DeliveryTour;
+import model.Intersection;
+import model.PlanningRequest;
+import model.Request;
+import model.graphs.pathfinding.SimulatedAnnealing;
+import model.graphs.pathfinding.TSP;
 import util.XMLParser;
 import view.MainWindow;
+import view.state.*;
 
 import java.io.File;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -51,46 +54,32 @@ public class ControllerMainWindow extends Observable {
      *
      */
     public void importTour(File xmlFile){
-        System.out.println("read requests");
+        State loadingFileState = new LoadingFileState();
+        loadingFileState.execute(mainWindow);
         XMLParser xmlParser = new XMLParser();
         PlanningRequest request;
         try{
-            request = xmlParser.readRequests(xmlFile.getPath());
+            request = xmlParser.readRequests(xmlFile.getPath(),planData.getIntersectionMap());
+            if(request!=null) {
+                planData.setPlanningRequest(request);
+                mainWindow.setPlanData(planData);
+                State calculatingTourState = new CalculatingTourState();
+                calculatingTourState.execute(mainWindow);
+                TSP tsp = new SimulatedAnnealing(mainWindow);
+                this.graph = Graph.generateCompleteGraphFromPlan(planData);
+
+                // Calling TSP to calculate the best tour
+                PlanningRequest finalRequest = request;
+                new Thread(() -> tsp.searchSolution(100000, graph, finalRequest)).start();
+            }
         }
         catch(Exception e){
-            request = null;
             String msg = "Error importing tour: "+e.getMessage();
             System.out.println(msg);
             showMessageDialog(mainWindow,msg);
+            State readyState = new ReadyState();
+            readyState.execute(mainWindow);
         }
-
-        if(request!=null) {
-            planData.setPlanningRequest(request);
-            mainWindow.setPlanData(planData);
-            tsp = new SimulatedAnnealing(mainWindow);
-            this.graph = Graph.generateCompleteGraphFromPlan(planData);
-
-            // Calling TSP to calculate the best tour
-            PlanningRequest finalRequest = request;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    tsp.searchSolution(100000, graph, finalRequest);
-                    history.registerCurrentState(planData, graph);
-                    System.out.println(history);
-                }
-            }).start();
-        }
-
-
-        //DeliveryTour deliveryTour = tsp.getDeliveryTour();
-        //this.deliveryTour = deliveryTour;
-        //mainWindow.setDeliveryTour(deliveryTour);
-        // System.out.println(request);
-
-
-
-
     }
 
     /**
@@ -99,6 +88,8 @@ public class ControllerMainWindow extends Observable {
      * @param file the file read.
      */
     public void importMap(File file){
+        State loadingFileState = new LoadingFileState();
+        loadingFileState.execute(mainWindow);
         XMLParser parser = new XMLParser();
         try {
             Plan plan = parser.readMap(file.getAbsolutePath());
@@ -114,6 +105,8 @@ public class ControllerMainWindow extends Observable {
             System.out.println(msg);
             showMessageDialog(mainWindow,msg);
         }
+        State readyState = new ReadyState();
+        readyState.execute(mainWindow);
     }
 
     /**
@@ -124,19 +117,29 @@ public class ControllerMainWindow extends Observable {
 
     public void removeRequest(Request request, boolean shouldChangeTour){
         PlanningRequest planningRequest = planData.getPlanningRequest();
-        if(!shouldChangeTour){
-            planningRequest.removeRequest(request);
+        if (shouldChangeTour) {
+            if (planningRequest.getRequests().size() == 1) {
+                planData.getDeliveryTour().setSegmentList(new ArrayList<>());
+            } else {
+                planData.getDeliveryTour().removeRequestAndChangeTour(request, graph);
+            }
         }
-        else{
-            planData.removeRequestAndChangeTour(request,graph);
-        }
+        planningRequest.removeRequest(request);
         // Updates the map to not have icons of the removed request
         mainWindow.setPlanData(planData);
         // Recalculate times
-        planningRequest.calculateTimes(planData.getDeliveryTour());
-        mainWindow.showSummary(planData.getPlanningRequest());
-        history.registerCurrentState(planData, graph);
-        System.out.println(history);
+        if(shouldChangeTour) {
+            planningRequest.calculateTimes(planData.getDeliveryTour());
+        }
+        mainWindow.showDelivery(planData.getPlanningRequest());
+        mainWindow.showSummary(planData.getPlanningRequest(),planData.getDeliveryTour());
+        State readyState = new ReadyState();
+        readyState.execute(mainWindow);
+    }
+
+    public Intersection getIntersectionFromId(String id){
+        return planData.getIntersectionMap().get(id);
+        
     }
 
     /**
@@ -218,7 +221,7 @@ public class ControllerMainWindow extends Observable {
         System.out.println(plan);
         System.out.println(history);
         mainWindow.setPlanData(plan);
-        mainWindow.showSummary(plan.getPlanningRequest());
+        //mainWindow.showSummary(plan.getPlanningRequest());
         notifyObservers(plan.getDeliveryTour());
 
 
@@ -230,7 +233,8 @@ public class ControllerMainWindow extends Observable {
         System.out.println(plan);
         System.out.println(history);
         mainWindow.setPlanData(plan);
-        mainWindow.showSummary(plan.getPlanningRequest());
+        //mainWindow.showSummary(plan.getPlanningRequest());
         notifyObservers(plan.getDeliveryTour());
+        
     }
 }

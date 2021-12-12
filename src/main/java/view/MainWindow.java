@@ -8,6 +8,7 @@ package view;
 import com.formdev.flatlaf.FlatLightLaf;
 import controller.ControllerMainWindow;
 import model.DeliveryTour;
+import model.Intersection;
 import model.PlanningRequest;
 import model.Request;
 import model.graphs.Plan;
@@ -15,11 +16,16 @@ import model.graphs.pathfinding.TSP;
 import observer.Observable;
 import observer.Observer;
 import view.plan.PlanPanel;
+import view.state.CalculatingTimesState;
+import view.state.ReadyState;
+import view.state.State;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 
 /**
  * The main class, displaying the HMI and starting the application.
@@ -30,6 +36,9 @@ import java.awt.event.KeyListener;
 public class MainWindow extends javax.swing.JFrame implements Observer {
     private final PlanPanel planPanel;
     private final ControllerMainWindow controller;
+    private State currentState;
+    // The currently highlighted on the summary panel
+    private PointOfInterestPanel highlighted;
 
     /**
      * Creates new form MainWindow.
@@ -37,11 +46,8 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     public MainWindow() {
         controller = new ControllerMainWindow(this);
         buttonListenerMainWindow = new ButtonListenerMainWindow(controller, this);
-
         initComponents();
-        planPanel = new PlanPanel(infoLabel);
-        addKeyListener(new KeyboardListenerMainWindow(controller));
-        this.setFocusable(true);
+        planPanel = new PlanPanel(this);
 
         jPanel1.add(planPanel);
         pack();
@@ -58,34 +64,30 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jPanel6 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        panelAddRequest = new javax.swing.JPanel();
-        btAddRequest = new javax.swing.JButton();
-        tfDeliveryID = new javax.swing.JTextField();
-        tfDeliveryTime = new javax.swing.JTextField();
-        tfPickupID = new javax.swing.JTextField();
-        tfPickupTime = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         infoLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        btImportMap = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        btImportTour = new javax.swing.JMenuItem();
+        btAddDelivery = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(720, 576));
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -98,127 +100,29 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             .addGap(0, 332, Short.MAX_VALUE)
         );
 
-        jTabbedPane2.addTab("Summary", jPanel6);
+        jScrollPane1.setViewportView(jPanel6);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        jTabbedPane2.addTab("Summary", jScrollPane1);
 
-        btAddRequest.setText("Add request");
-        btAddRequest.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAddRequestActionPerformed(evt);
-            }
-        });
-
-        tfPickupTime.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfPickupTimeActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Pickup intersection ID");
-
-        jLabel2.setText("Delivery time");
-
-        jLabel3.setText("Pickup time");
-
-        jLabel4.setText("Delivery intersection ID");
-
-        jLabel5.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
-        jLabel5.setText("Add a new request");
-
-        javax.swing.GroupLayout panelAddRequestLayout = new javax.swing.GroupLayout(panelAddRequest);
-        panelAddRequest.setLayout(panelAddRequestLayout);
-        panelAddRequestLayout.setHorizontalGroup(
-            panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAddRequestLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btAddRequest)
-                .addGap(270, 270, 270))
-            .addGroup(panelAddRequestLayout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelAddRequestLayout.createSequentialGroup()
-                        .addComponent(tfPickupTime, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2))
-                    .addGroup(panelAddRequestLayout.createSequentialGroup()
-                        .addComponent(tfPickupID, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
-                        .addComponent(jLabel4)))
-                .addGap(12, 12, 12)
-                .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfDeliveryTime, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfDeliveryID, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(63, 63, 63))
-            .addGroup(panelAddRequestLayout.createSequentialGroup()
-                .addGap(238, 238, 238)
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panelAddRequestLayout.setVerticalGroup(
-            panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelAddRequestLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelAddRequestLayout.createSequentialGroup()
-                        .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfDeliveryID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfDeliveryTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
-                    .addGroup(panelAddRequestLayout.createSequentialGroup()
-                        .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfPickupID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelAddRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfPickupTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))))
-                .addGap(18, 18, 18)
-                .addComponent(btAddRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelAddRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addGap(0, 628, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(panelAddRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+            .addGap(0, 332, Short.MAX_VALUE)
         );
 
-        jTabbedPane2.addTab("Deliveries", jPanel2);
+        jScrollPane2.setViewportView(jPanel2);
+
+        jTabbedPane2.addTab("Deliveries", jScrollPane2);
 
         jPanel1.add(jTabbedPane2);
+        jTabbedPane2.getAccessibleContext().setAccessibleName("Deliveries");
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -240,35 +144,58 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu1.setText("Map");
+        jMenu4.setText("Edit");
 
-        jMenuItem3.setText("Import map");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem3);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Delivery");
-
-        jMenuItem1.setText("Import tour");
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setText("Undo");
+        jMenuItem1.setToolTipText("");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        jMenu4.add(jMenuItem1);
 
-        jMenuItem2.setText("Ajouter livraison");
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem2.setText("Redo");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem2);
+        jMenu4.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu4);
+
+        jMenu1.setText("Map");
+
+        btImportMap.setText("Import map");
+        btImportMap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btImportMap);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Delivery");
+
+        btImportTour.setText("Import tour");
+        btImportTour.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(btImportTour);
+
+        btAddDelivery.setText("Ajouter livraison");
+        btAddDelivery.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(btAddDelivery);
 
         jMenuBar1.add(jMenu2);
 
@@ -284,41 +211,40 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      * @see ButtonListenerMainWindow
      */
     private void jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActionPerformed
-        // TODO add your handling code here:
         System.out.println(evt.getActionCommand());
         buttonListenerMainWindow.actionPerformed(evt);
 
     }//GEN-LAST:event_jMenuItemActionPerformed
 
-    private void btAddRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddRequestActionPerformed
-        // TODO add your handling code here:
-        System.out.println(evt.getActionCommand());
-        buttonListenerMainWindow.actionPerformed(evt);
-        
-    }//GEN-LAST:event_btAddRequestActionPerformed
+    public void setModifyPlanData(final boolean state) {
+        btAddDelivery.setEnabled(state);
+        btImportMap.setEnabled(state);
+        btImportTour.setEnabled(state);
+    }
 
-    private void tfPickupTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPickupTimeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfPickupTimeActionPerformed
+    public void setSystemInfoText(final String text) {
+        infoLabel.setText(text);
+    }
 
-
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
 
     @Override
     public void update(Observable o, Object arg){
-        if(o instanceof TSP || o instanceof ControllerMainWindow){
+        if(o instanceof TSP){
+            DeliveryTour deliveryTour = (DeliveryTour) arg;
             PlanningRequest planningRequest = planPanel.getPlanData().getPlanningRequest();
-            if(arg != null){
-                DeliveryTour deliveryTour = (DeliveryTour) arg;
-                planPanel.getPlanData().setDeliveryTour(deliveryTour);
-                planningRequest.calculateTimes(deliveryTour);
-            }else{
-                planPanel.getPlanData().setDeliveryTour(null);
-            }
+            planPanel.getPlanData().setDeliveryTour(deliveryTour);
+            State calculatingTimesState = new CalculatingTimesState();
+            calculatingTimesState.execute(this);
+            planningRequest.calculateTimes(deliveryTour);
+            State readyState = new ReadyState();
+            readyState.execute(this);
             planPanel.repaint();
-            showSummary(planningRequest);
+            showDelivery(planningRequest);
+            showSummary(planningRequest,deliveryTour);
         }
-
-
     }
 
     /**
@@ -337,61 +263,128 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      * Display summary information about the requests
      * @param planningRequest
      */
-    public void showSummary(PlanningRequest planningRequest){
-
-        if(planningRequest != null) {
+    public void showDelivery(PlanningRequest planningRequest){
             String startTime = planningRequest.getDepartureTime();
             String finishTime = planningRequest.getFinishTime();
 
             // Add information to jPanel
-            JPanel container = jPanel6;
+            JPanel container = jPanel2;
             container.removeAll();
-            container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-            JLabel startLabel = new JLabel("Start time: " + startTime);
-            startLabel.setFont(new Font("Verdana", 1, 20));
-            startLabel.setForeground(new Color(20, 100, 10));
+            container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+
+            JLabel startLabel = new JLabel("Start time: "+startTime);
+            startLabel.setFont(new Font("Verdana",1,20));
+            startLabel.setForeground(new Color(20,100,10));
             container.add(startLabel);
             // Adding space between components
             container.add(Box.createVerticalStrut(10));
 
 
             // For each request we get the time of passage of the pickup and the delivery
-            int i = 1;
-            for (Request request : planningRequest.getRequests()) {
+            int i = 1 ;
+            for(Request request : planningRequest.getRequests()){
                 String pickUpTimePassage = request.getPickupTimePassage();
                 String deliveryTimePassage = request.getDeliveryTimePassage();
 
-                JLabel requestLabel = new JLabel("Request number " + i + ":");
-                requestLabel.setFont(new Font("Verdana", 1, 16));
+                JLabel requestLabel = new JLabel("Request number "+i+":");
+                requestLabel.setFont(new Font("Verdana",1,16));
+                requestLabel.setForeground(request.getColor());
                 container.add(requestLabel);
+                container.add(Box.createVerticalStrut(10));
+
+
+
+                JLabel timeLabel = new JLabel("PickupTime: "+pickUpTimePassage+"\t DeliveryTime: "+deliveryTimePassage);
+                timeLabel.setFont(new Font("Verdana",1,12));
+                container.add(timeLabel);
+                container.add(Box.createVerticalStrut(5));
 
                 JButton deleteButton = new JButton("Remove request");
                 container.add(deleteButton);
-                deleteButton.addActionListener(new DeleteButtonListener(controller, request, false));
+                deleteButton.addActionListener(new DeleteButtonListener(controller,request,false));
+                container.add(Box.createVerticalStrut(5));
 
                 JButton deleteAndChangeTourButton = new JButton("Remove request and change the tour");
                 container.add(deleteAndChangeTourButton);
-                deleteAndChangeTourButton.addActionListener(new DeleteButtonListener(controller, request, true));
+                deleteAndChangeTourButton.addActionListener(new DeleteButtonListener(controller,request,true));
+                container.add(Box.createVerticalStrut(20));
 
-                JLabel timeLabel = new JLabel("PickupTime: " + pickUpTimePassage + "\t DeliveryTime: " + deliveryTimePassage);
-                timeLabel.setFont(new Font("Verdana", 1, 12));
-                container.add(timeLabel);
-                container.add(Box.createVerticalStrut(5));
                 i++;
             }
 
             container.add(Box.createVerticalStrut(10));
 
-            JLabel finishLabel = new JLabel("Finish time: " + finishTime);
-            finishLabel.setFont(new Font("Verdana", 1, 20));
+            JLabel finishLabel = new JLabel("Finish time: "+finishTime);
+            finishLabel.setFont(new Font("Verdana",1,20));
             finishLabel.setForeground(Color.BLUE);
             container.add(finishLabel);
 
             container.revalidate();
             container.repaint();
-        }else{
-            clearPanels();
+    }
+
+    public void showSummary(PlanningRequest planningRequest, DeliveryTour deliveryTour){
+        // Add information to jPanel
+        JPanel container = jPanel6;
+        container.removeAll();
+        container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+
+        String startTime = planningRequest.getDepartureTime();
+        String finishTime = planningRequest.getFinishTime();
+
+        JLabel startLabel = new JLabel("Start time: "+startTime);
+        startLabel.setFont(new Font("Verdana",1,20));
+        startLabel.setForeground(new Color(20,100,10));
+        container.add(startLabel);
+        // Adding space between components
+        container.add(Box.createVerticalStrut(10));
+
+        List<Request> requests = planningRequest.getRequests();
+        int i =0;
+
+        MouseListener ml = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                PointOfInterestPanel poiPanel = (PointOfInterestPanel) e.getSource();
+                String id = poiPanel.isPickUp() ? poiPanel.getRequest().getPickupId() : poiPanel.getRequest().getDeliveryId();
+                Intersection intersection  = controller.getIntersectionFromId(id);
+                if(highlighted !=null){
+                    highlighted.setBackground(jPanel6.getBackground());
+                }
+                poiPanel.setBackground(Color.LIGHT_GRAY);
+                highlighted = poiPanel;
+                planPanel.setSelectedPOI(intersection);
+
+            }
+        };
+
+        for(String pointOfInterest : deliveryTour.getPointsOfInterest()){
+            for(Request request: requests){
+                if(request.getPickupId().equals(pointOfInterest)){
+                    PointOfInterestPanel poiPanel = new PointOfInterestPanel(true,request.getPickupTimePassage(),request,i);
+                    poiPanel.addMouseListener(ml);
+                    container.add(poiPanel);
+                    break;
+                }
+                if(request.getDeliveryId().equals(pointOfInterest)){
+                    PointOfInterestPanel poiPanel = new PointOfInterestPanel(false,request.getDeliveryTimePassage(),request,i);
+                    poiPanel.addMouseListener(ml);
+                    container.add(poiPanel);
+                    break;
+                }
+            }
+            i++;
         }
+        container.add(Box.createVerticalStrut(10));
+
+        JLabel finishLabel = new JLabel("Finish time: "+finishTime);
+        finishLabel.setFont(new Font("Verdana",1,20));
+        finishLabel.setForeground(Color.BLUE);
+        container.add(finishLabel);
+
+        container.revalidate();
+        container.repaint();
+
     }
 
     /**
@@ -399,9 +392,17 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      */
     public void clearPanels(){
         jPanel6.removeAll();
+        jPanel2.removeAll();
         jPanel6.revalidate();
         jPanel6.repaint();
+        jPanel2.revalidate();
+        jPanel2.repaint();
     }
+
+
+
+
+
 
     /**
      * @param args the command line arguments
@@ -438,56 +439,29 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 System.out.println("Hello world");
             }
         });
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btAddRequest;
+    private javax.swing.JMenuItem btAddDelivery;
+    private javax.swing.JMenuItem btImportMap;
+    private javax.swing.JMenuItem btImportTour;
     private javax.swing.JLabel infoLabel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JPanel panelAddRequest;
-    private javax.swing.JTextField tfDeliveryID;
-    private javax.swing.JTextField tfDeliveryTime;
-    private javax.swing.JTextField tfPickupID;
-
-    public JTextField getTfDeliveryID() {
-        return tfDeliveryID;
-    }
-
-    public JTextField getTfDeliveryTime() {
-        return tfDeliveryTime;
-    }
-
-    public JTextField getTfPickupID() {
-        return tfPickupID;
-    }
-
-    public JTextField getTfPickupTime() {
-        return tfPickupTime;
-    }
-
-    private javax.swing.JTextField tfPickupTime;
     // End of variables declaration//GEN-END:variables
 
     private ButtonListenerMainWindow buttonListenerMainWindow;
-    private KeyboardListenerMainWindow keyboardListenerMainWindow;
-
 }

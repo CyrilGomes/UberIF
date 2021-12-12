@@ -11,6 +11,7 @@ public class MouseListenerPlanPanel implements MouseListener, MouseWheelListener
         this.plan = planInit;
 
     }
+
     @Override
     public void mouseWheelMoved(MouseWheelEvent e){
         System.out.println("mouse wheel used");
