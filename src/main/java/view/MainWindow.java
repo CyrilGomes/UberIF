@@ -66,8 +66,21 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel6 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        tPickupId = new javax.swing.JTextField();
+        tPickupTime = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        tPickupId1 = new javax.swing.JTextField();
+        tPickupTime1 = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jPanel7 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         infoLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -83,7 +96,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         btAddDelivery = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(720, 576));
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
@@ -93,33 +105,153 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 628, Short.MAX_VALUE)
+            .addGap(0, 1102, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 332, Short.MAX_VALUE)
+            .addGap(0, 395, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel6);
 
         jTabbedPane2.addTab("Summary", jScrollPane1);
 
+        jLabel1.setText("add a request");
+
+        jButton1.setText("add request");
+        jButton1.setToolTipText("");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        tPickupId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tPickupIdActionPerformed(evt);
+            }
+        });
+
+        tPickupTime.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tPickupTimeActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("pickup ID");
+
+        jLabel3.setText("pickup duration");
+
+        jLabel4.setText("delivery duration");
+
+        jLabel5.setText("delivery ID");
+
+        tPickupId1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tPickupId1ActionPerformed(evt);
+            }
+        });
+
+        tPickupTime1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tPickupTime1ActionPerformed(evt);
+            }
+        });
+
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(119, 119, 119)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tPickupTime, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                    .addComponent(tPickupId))
+                .addGap(62, 62, 62)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tPickupTime1)
+                    .addComponent(tPickupId1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(251, 251, 251)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(76, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tPickupId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tPickupTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(tPickupId1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(tPickupTime1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 760, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 191, Short.MAX_VALUE)
+        );
+
+        jScrollPane3.setViewportView(jPanel7);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 628, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane3)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 332, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jScrollPane2.setViewportView(jPanel2);
-
-        jTabbedPane2.addTab("Deliveries", jScrollPane2);
+        jTabbedPane2.addTab("Deliveries", null, jPanel2, "");
 
         jPanel1.add(jTabbedPane2);
         jTabbedPane2.getAccessibleContext().setAccessibleName("Deliveries");
@@ -216,6 +348,26 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
     }//GEN-LAST:event_jMenuItemActionPerformed
 
+    private void tPickupTime1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tPickupTime1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tPickupTime1ActionPerformed
+
+    private void tPickupId1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tPickupId1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tPickupId1ActionPerformed
+
+    private void tPickupTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tPickupTimeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tPickupTimeActionPerformed
+
+    private void tPickupIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tPickupIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tPickupIdActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public void setModifyPlanData(final boolean state) {
         btAddDelivery.setEnabled(state);
         btImportMap.setEnabled(state);
@@ -264,13 +416,14 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      * @param planningRequest
      */
     public void showDelivery(PlanningRequest planningRequest){
+        // Add information to jPanel
+        JPanel container = jPanel7;
+        container.removeAll();
+        container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+
+        if(planningRequest != null){
             String startTime = planningRequest.getDepartureTime();
             String finishTime = planningRequest.getFinishTime();
-
-            // Add information to jPanel
-            JPanel container = jPanel2;
-            container.removeAll();
-            container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
 
             JLabel startLabel = new JLabel("Start time: "+startTime);
             startLabel.setFont(new Font("Verdana",1,20));
@@ -311,14 +464,13 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
                 i++;
             }
-
             container.add(Box.createVerticalStrut(10));
 
             JLabel finishLabel = new JLabel("Finish time: "+finishTime);
             finishLabel.setFont(new Font("Verdana",1,20));
             finishLabel.setForeground(Color.BLUE);
             container.add(finishLabel);
-
+        }
             container.revalidate();
             container.repaint();
     }
@@ -329,59 +481,59 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         container.removeAll();
         container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
 
-        String startTime = planningRequest.getDepartureTime();
-        String finishTime = planningRequest.getFinishTime();
+        if(planningRequest != null && deliveryTour != null){
+            String startTime = planningRequest.getDepartureTime();
+            String finishTime = planningRequest.getFinishTime();
 
-        JLabel startLabel = new JLabel("Start time: "+startTime);
-        startLabel.setFont(new Font("Verdana",1,20));
-        startLabel.setForeground(new Color(20,100,10));
-        container.add(startLabel);
-        // Adding space between components
-        container.add(Box.createVerticalStrut(10));
+            JLabel startLabel = new JLabel("Start time: "+startTime);
+            startLabel.setFont(new Font("Verdana",1,20));
+            startLabel.setForeground(new Color(20,100,10));
+            container.add(startLabel);
+            // Adding space between components
+            container.add(Box.createVerticalStrut(10));
 
-        List<Request> requests = planningRequest.getRequests();
-        int i =0;
+            List<Request> requests = planningRequest.getRequests();
+            int i =0;
 
-        MouseListener ml = new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                PointOfInterestPanel poiPanel = (PointOfInterestPanel) e.getSource();
-                String id = poiPanel.isPickUp() ? poiPanel.getRequest().getPickupId() : poiPanel.getRequest().getDeliveryId();
-                Intersection intersection  = controller.getIntersectionFromId(id);
-                if(highlighted !=null){
-                    highlighted.setBackground(jPanel6.getBackground());
+            MouseListener ml = new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    PointOfInterestPanel poiPanel = (PointOfInterestPanel) e.getSource();
+                    String id = poiPanel.isPickUp() ? poiPanel.getRequest().getPickupId() : poiPanel.getRequest().getDeliveryId();
+                    Intersection intersection  = controller.getIntersectionFromId(id);
+                    if(highlighted !=null){
+                        highlighted.setBackground(jPanel6.getBackground());
+                    }
+                    poiPanel.setBackground(Color.LIGHT_GRAY);
+                    highlighted = poiPanel;
+                    planPanel.setSelectedPOI(intersection);
+
                 }
-                poiPanel.setBackground(Color.LIGHT_GRAY);
-                highlighted = poiPanel;
-                planPanel.setSelectedPOI(intersection);
-
+            };
+            for(String pointOfInterest : deliveryTour.getPointsOfInterest()){
+                for(Request request: requests){
+                    if(request.getPickupId().equals(pointOfInterest)){
+                        PointOfInterestPanel poiPanel = new PointOfInterestPanel(true,request.getPickupTimePassage(),request,i);
+                        poiPanel.addMouseListener(ml);
+                        container.add(poiPanel);
+                        break;
+                    }
+                    if(request.getDeliveryId().equals(pointOfInterest)){
+                        PointOfInterestPanel poiPanel = new PointOfInterestPanel(false,request.getDeliveryTimePassage(),request,i);
+                        poiPanel.addMouseListener(ml);
+                        container.add(poiPanel);
+                        break;
+                    }
+                }
+                i++;
             }
-        };
+            container.add(Box.createVerticalStrut(10));
 
-        for(String pointOfInterest : deliveryTour.getPointsOfInterest()){
-            for(Request request: requests){
-                if(request.getPickupId().equals(pointOfInterest)){
-                    PointOfInterestPanel poiPanel = new PointOfInterestPanel(true,request.getPickupTimePassage(),request,i);
-                    poiPanel.addMouseListener(ml);
-                    container.add(poiPanel);
-                    break;
-                }
-                if(request.getDeliveryId().equals(pointOfInterest)){
-                    PointOfInterestPanel poiPanel = new PointOfInterestPanel(false,request.getDeliveryTimePassage(),request,i);
-                    poiPanel.addMouseListener(ml);
-                    container.add(poiPanel);
-                    break;
-                }
-            }
-            i++;
+            JLabel finishLabel = new JLabel("Finish time: "+finishTime);
+            finishLabel.setFont(new Font("Verdana",1,20));
+            finishLabel.setForeground(Color.BLUE);
+            container.add(finishLabel);
         }
-        container.add(Box.createVerticalStrut(10));
-
-        JLabel finishLabel = new JLabel("Finish time: "+finishTime);
-        finishLabel.setFont(new Font("Verdana",1,20));
-        finishLabel.setForeground(Color.BLUE);
-        container.add(finishLabel);
-
         container.revalidate();
         container.repaint();
 
@@ -392,11 +544,11 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      */
     public void clearPanels(){
         jPanel6.removeAll();
-        jPanel2.removeAll();
+        jPanel7.removeAll();
         jPanel6.revalidate();
         jPanel6.repaint();
-        jPanel2.revalidate();
-        jPanel2.repaint();
+        jPanel7.revalidate();
+        jPanel7.repaint();
     }
 
 
@@ -446,6 +598,12 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem btImportMap;
     private javax.swing.JMenuItem btImportTour;
     private javax.swing.JLabel infoLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -457,10 +615,17 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextField tPickupId;
+    private javax.swing.JTextField tPickupId1;
+    private javax.swing.JTextField tPickupTime;
+    private javax.swing.JTextField tPickupTime1;
     // End of variables declaration//GEN-END:variables
 
     private ButtonListenerMainWindow buttonListenerMainWindow;

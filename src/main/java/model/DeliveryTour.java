@@ -13,9 +13,7 @@ import java.util.List;
  */
 public class DeliveryTour {
     List<Segment> segmentList;
-    List<String> orderedIdIntersectionTour;
     String lastIntersectionId;
-    String[] bestTour;
 
     float globalTime;
     List<String> pointsOfInterest;
@@ -36,11 +34,10 @@ public class DeliveryTour {
     /**
      * Constructor of the delivery tour.
      *
-     * @param segmentList the list of segments, in order, which compose the tour.
      * @param globalTime  the estimed time for the tour.
      */
-    public DeliveryTour(List<Segment> segmentList, float globalTime, String[] bestSol) {
-        this.segmentList = segmentList;
+    public DeliveryTour(float globalTime, String[] bestSol) {
+        this.segmentList = new ArrayList<>();
         this.globalTime = globalTime;
         pointsOfInterest = new ArrayList<>();
         for(int i=0; i<bestSol.length; i++){
@@ -58,7 +55,7 @@ public class DeliveryTour {
             this.segmentList.add(new Segment(s));
         }
         this.globalTime = deliverCopy.globalTime;
-        this.orderedIdIntersectionTour = new ArrayList<>(deliverCopy.orderedIdIntersectionTour);
+        this.pointsOfInterest = new ArrayList<>(deliverCopy.pointsOfInterest);
         this.lastIntersectionId = deliverCopy.lastIntersectionId;
     }
 
@@ -67,11 +64,11 @@ public class DeliveryTour {
     }
 
     public String getFirstIntersectionId(){
-        return orderedIdIntersectionTour.get(0);
+        return pointsOfInterest.get(0);
     }
 
     public void addNextPoint(String idIntersection){
-        this.orderedIdIntersectionTour.add(idIntersection);
+        this.pointsOfInterest.add(idIntersection);
         this.lastIntersectionId = idIntersection;
     }
     public void addListSegment(List<Segment> segmentListAdded){
@@ -84,24 +81,27 @@ public class DeliveryTour {
      * @param request the request to be removed
      * @param graph the already calculated graph
      */
-    public void removeRequestAndChangeTour(Request request, Graph graph) {
+    public DeliveryTour removeRequestAndChangeTour(Request request, Graph graph) {
+        DeliveryTour newDeliveryTour = new DeliveryTour(this);
         String pickupId = request.getPickupId();
         String deliveryId = request.getDeliveryId();
 
-        pointsOfInterest.remove(pickupId);
-        pointsOfInterest.remove(deliveryId);
+        newDeliveryTour.pointsOfInterest.remove(pickupId);
+        newDeliveryTour.pointsOfInterest.remove(deliveryId);
 
         List<Segment> segmentList = new ArrayList<>();
 
-        int solutionSize = pointsOfInterest.size();
+        int solutionSize = newDeliveryTour.pointsOfInterest.size();
         for (int i = 1; i < solutionSize; i++) {
-            Edge edge = graph.getEdge(pointsOfInterest.get(i - 1), pointsOfInterest.get(i));
+            Edge edge = graph.getEdge(newDeliveryTour.pointsOfInterest.get(i - 1), newDeliveryTour.pointsOfInterest.get(i));
             segmentList.addAll(edge.getSegmentList());
         }
         Edge edge = graph.getEdge(pointsOfInterest.get(solutionSize - 1), pointsOfInterest.get(0));
         segmentList.addAll(edge.getSegmentList());
 
-        this.segmentList = segmentList;
+        this.segmentList = new ArrayList<>(segmentList);
+
+        return newDeliveryTour;
     }
 
 

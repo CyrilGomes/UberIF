@@ -65,12 +65,18 @@ public class ControllerMainWindow extends Observable {
                 mainWindow.setPlanData(planData);
                 State calculatingTourState = new CalculatingTourState();
                 calculatingTourState.execute(mainWindow);
-                TSP tsp = new SimulatedAnnealing(mainWindow);
+                tsp = new SimulatedAnnealing(mainWindow);
                 this.graph = Graph.generateCompleteGraphFromPlan(planData);
 
                 // Calling TSP to calculate the best tour
                 PlanningRequest finalRequest = request;
-                new Thread(() -> tsp.searchSolution(100000, graph, finalRequest)).start();
+                new Thread(() -> {
+                    tsp.searchSolution(100000, graph, finalRequest);
+                    history.registerCurrentState(planData, graph);
+                    System.out.println(history);}).start();
+                State readyState = new ReadyState();
+                readyState.execute(mainWindow);
+
             }
         }
         catch(Exception e){
@@ -121,7 +127,8 @@ public class ControllerMainWindow extends Observable {
             if (planningRequest.getRequests().size() == 1) {
                 planData.getDeliveryTour().setSegmentList(new ArrayList<>());
             } else {
-                planData.getDeliveryTour().removeRequestAndChangeTour(request, graph);
+                Graph newGraph = new Graph(graph);
+                planData.setDeliveryTour(planData.getDeliveryTour().removeRequestAndChangeTour(request, newGraph));
             }
         }
         planningRequest.removeRequest(request);
@@ -135,6 +142,7 @@ public class ControllerMainWindow extends Observable {
         mainWindow.showSummary(planData.getPlanningRequest(),planData.getDeliveryTour());
         State readyState = new ReadyState();
         readyState.execute(mainWindow);
+        history.registerCurrentState(planData,graph);
     }
 
     public Intersection getIntersectionFromId(String id){
@@ -221,8 +229,10 @@ public class ControllerMainWindow extends Observable {
         System.out.println(plan);
         System.out.println(history);
         mainWindow.setPlanData(plan);
-        //mainWindow.showSummary(plan.getPlanningRequest());
-        notifyObservers(plan.getDeliveryTour());
+        mainWindow.showSummary(plan.getPlanningRequest(),plan.getDeliveryTour());
+        mainWindow.showDelivery(planData.getPlanningRequest());
+        State readyState = new ReadyState();
+        readyState.execute(mainWindow);
 
 
     }
@@ -233,8 +243,10 @@ public class ControllerMainWindow extends Observable {
         System.out.println(plan);
         System.out.println(history);
         mainWindow.setPlanData(plan);
-        //mainWindow.showSummary(plan.getPlanningRequest());
-        notifyObservers(plan.getDeliveryTour());
+        mainWindow.showSummary(plan.getPlanningRequest(), plan.getDeliveryTour());
+        mainWindow.showDelivery(plan.getPlanningRequest());
+        State readyState = new ReadyState();
+        readyState.execute(mainWindow);
         
     }
 }
