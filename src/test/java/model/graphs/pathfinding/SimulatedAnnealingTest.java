@@ -69,7 +69,8 @@ public class SimulatedAnnealingTest {
 
     @Test
     public void saStats(){
-        String filesFolder = "E:\\4IF\\PLD\\Agile\\UberIF\\files\\";
+        System.out.println("Calculating Simulated Annealing :");
+        String filesFolder = "./files/";
         File mapFile = new File(filesFolder+ "largeMap.xml");
         File request1 = new File(filesFolder+ "requestsSmall1.xml");
         File request2 = new File(filesFolder+ "requestsSmall2.xml");
@@ -159,8 +160,8 @@ public class SimulatedAnnealingTest {
 
     @Test
     public void stats(){
-        System.out.println("Calcul Branch and Bound :");
-        String filesFolder = "E:\\4IF\\PLD\\Agile\\UberIF\\files\\";
+        System.out.println("Calculating Branch and Bound :");
+        String filesFolder = "./files/";
         File mapFile = new File(filesFolder+ "largeMap.xml");
         File request1 = new File(filesFolder+ "requestsSmall1.xml");
         File request2 = new File(filesFolder+ "requestsSmall2.xml");

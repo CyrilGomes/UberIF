@@ -19,6 +19,27 @@ public class BranchAndBound extends TemplateTSP{
     public BranchAndBound() {
     }
 
+
+    /**
+     * @param startNode the departure vertex
+     * @return the list sorted by cost
+     */
+    private List<String> greedyPermutation(String startNode){
+        int size = g.getNbVertices();
+        String[] permutation = new String[size];
+        permutation[0] = startNode;
+        Set<String> vertices = g.getVertices();
+
+        for (int i = 1; i < size; i++) {
+            vertices.remove(permutation[i-1]);
+            permutation[i] = g.getNearestNodeFromNode(permutation[i-1],vertices);
+        }
+        return Arrays.asList(permutation);
+    }
+
+
+
+
     @Override
     public void computeSolution(int timeLimit, Graph g, PlanningRequest planningRequest) {
 
@@ -26,9 +47,9 @@ public class BranchAndBound extends TemplateTSP{
         List<String> visited = new ArrayList<String>(g.getNbVertices());
         visited.add(sourceVertex);
         List<String> unvisited = new ArrayList<String>(g.getNbVertices() - 1);
-        Set<String> vertices = g.getVertices();
+        List<String> vertices = greedyPermutation(sourceVertex);
         unvisited.addAll(vertices);
-        unvisited.remove(sourceVertex);
+        unvisited.remove(0);
         List<String> deliveryPoints = new ArrayList<>();
         List<String> pickupPoints = new ArrayList<>();
         List<Request> requests = planningRequest.getRequests();
@@ -42,13 +63,17 @@ public class BranchAndBound extends TemplateTSP{
     }
 
 
+
+
     /**
-     * Template method of a branch and bound algorithm for solving the TSP in <code>g</code>.
-     *
-     * @param currentVertex the last visited vertex
-     * @param unvisited     the set of vertex that have not yet been visited
-     * @param visited       the sequence of vertices that have been already visited (including currentVertex)
-     * @param currentCost   the cost of the path corresponding to <code>visited</code>
+     * Execute the branch and bound algorithm
+     * @param sourceVertex    the departure vertex
+     * @param currentVertex   the last visited vertex
+     * @param unvisited       the set of vertex that have not yet been visited
+     * @param visited         the sequence of vertices that have been already visited (including currentVertex)
+     * @param pickupPoints    the pickup points
+     * @param deliveryPoints  the delivery points
+     * @param currentCost     the cost of the path corresponding to <code>visited</code>
      */
     private void branchAndBound(String sourceVertex, String currentVertex, Collection<String> unvisited,
                                 Collection<String> visited, List<String> pickupPoints,
@@ -85,16 +110,15 @@ public class BranchAndBound extends TemplateTSP{
     }
 
 
-
     /**
-     * Method that must be defined in TemplateTSP subclasses
-     *
-     * @param currentVertex
-     * @param unvisited
+     * @param sourceVertex  the departure vertex
+     * @param currentVertex the current vertex
+     * @param unvisited     list of the unvisited vertices
      * @return a lower bound of the cost of paths in <code>g</code> starting from <code>currentVertex</code>, visiting
      * every vertex in <code>unvisited</code> exactly once, and returning back to vertex <code>0</code>.
      */
     protected float bound(String sourceVertex, String currentVertex, Collection<String> unvisited) {
+
 
         List<String> subGraph = new ArrayList<>(unvisited);
         subGraph.add(currentVertex);
@@ -107,9 +131,9 @@ public class BranchAndBound extends TemplateTSP{
 
     /**
      *
-     * @param currentVertex
-     * @param unvisited
-     * @param g
+     * @param currentVertex the current vertex
+     * @param unvisited     the list of the unvisited vertices
+     * @param g             the graph
      * @return an iterator for visiting all vertices in <code>unvisited</code> which are successors of <code>currentVertex</code>
      */
     protected Iterator<String> iterator(String currentVertex, Collection<String> unvisited, Graph g) {

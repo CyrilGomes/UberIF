@@ -45,6 +45,9 @@ public class Plan {
         this.segmentMap = segmentMap;
     }
 
+    /**
+     * @return the adjacents map
+     */
     public Map<String, List<String>> getAdjacentsMap() {
         return adjacentsMap;
     }
@@ -59,11 +62,17 @@ public class Plan {
         this.minLongitude = minLongitude;
     }
 
+    /**
+     * @return the intersections map
+     */
     public Map<String, Intersection> getIntersectionMap() {
         return intersectionMap;
     }
 
-    
+
+    /**
+     * @return the segment map
+     */
     public Map<Key, Segment> getSegmentMap() {
         return segmentMap;
     }
@@ -146,6 +155,10 @@ public class Plan {
         this.deliveryTour = deliveryTour;
     }
 
+    /**
+     * @param origin the concerned vertex
+     * @return       the adjacent segments of the vertex
+     */
     public List<Segment> getSegmentsFromIntersection(String origin) {
         List<String> adjacents = adjacentsMap.get(origin);
         List<Segment> segments = new ArrayList<>();

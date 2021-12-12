@@ -1,15 +1,9 @@
 package model.graphs.pathfinding;
 
-import model.DeliveryTour;
 import model.PlanningRequest;
 import model.Request;
-import model.Segment;
 import model.graphs.Graph;
-import observer.Observable;
 import observer.Observer;
-import view.MainWindow;
-
-import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -54,8 +48,6 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         this.timeLimit = timeLimit;
         this.g = g;
 
-        //bestSolCost = Float.MAX_VALUE;
-
 
         //greedyPermutation(planningRequest.getStartId());
         float curCost = randomPermutation(planningRequest.getStartId());
@@ -67,7 +59,6 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         //heat();
         t0 = 200000;
         float temp = t0;
-        //System.out.println("Trouvé :" + t0);
 
 
 
@@ -95,11 +86,11 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         }
 
 
-        //System.out.println("FINITO");
-
-
     }
 
+    /**
+     * @return the cost of the current permutation
+     */
     private float getPermutationCost(){
         float cost = 0;
 
@@ -112,8 +103,13 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
     }
 
 
-
-
+    /**
+     * Simulated Annealing step : move an vertex randomly, check if it improved the route and accept it
+     * if it doesnt imroove, accept it with a probability of <code>Math.exp(-deltaCost/temp))</code>
+     * @param curCost the current cost of the permutation
+     * @param temp the current temperature
+     * @return the cost of the accepted permutation
+     */
     float saStep(float curCost, float temp){
 
         float newCost;
@@ -149,6 +145,9 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         return curCost;
     }
 
+    /**
+     * increase the temperature so we have enough rejections
+     */
     private void heat(){
         float curCost = getPermutationCost();
         float temp = 1.0f;
@@ -172,6 +171,13 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
 
         t0 = temp;
     }
+
+    /**
+     * swap 2 elements in an array
+     * @param a the index of the first node to be swapped
+     * @param b the index of the second node to be swapped
+     * @param permutation the permutation in wich we have to swap
+     */
     private void swap(int a, int b, String[] permutation){
         String tmp = permutation[a];
         String curr = permutation[b];
@@ -179,25 +185,33 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         permutation[b] = tmp;
     }
 
-    // Method to move element at position
-    private void moveElement(
-            String[] arr, int source,
+
+    /**
+     * @param source the source index to me moved
+     * @param dest the destination where the source should be moved
+     */
+    private void moveElement( int source,
             int dest)
     {
 
         // Converting array to ArrayList
         List<String> list = new ArrayList<>(
-                Arrays.asList(arr));
+                Arrays.asList(permutation));
 
+        // Does the move by removing the source and adding it at the destination index
         list.add(dest, list.remove(source));
 
 
         // Converting the list back to array
-        arr = list.toArray(arr);
+        permutation = list.toArray(permutation);
 
 
 
     }
+
+    /**
+     * move one vertex randomly across the tour
+     */
     public void randomMove(){
 
         int size = permutation.length;
@@ -210,45 +224,20 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
             lastI = rd.nextInt(size-1)+1;
             lastJ = rd.nextInt(size-1)+1;
 
-            moveElement(permutation,lastI,lastJ);
+            moveElement(lastI,lastJ);
             if(checkIsValid() && lastJ != lastI){
                 isValid = true;
             }
 
-
-            //reverseRoute(permutation);
-            //swap(lastI,lastJ,permutation);
-
         }
 
-
-        /**
-        System.out.println(Arrays.toString(permutation));
-        System.out.println(Arrays.toString(permutation));
-        reverseRoute(permutation);
-        System.out.println(Arrays.toString(permutation));
-        System.out.println("------------------------------------");
-        */
 
     }
 
 
-
-    private void reverseRoute(String[] permutation) {
-        int randLength = Math.abs(lastI-lastJ);
-
-
-        int currI = Math.min(lastI, lastJ);
-        int currJ = Math.max(lastI, lastJ);
-
-        for (int i = 0 ; i < randLength/2; i++) {
-            swap(currI,currJ,permutation);
-            currI++;
-            currJ--;
-        }
-    }
-
-
+    /**
+     * @return true if the current generated permutation has all the pickup and delivery precedence respected
+     */
     private boolean checkIsValid(){
         for (int j = 0; j < permutation.length; j++) {
 
@@ -260,6 +249,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
 
                     if (permutation[k].equals(pickup)) {
                         isValid = true;
+                        break;
                     }
                 }
                 if(!isValid){
@@ -271,6 +261,11 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         return true;
     }
 
+    /**
+     * create a random permutation of the tour
+     * @param startNode the starting point
+     * @return the cost of the generated permutation
+     */
     public float randomPermutation(String startNode) {
 
         int size = g.getNbVertices();
@@ -279,7 +274,6 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         permutation[0] = startNode;
 
         Set<String> vertices = g.getVertices();
-        int verticesSize = g.getNbVertices();
 
         int i = 1;
         for (String node: vertices) {
@@ -298,71 +292,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
             }
         }while(!checkIsValid());
 
-        /*
-        for (int j = 0; j < permutation.length; j++) {
-            if (deliveryPoints.contains(permutation[j])) {
-                int deliveryIndex = deliveryPoints.indexOf(permutation[j]);
-                String pickup = pickupPoints.get(deliveryIndex);
-                for (int k = 0; k < permutation.length; k++) {
-
-                    if (permutation[k].equals(pickup)) {
-                        if (k > deliveryIndex) {
-                            swap(k, j, permutation);
-                        }
-
-                    }
-                }
-
-            }
-        }*/
 
     return getPermutationCost();
-
-
-
     }
-
-
-
-    private void greedyPermutation(String startNode){
-        int size = g.getNbVertices();
-        permutation = new String[size];
-        permutation[0] = startNode;
-        Set<String> vertices = g.getVertices();
-
-        for (int i = 1; i < size; i++) {
-            vertices.remove(permutation[i-1]);
-            permutation[i] = getNearestNodeFromNode(permutation[i-1],vertices);
-        }
-    }
-
-
-    /**
-     * @param node the current node to check nieghbors of
-     * @param vertices all the vertices of the graph
-     * @return the nearest node of the currentNode
-     */
-    private String getNearestNodeFromNode(String node, Set<String>  vertices ){
-
-        float minCost = Float.MAX_VALUE;
-        String minNode = "";
-        for (String vertex:vertices
-             ) {
-            if(node != vertex){
-
-                float cost =  g.getCost(node,vertex);
-                if (cost < minCost){
-                    minCost = cost;
-                    minNode = vertex;
-                }
-            }
-        }
-        return minNode;
-    }
-
-
-
-
-
-
 }
