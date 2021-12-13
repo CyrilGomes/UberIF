@@ -106,10 +106,11 @@ public class DeliveryTour extends Observable {
             Edge edge = graph.getEdge(newDeliveryTour.pointsOfInterest.get(i - 1), newDeliveryTour.pointsOfInterest.get(i));
             segmentList.addAll(edge.getSegmentList());
         }
-        Edge edge = graph.getEdge(pointsOfInterest.get(solutionSize - 1), pointsOfInterest.get(0));
+        Edge edge = graph.getEdge(newDeliveryTour.pointsOfInterest.get(solutionSize - 1), newDeliveryTour.pointsOfInterest.get(0));
         segmentList.addAll(edge.getSegmentList());
 
         this.segmentList = new ArrayList<>(segmentList);
+        newDeliveryTour.segmentList =  new ArrayList<>(segmentList);
 
         return newDeliveryTour;
     }
