@@ -114,11 +114,13 @@ public class PlanDrawing {
 			// Draw pickup as a map bullet point
 			Color color = Color.getHSBColor((float) i++
                     / (float) allLength, 1, 1);
-			g.setColor(color);
-			drawPickupPoint(xPickup, yPickup, 25, 25, color);
+			if(request.getColor()==null){
+				request.setColor(color);
+			}
+			drawPickupPoint(xPickup, yPickup, 25, 25, request.getColor());
 
 			// Draw delivery as house icon
-			drawDeliveryPoint(xDelivery, yDelivery, 30, 30, color);
+			drawDeliveryPoint(xDelivery, yDelivery, 30, 30, request.getColor());
 			clickablePOI.updateTrack(pickup, 25 / 2, delivery,
                     30 / 2);
 		}
