@@ -100,7 +100,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         btImportMap = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         btImportTour = new javax.swing.JMenuItem();
-        btAddDelivery = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -326,14 +325,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             }
         });
         jMenu2.add(btImportTour);
-
-        btAddDelivery.setText("Ajouter livraison");
-        btAddDelivery.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemActionPerformed(evt);
-            }
-        });
-        jMenu2.add(btAddDelivery);
 
         jMenuBar1.add(jMenu2);
 
@@ -659,7 +650,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem btAddDelivery;
     private javax.swing.JMenuItem btImportMap;
     private javax.swing.JMenuItem btImportTour;
     private javax.swing.JButton buttonAddRequest;
@@ -694,24 +684,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JTextField tfDeliveryTime;
     private javax.swing.JTextField tfPickupID;
     private javax.swing.JTextField tfPickupTime;
-
-    public JTextField getTfDeliveryID() {
-        return tfDeliveryID;
-    }
-
-    public JTextField getTfDeliveryTime() {
-        return tfDeliveryTime;
-    }
-
-    public JTextField getTfPickupID() {
-        return tfPickupID;
-    }
-
-    public JTextField getTfPickupTime() {
-        return tfPickupTime;
-    }
-
-
     // End of variables declaration//GEN-END:variables
 
     private ButtonListenerMainWindow buttonListenerMainWindow;
