@@ -27,15 +27,15 @@ public class Plan {
      */
     private final Map<Key, Segment> segmentMap;
     /**
-     * the planning request
+     * the planning request.
      */
     private PlanningRequest planningRequest = null;
     /**
-     * the currently selected street name
+     * the currently selected street name.
      */
     private String selectedStreetName = "";
     /**
-     * the delivery tour
+     * the delivery tour.
      */
     private DeliveryTour deliveryTour = null;
 
