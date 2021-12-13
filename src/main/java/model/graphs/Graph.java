@@ -20,11 +20,11 @@ public class Graph {
     /**
      * the graph vertices.
      */
-    private final Set<String> vertices;
+    private Set<String> vertices;
     /**
      * the graph edges.
      */
-    private final HashMap<Key, Edge> edges;
+    private HashMap<Key, Edge> edges;
     /**
      * the graph minimal edge cost.
      */

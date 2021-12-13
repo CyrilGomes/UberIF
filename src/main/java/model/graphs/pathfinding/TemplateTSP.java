@@ -81,15 +81,15 @@ public abstract class TemplateTSP extends Observable implements TSP {
         int solutionSize = bestSol.length;
         for (int i = 1; i < solutionSize; i++) {
             Edge edge = g.getEdge(bestSol[i - 1], bestSol[i]);
-            if(edge.segmentList != null) {
-                segmentList.addAll(edge.segmentList);
-                deliveryTour.addListSegment(edge.segmentList);
+            if(edge.getSegmentList() != null) {
+                segmentList.addAll(edge.getSegmentList());
+                deliveryTour.addListSegment(edge.getSegmentList());
             }
         }
         Edge edge = g.getEdge(bestSol[solutionSize - 1], bestSol[0]);
-        if(edge.segmentList != null) {
-            segmentList.addAll(edge.segmentList);
-            deliveryTour.addListSegment(edge.segmentList);
+        if(edge.getSegmentList() != null) {
+            segmentList.addAll(edge.getSegmentList());
+            deliveryTour.addListSegment(edge.getSegmentList());
         }
 
         //System.out.println(bestSolCost);
