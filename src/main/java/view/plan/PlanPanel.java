@@ -80,12 +80,11 @@ public final class PlanPanel extends JPanel {
         setVisible(true);
     }
 
-    public Intersection getSelectedPOI() {
-        return selectedPOI;
-    }
-
-    public void setSelectedPOI(final Intersection selectedPOI) {
-        this.selectedPOI = selectedPOI;
+    /** Sets the new selected POI and refreshes the UI.
+     * @param pointOfInterest The newly selected POI
+     * **/
+    public void setSelectedPOI(final Intersection pointOfInterest) {
+        this.selectedPOI = pointOfInterest;
         repaint();
     }
 
@@ -171,7 +170,8 @@ public final class PlanPanel extends JPanel {
             if (Math.sqrt(Math.pow(yMouse
                     - scaleYCoordinateToPlan(t.firstElem.getLatitude()), 2D)
                     + Math.pow(xMouse
-                        - scaleXCoordinateToPlan(t.firstElem.getLongitude()), 2D))
+                        - scaleXCoordinateToPlan(t.firstElem
+                            .getLongitude()), 2D))
                     <= t.secondElem) {
                 selectedPOI = t.firstElem;
                 highlightedPath = clickablePOIMap.get(t);
