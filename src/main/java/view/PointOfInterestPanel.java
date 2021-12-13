@@ -12,6 +12,12 @@ public class PointOfInterestPanel extends JPanel {
     private Request request;
     private int i;
 
+    /** Constructor
+     * @param isPickUp true if the point is a pickup, false if it's a delivery
+     * @param timePassage the time of passage of this point
+     * @param request the request containing this point of interest
+     * @param i number on the list of points of interest
+     */
     public PointOfInterestPanel(boolean isPickUp, String timePassage, Request request,int i) {
         this.isPickUp = isPickUp;
         this.timePassage = timePassage;

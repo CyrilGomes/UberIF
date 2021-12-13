@@ -11,6 +11,11 @@ public class DeleteButtonListener implements ActionListener {
     private Request request;
     private boolean shouldChangeTour;
 
+    /** Constructor
+     * @param controllerMainWindow the main controller
+     * @param request the request corresponding to this button
+     * @param shouldChangeTour if it's a button that also changes tour or not
+     */
     public DeleteButtonListener(ControllerMainWindow controllerMainWindow, Request request, boolean shouldChangeTour) {
         this.controllerMainWindow = controllerMainWindow;
         this.request = request;

@@ -114,6 +114,10 @@ public class PlanningRequest {
         this.requests = sortedRequests;
     }
 
+    /**
+     * Removes a request from the requests list
+     * @param request the request to remove
+     */
     public void removeRequest(Request request){
         requests.remove(request);
     }

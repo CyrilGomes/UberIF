@@ -11,11 +11,9 @@ import java.util.List;
  * @see Segment
  */
 public class DeliveryTour {
-    List<Segment> segmentList;
-    String[] bestTour;
-
-    float globalTime;
-    List<String> pointsOfInterest;
+    private List<Segment> segmentList;
+    private float globalTime;
+    private List<String> pointsOfInterest;
 
 
     public List<Segment> getSegmentList() {
@@ -34,7 +32,8 @@ public class DeliveryTour {
      * Constructor of the delivery tour.
      *
      * @param segmentList the list of segments, in order, which compose the tour.
-     * @param globalTime  the estimed time for the tour.
+     * @param globalTime  the estimated time for the tour.
+     * @param bestSol the best solution consisting of list of pointsOfInterest ids in order.
      */
     public DeliveryTour(List<Segment> segmentList, float globalTime, String[] bestSol) {
         this.segmentList = segmentList;

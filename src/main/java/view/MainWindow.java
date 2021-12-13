@@ -264,8 +264,8 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     }
 
     /**
-     * Display summary information about the requests
-     * @param planningRequest
+     * Display delivery information about the requests on the delivery panel
+     * @param planningRequest contains the requests
      */
     public void showDelivery(PlanningRequest planningRequest){
             String startTime = planningRequest.getDepartureTime();
@@ -371,6 +371,11 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             container.repaint();
     }
 
+    /**
+     * Display summary information about each point of interest
+     * @param planningRequest contains the requests
+     * @param deliveryTour contains the points of interests
+     */
     public void showSummary(PlanningRequest planningRequest, DeliveryTour deliveryTour){
         // Add information to jPanel
         JPanel container = jPanel6;
@@ -390,6 +395,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         List<Request> requests = planningRequest.getRequests();
         int i =0;
 
+        // Add mouseListener to highlight the pointOfInterest panel and select it on the map
         MouseListener ml = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -406,6 +412,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             }
         };
 
+        // For each pointOfInterest we create a PointOfInterestPanel containing information about it.
         for(String pointOfInterest : deliveryTour.getPointsOfInterest()){
             for(Request request: requests){
                 if(request.getPickupId().equals(pointOfInterest)){
@@ -451,7 +458,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     }
 
     /**
-     * Clear the summary panel
+     * Clear the summary and delivery panel
      */
     public void clearPanels(){
         jPanel6.removeAll();
