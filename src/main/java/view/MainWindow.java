@@ -679,6 +679,23 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane2;
+
+    public JTextField getTfDeliveryID() {
+        return tfDeliveryID;
+    }
+
+    public JTextField getTfDeliveryTime() {
+        return tfDeliveryTime;
+    }
+
+    public JTextField getTfPickupID() {
+        return tfPickupID;
+    }
+
+    public JTextField getTfPickupTime() {
+        return tfPickupTime;
+    }
+
     private javax.swing.JTextField tfDeliveryID;
     private javax.swing.JTextField tfDeliveryTime;
     private javax.swing.JTextField tfPickupID;
