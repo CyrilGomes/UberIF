@@ -2,14 +2,14 @@ package controller;
 
 
 import model.*;
-import model.graphs.Graph;
-import model.graphs.Plan;
 import model.graphs.pathfinding.*;
 import observer.Observable;
 import model.DeliveryTour;
 import model.Intersection;
 import model.PlanningRequest;
 import model.Request;
+import model.graphs.Graph;
+import model.graphs.Plan;
 import model.graphs.pathfinding.SimulatedAnnealing;
 import model.graphs.pathfinding.TSP;
 import util.XMLParser;

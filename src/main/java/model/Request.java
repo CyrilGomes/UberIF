@@ -1,6 +1,7 @@
 package model;
 
-import java.awt.*;
+
+import java.awt.Color;
 
 /**
  * class Request, a request from a client. Object constituted from

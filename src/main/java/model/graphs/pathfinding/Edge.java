@@ -5,20 +5,36 @@ import model.Segment;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class Edge. represent an edge of the complete graph
+ */
 public class Edge {
-    String origin;
-    String destination;
-    List<Segment> segmentList;
-    float duration;
+    /**
+     * the origin of the edge.
+     */
+    private final String origin;
+    /**
+     * the destination of the edge.
+     */
+    private final String destination;
+    /**
+     * the segments nested in the edge.
+     */
+    private final List<Segment> segmentList;
+    /**
+     * the total travel time bewteen <code>origin</code> and
+     * <code>destination</code>.
+     */
+    private final float duration;
 
     @Override
     public String toString() {
-        return "Edge{" +
-                "origin='" + origin + '\'' +
-                ", destination='" + destination + '\'' +
-                ", segmentList=" + segmentList +
-                ", duration=" + duration +
-                '}';
+        return  "Edge{"
+                + "origin='" + origin + '\''
+                + ", destination='" + destination + '\''
+                + ", segmentList=" + segmentList
+                + ", duration=" + duration
+                + '}';
     }
 
     public String getOrigin() {
@@ -37,7 +53,17 @@ public class Edge {
         return duration;
     }
 
-    public Edge(String origin, String destination, List<Segment> segmentList, float duration) {
+    /**
+     * @param origin        the edge origin
+     * @param destination   the edge destination
+     * @param segmentList   the segments nested in the edge
+     * @param duration      the total travel time bewteen <code>origin</code> and
+     *                      <code>destination</code>
+     */
+    public Edge(final String origin,
+                final String destination,
+                final List<Segment> segmentList,
+                final float duration) {
         this.origin = origin;
         this.destination = destination;
         this.segmentList = segmentList;

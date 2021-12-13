@@ -1,24 +1,30 @@
 package view.plan;
 
 class Tuple2<T1, T2> {
-    public T1 _1;
-    public T2 _2;
+    /** 1st element of the tuple. **/
+    public T1 firstElem;
+    /** 2nd element of the tuple. **/
+    public T2 secondElem;
 
-    public Tuple2(T1 _1, T2 _2) {
-        this._1 = _1;
-        this._2 = _2;
+    Tuple2(final T1 first, final T2 second) {
+        this.firstElem = first;
+        this.secondElem = second;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Tuple2 e = (Tuple2)o;
-        return _1.equals(e._1) && _2.equals(e._2);
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Tuple2 e = (Tuple2) o;
+        return firstElem.equals(e.firstElem) && secondElem.equals(e.secondElem);
     }
 
     @Override
     public int hashCode() {
-        return _1.hashCode()*100000 + _2.hashCode();
+        return firstElem.hashCode() * 100000 + secondElem.hashCode();
     }
 }

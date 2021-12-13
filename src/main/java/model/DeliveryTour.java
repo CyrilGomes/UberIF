@@ -35,6 +35,7 @@ public class DeliveryTour extends Observable {
      * Constructor of the delivery tour.
      *
      * @param globalTime  the estimed time for the tour.
+     * @param bestSol the best solution consisting of list of pointsOfInterest ids in order.
      */
     public DeliveryTour(float globalTime, String[] bestSol) {
         this.segmentList = new ArrayList<>();

@@ -1,51 +1,72 @@
 package model.graphs.pathfinding;
 
-import javafx.util.Pair;
 import model.DeliveryTour;
 import model.PlanningRequest;
-import model.Request;
 import model.Segment;
 import model.graphs.Graph;
-import model.graphs.Key;
-import model.graphs.Plan;
 import observer.Observable;
 
-import java.sql.SQLOutput;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Class TemplateTSP. a template class with all shared values between
+ * algorithms
+ */
 public abstract class TemplateTSP extends Observable implements TSP {
+    /**
+     * the best computed solution.
+     */
     protected String[] bestSol;
+    /**
+     * the graph.
+     */
     protected Graph g;
+    /**
+     * the best computed solution cost.
+     */
     protected float bestSolCost;
+    /**
+     * the time limit
+     */
     protected int timeLimit;
+    /**
+     * the starting time
+     */
     protected long startTime;
 
 
     /**
-     * Call the <code>computerSolution</code> of the specific algorithm
-     * @param timeLimit
-     * @param g
-     * @param planningRequest
+     * Call the <code>computerSolution</code> of the specific algorithm.
+     *
+     * @param timeLimit       the time limit
+     * @param g               the graph
+     * @param planningRequest the planing request with the deliveries, the
+     *                        pickups and the starting point
      */
     @Override
-    public void searchSolution(int timeLimit, Graph g, PlanningRequest planningRequest) {
-        if (timeLimit <= 0) return;
+    public void searchSolution(final int timeLimit,
+                               final Graph g,
+                               final PlanningRequest planningRequest) {
+        if (timeLimit <= 0) {
+            return;
+        }
         startTime = System.currentTimeMillis();
         this.timeLimit = timeLimit;
         this.g = g;
         bestSol = new String[g.getNbVertices()];
 
-        computeSolution(timeLimit,g,planningRequest);
+        computeSolution(planningRequest);
         notifyObservers(getDeliveryTour());
     }
 
     /**
-     * The specific implementation of the algorithm
-     * @param timeLimit
-     * @param g
-     * @param planningRequest
+     * The specific implementation of the algorithm.
+     *
+     * @param planningRequest   the planning request
      */
-    protected abstract void computeSolution(int timeLimit, Graph g, PlanningRequest planningRequest);
+    protected abstract void computeSolution(PlanningRequest
+                                                    planningRequest);
 
     /**
      * @return a DeliveryTour object that contains, all the computed information

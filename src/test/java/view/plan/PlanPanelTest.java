@@ -5,7 +5,6 @@ import model.graphs.Plan;
 import util.XMLParser;
 import view.MainWindow;
 
-import javax.swing.*;
 import java.io.File;
 
 public class PlanPanelTest extends TestCase {

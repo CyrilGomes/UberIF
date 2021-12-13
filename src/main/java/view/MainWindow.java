@@ -25,7 +25,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The main class, displaying the HMI and starting the application.
@@ -39,6 +41,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private State currentState;
     // The currently highlighted on the summary panel
     private PointOfInterestPanel highlighted;
+    private Map<String,PointOfInterestPanel> pointOfInterestsPanelMap;
 
     /**
      * Creates new form MainWindow.
@@ -48,6 +51,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         buttonListenerMainWindow = new ButtonListenerMainWindow(controller, this);
         initComponents();
         planPanel = new PlanPanel(this);
+        pointOfInterestsPanelMap = new HashMap<>();
 
         jPanel1.add(planPanel);
         pack();
@@ -411,8 +415,8 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     }
 
     /**
-     * Display summary information about the requests
-     * @param planningRequest
+     * Display delivery information about the requests on the delivery panel
+     * @param planningRequest contains the requests
      */
     public void showDelivery(PlanningRequest planningRequest){
         // Add information to jPanel
@@ -432,34 +436,78 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             container.add(Box.createVerticalStrut(10));
 
 
-            // For each request we get the time of passage of the pickup and the delivery
+            MouseListener ml = new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    for(int j = 0; j<container.getComponentCount(); j++) {
+                        Component c = container.getComponent(j);
+                        if(c instanceof JPanel) {
+                            for(int k=0; k<((JPanel) c).getComponentCount(); k++) {
+                                Component child = ((JPanel) c).getComponent(k);
+                                if(child.getName() != null && child.getName().startsWith("btnDelete")) {
+                                    child.setVisible(false);
+                                }
+                            }
+                            c.setBackground(container.getBackground());
+                        }
+                    }
+
+                    JPanel clickedPanel = (JPanel) e.getSource();
+                    clickedPanel.setBackground(Color.LIGHT_GRAY);
+
+                    for(int j = 0; j<clickedPanel.getComponentCount(); j++) {
+                        Component c = clickedPanel.getComponent(j);
+                        if(c.getName() != null && c.getName().startsWith("btnDelete")) {
+                            c.setVisible(true);
+                        }
+                        if(c instanceof JPanel) {
+                            c.setBackground(Color.LIGHT_GRAY);
+                        }
+                    }
+                }
+            };
+
+
+
+
+        // For each request we get the time of passage of the pickup and the delivery
             int i = 1 ;
             for(Request request : planningRequest.getRequests()){
                 String pickUpTimePassage = request.getPickupTimePassage();
                 String deliveryTimePassage = request.getDeliveryTimePassage();
 
+
+
+                JPanel linePanel = new JPanel();
+                linePanel.setLayout(new BoxLayout(linePanel,BoxLayout.Y_AXIS));
+
                 JLabel requestLabel = new JLabel("Request number "+i+":");
                 requestLabel.setFont(new Font("Verdana",1,16));
                 requestLabel.setForeground(request.getColor());
-                container.add(requestLabel);
-                container.add(Box.createVerticalStrut(10));
-
-
+                linePanel.add(requestLabel);
+                linePanel.add(Box.createVerticalStrut(10));
 
                 JLabel timeLabel = new JLabel("PickupTime: "+pickUpTimePassage+"\t DeliveryTime: "+deliveryTimePassage);
                 timeLabel.setFont(new Font("Verdana",1,12));
-                container.add(timeLabel);
-                container.add(Box.createVerticalStrut(5));
+                linePanel.add(timeLabel);
+                linePanel.add(Box.createVerticalStrut(5));
 
                 JButton deleteButton = new JButton("Remove request");
-                container.add(deleteButton);
+                deleteButton.setName("btnDelete" + i);
+                deleteButton.setVisible(false);
+                linePanel.add(deleteButton);
                 deleteButton.addActionListener(new DeleteButtonListener(controller,request,false));
-                container.add(Box.createVerticalStrut(5));
+                linePanel.add(Box.createVerticalStrut(5));
 
                 JButton deleteAndChangeTourButton = new JButton("Remove request and change the tour");
-                container.add(deleteAndChangeTourButton);
+                linePanel.add(deleteAndChangeTourButton);
+                deleteAndChangeTourButton.setName("btnDeleteTour" + i);
+                deleteAndChangeTourButton.setVisible(false);
                 deleteAndChangeTourButton.addActionListener(new DeleteButtonListener(controller,request,true));
-                container.add(Box.createVerticalStrut(20));
+                linePanel.add(Box.createVerticalStrut(20));
+
+                linePanel.addMouseListener(ml);
+                container.add(linePanel);
 
                 i++;
             }
@@ -474,6 +522,11 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             container.repaint();
     }
 
+    /**
+     * Display summary information about each point of interest
+     * @param planningRequest contains the requests
+     * @param deliveryTour contains the points of interests
+     */
     public void showSummary(PlanningRequest planningRequest, DeliveryTour deliveryTour){
         // Add information to jPanel
         JPanel container = jPanel6;
@@ -539,7 +592,20 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     }
 
     /**
-     * Clear the summary panel
+     * Method called to highlight a point on interest, called when we click on a point on the map
+     * @param pointOfInterestId the id of the pointOfInterest to highlight
+     */
+    public void setHighlighted(String pointOfInterestId){
+        PointOfInterestPanel toHighlight = pointOfInterestsPanelMap.get(pointOfInterestId);
+        if(highlighted != null){
+            highlighted.setBackground(jPanel6.getBackground());
+        }
+        highlighted = toHighlight;
+        highlighted.setBackground(Color.LIGHT_GRAY);
+    }
+
+    /**
+     * Clear the summary and delivery panel
      */
     public void clearPanels(){
         jPanel6.removeAll();

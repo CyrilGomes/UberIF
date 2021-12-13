@@ -106,4 +106,15 @@ public class XMLParserTest {
             assertEquals("Depot not found",e.getMessage());
         }
     }
+
+    @Test
+    public void testRequestsNotInMap(){
+        try{
+            Plan plan = xmlParser.readMap("files/smallMap.xml");
+            xmlParser.readRequests("files/requestsLarge7.xml", plan.getIntersectionMap());
+        }
+        catch(Exception e){
+            assertEquals("The map is too small for the requests imported, please use a bigger map.",e.getMessage());
+        }
+    }
 }
