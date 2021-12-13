@@ -172,24 +172,20 @@ public class ControllerMainWindow extends Observable {
                 planningRequest.addRequest(newRequest);
                 planData.setPlanningRequest(planningRequest);
                 System.out.println("Planning :"+planningRequest);
-                DeliveryTour deliveryTour = tsp.getDeliveryTour();
+                DeliveryTour deliveryTour = planData.getDeliveryTour();
                 String lastIntersectionId = deliveryTour.getLastIntersectionId();
                 deliveryTour.addNextPoint(pickupId);
                 deliveryTour.addNextPoint(deliveryId);
                 Dijkstra dijkstra = new Dijkstra();
                 Graph newGraph = new Graph();
                 List<String> pointsOfInterests = new ArrayList<>();
+
                 pointsOfInterests.add(pickupId);
-
-
-
                 dijkstra.executeAlgorithm(planData,lastIntersectionId,newGraph,pointsOfInterests);
 
-                pointsOfInterests.remove(0);
                 pointsOfInterests.add(deliveryId);
                 dijkstra.executeAlgorithm(planData,pickupId,newGraph,pointsOfInterests);
 
-                pointsOfInterests.remove(0);
                 String startId = planningRequest.getStartId();
                 pointsOfInterests.add(startId);
                 dijkstra.executeAlgorithm(planData,deliveryId,newGraph,pointsOfInterests);
@@ -199,13 +195,17 @@ public class ControllerMainWindow extends Observable {
                 listEdges.add(newGraph.getEdge(pickupId,deliveryId));
                 listEdges.add(newGraph.getEdge(deliveryId,startId));
 
+                deliveryTour.removeListSegment(lastIntersectionId);
                 for (Edge edge: listEdges) {
                     deliveryTour.addListSegment(edge.getSegmentList());
                 }
 
                 planningRequest.calculateTimes(deliveryTour);
-                notifyObservers(deliveryTour);
                 planData.setDeliveryTour(deliveryTour);
+                deliveryTour.addObserver(mainWindow);
+                mainWindow.showSummary(planData.getPlanningRequest(),planData.getDeliveryTour());
+                mainWindow.showDelivery(planData.getPlanningRequest());
+                deliveryTour.notifyObservers(deliveryTour);
                 history.registerCurrentState(planData, graph);
                 System.out.println(history);
 

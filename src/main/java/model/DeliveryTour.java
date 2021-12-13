@@ -1,8 +1,8 @@
 package model;
 
-import java.util.*;
 import model.graphs.Graph;
 import model.graphs.pathfinding.Edge;
+import observer.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * Class representing the computed Delivery tour. result of the TSP.
  * @see Segment
  */
-public class DeliveryTour {
+public class DeliveryTour extends Observable {
     List<Segment> segmentList;
     String lastIntersectionId;
 
@@ -43,6 +43,7 @@ public class DeliveryTour {
         for(int i=0; i<bestSol.length; i++){
             pointsOfInterest.add(bestSol[i]);
         }
+        this.lastIntersectionId = bestSol[bestSol.length -1];
     }
 
     public List<String> getPointsOfInterest() {
@@ -74,6 +75,14 @@ public class DeliveryTour {
     public void addListSegment(List<Segment> segmentListAdded){
         segmentList.addAll(segmentListAdded);
         
+    }
+
+    public void removeListSegment(String departID){
+        String originSeg = "0";
+        for(int i = segmentList.size()-1; i>=0 && !originSeg.equals(departID);i--){
+            originSeg = segmentList.get(i).getOrigin();
+            segmentList.remove(i);
+        }
     }
 
     /**
