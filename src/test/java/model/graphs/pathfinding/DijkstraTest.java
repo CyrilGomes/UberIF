@@ -104,14 +104,6 @@ public class DijkstraTest {
 
     }
 
-    @Test
-    public void getLowestDistanceNode() {
-    }
-
-    @Test
-    public void calculateMinimumDistance() {
-    }
-
 
     @Test
     public void executeAlgorithm() {

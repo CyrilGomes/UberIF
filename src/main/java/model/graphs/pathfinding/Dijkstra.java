@@ -33,7 +33,7 @@ public class Dijkstra {
      * @param nodes the the unsettled nodes
      * @return the node with the minimum weight in the <code>weights</code> map
      */
-    public String getLowestDistanceNode(final Set<String> nodes) {
+    private String getLowestDistanceNode(final Set<String> nodes) {
         String lowestNode = null;
         float lowestWeight = Float.MAX_VALUE;
         for (String node : nodes) {
@@ -56,7 +56,7 @@ public class Dijkstra {
      * @param edgeWeight   the weight of the edge
      * @param currentNode  the current node
      */
-    public void calculateMinimumDistance(final String adjacentNode,
+    private void calculateMinimumDistance(final String adjacentNode,
                                          final float edgeWeight,
                                          final String currentNode) {
         //System.out.println(adjacentNode + " " +edgeWeight + " "+ currentNode);
