@@ -6,6 +6,7 @@ import model.PlanningRequest;
 import model.Segment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +71,22 @@ public class Plan {
         this.intersectionMap = intersectionMap;
         this.adjacentsMap = adjacentsMap;
         this.segmentMap = segmentMap;
+    }
+
+    public Plan(Plan planCopy){
+        this.intersectionMap = new HashMap<>(planCopy.getIntersectionMap());
+        this.adjacentsMap = new HashMap<>(planCopy.getAdjacentsMap());
+        this.segmentMap = new HashMap<>(planCopy.getSegmentMap());
+        if(planCopy.planningRequest != null){
+            this.planningRequest = new PlanningRequest(planCopy.getPlanningRequest());
+        }
+        if(planCopy.getDeliveryTour() != null){
+            this.deliveryTour = new DeliveryTour(planCopy.getDeliveryTour());
+        }
+        this.maxLatitude = planCopy.maxLatitude;
+        this.minLatitude = planCopy.minLatitude;
+        this.maxLongitude = planCopy.maxLongitude;
+        this.minLongitude = planCopy.minLongitude;
     }
 
     /**

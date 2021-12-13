@@ -48,8 +48,22 @@ public class ButtonListenerMainWindow implements ActionListener {
                 break;
 
             //If the button to add a request is pressed
-            case "Add a request":System.out.println("Add a request : not implemented");break;
-
+            case "Add request":System.out.println("Add a request : implemention in progress");
+                String deliveryId = mainWindow.getTfDeliveryID().getText();
+                String pickupId = mainWindow.getTfPickupID().getText();
+                String deliveryTime = mainWindow.getTfDeliveryTime().getText();
+                String pickupTime = mainWindow.getTfPickupTime().getText();
+                controllerMainWindow.addNewRequest(pickupId, pickupTime, deliveryId, deliveryTime);
+                break;
+            case "Redo":
+                System.out.println("redo : implementation in progress");
+                System.out.println("Go forward !");
+                controllerMainWindow.redo();
+                break;
+            case "Undo":
+                System.out.println("undo : implementation in progress");
+                System.out.println("Go back !");
+                controllerMainWindow.undo();
             //If an unpredictable or unimplemented event happen.
             default : System.out.println("Not Implemented");break;
         }
