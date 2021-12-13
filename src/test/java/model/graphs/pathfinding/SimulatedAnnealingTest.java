@@ -67,7 +67,7 @@ public class SimulatedAnnealingTest {
 
 
 
-    @Test
+
     public void saStats(){
         System.out.println("Calculating Simulated Annealing :");
         String filesFolder = "./files/";
@@ -158,7 +158,7 @@ public class SimulatedAnnealingTest {
 
     }
 
-    @Test
+
     public void stats(){
         System.out.println("Calculating Branch and Bound :");
         String filesFolder = "./files/";
