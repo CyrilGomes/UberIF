@@ -18,7 +18,7 @@ On IntelliJ IDEA, use the following method:
 - Open the project. The IDE might generate some files.
 - Go to `Run --> Edit Configurations...`, then add an `Application` 
   configuration with `View.MainWindow` as the main class.
-- Dowload the Maven dependencies through the Maven tab (on the right hand
+- Download the Maven dependencies through the Maven tab (on the right-hand
   side of the IDE) and by clicking on `Reload all Maven projects`.
 
 You can also build the application through the supported IDEs and run the 
