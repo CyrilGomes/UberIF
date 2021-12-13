@@ -6,11 +6,8 @@ import model.Intersection;
 import model.Segment;
 import model.graphs.Key;
 import model.graphs.Plan;
-import sun.applet.Main;
 import view.MainWindow;
 import view.MouseListenerPlanPanel;
-
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -52,20 +49,25 @@ public final class PlanPanel extends JPanel {
     private int width;
     /** Height of the component. **/
     private int height;
-
-    Map<Tuple2<Intersection, Integer>, Tuple2<Intersection, Intersection>> clickablePOIMap;
-    Tuple2<Intersection, Intersection> highlightedPath;
+    /** Map containing the clickable points of interest according to their
+     * intersection.
+     */
+    private final Map<Tuple2<Intersection, Integer>,
+            Tuple2<Intersection, Intersection>> clickablePOIMap;
+    /** The delivery route to highlight on the best tour. **/
+    private Tuple2<Intersection, Intersection> highlightedPath;
+    /** Selected point of interest. **/
     private Intersection selectedPOI;
 
     /**
      * Creates a new instance of the graphical component and initializes its
      * listeners.
      *
-     * @param parent Parent component of the panel
+     * @param mainWindow Parent component of the panel
      */
-    public PlanPanel(final MainWindow parent) {
+    public PlanPanel(final MainWindow mainWindow) {
         super();
-        this.parent = parent;
+        this.parent = mainWindow;
         this.setBackground(Color.LIGHT_GRAY);
         MouseListenerPlanPanel mouseEvent = new MouseListenerPlanPanel(this);
         this.addMouseListener(mouseEvent);
@@ -157,14 +159,19 @@ public final class PlanPanel extends JPanel {
         highlightedPath = null;
 
         for (Tuple2<Intersection, Integer> t : clickablePOIMap.keySet()) {
-            if(Math.sqrt(Math.pow(yMouse - scaleYCoordinateToPlan(t._1.getLatitude()), 2D) + Math.pow(xMouse - scaleXCoordinateToPlan(t._1.getLongitude()), 2D)) <= t._2) {
-                selectedPOI = t._1;
+            if (Math.sqrt(Math.pow(yMouse
+                    - scaleYCoordinateToPlan(t.firstElem.getLatitude()), 2D)
+                    + Math.pow(xMouse
+                        - scaleXCoordinateToPlan(t.firstElem.getLongitude()), 2D))
+                    <= t.secondElem) {
+                selectedPOI = t.firstElem;
                 highlightedPath = clickablePOIMap.get(t);
             }
         }
 
-        if(highlightedPath==null)
+        if (highlightedPath == null) {
             identifyStreet(xMouse, yMouse);
+        }
         repaint();
     }
 
@@ -248,7 +255,8 @@ public final class PlanPanel extends JPanel {
             if ((int) (pointOrigine.distance(pointMouse))
                     + (int) (pointDestination.distance(pointMouse))
                     == (int) (pointDestination.distance(pointOrigine))
-                    && !planData.getSelectedStreetName().equals(segment.getName())
+                    && !planData.getSelectedStreetName()
+                        .equals(segment.getName())
             ) {
                 planData.setSelectedStreetName(segment.getName());
                 parent.setSystemInfoText(segment.getName());
@@ -294,10 +302,19 @@ public final class PlanPanel extends JPanel {
             if (planData.getPlanningRequest() != null) {
                 planDrawing.drawPOI(new ClickablePOI() {
                     @Override
-                    public void updateTrack(Intersection origin, int radiusOrigin, Intersection destination, int radiusDestination) {
-                        if(deliveryTour != null) { //beatriz
-                            clickablePOIMap.put(new Tuple2<Intersection, Integer>(origin, radiusOrigin), new Tuple2<Intersection, Intersection>(origin, destination));
-                            clickablePOIMap.put(new Tuple2<Intersection, Integer>(destination, radiusDestination), new Tuple2<Intersection, Intersection>(origin, destination));
+                    public void updateTrack(final Intersection origin,
+                                            final int radiusOrigin,
+                                            final Intersection destination,
+                                            final int radiusDestination) {
+                        if (deliveryTour != null) { //beatriz
+                            clickablePOIMap.put(new Tuple2<Intersection,
+                                    Integer>(origin, radiusOrigin),
+                                new Tuple2<Intersection,
+                                    Intersection>(origin, destination));
+                            clickablePOIMap.put(new Tuple2<Intersection,
+                                    Integer>(destination, radiusDestination),
+                                new Tuple2<Intersection,
+                                        Intersection>(origin, destination));
                         }
                     }
                 });
