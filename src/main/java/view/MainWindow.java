@@ -443,7 +443,9 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      */
     public void setHighlighted(String pointOfInterestId){
         PointOfInterestPanel toHighlight = pointOfInterestsPanelMap.get(pointOfInterestId);
-        highlighted.setBackground(jPanel6.getBackground());
+        if(highlighted != null){
+            highlighted.setBackground(jPanel6.getBackground());
+        }
         highlighted = toHighlight;
         highlighted.setBackground(Color.LIGHT_GRAY);
     }
