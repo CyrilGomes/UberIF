@@ -20,11 +20,11 @@ public class Graph {
     /**
      * the graph vertices.
      */
-    private final Set<String> vertices;
+    private Set<String> vertices;
     /**
      * the graph edges.
      */
-    private final HashMap<Key, Edge> edges;
+    private HashMap<Key, Edge> edges;
     /**
      * the graph minimal edge cost.
      */
@@ -89,6 +89,18 @@ public class Graph {
         vertices = new HashSet<>();
         edges = new HashMap<>();
         minSubgraphCost = new HashMap<>();
+    }
+    public Graph(Graph graphCopy){
+        if(graphCopy.vertices != null){
+            vertices = new HashSet<>(graphCopy.vertices);
+        }
+        if(graphCopy.edges != null){
+            edges = new HashMap<>();
+            graphCopy.edges.forEach(((key, edge) -> {
+                this.edges.put(new Key(key), new Edge(edge));
+            }));
+        }
+
     }
 
     /**

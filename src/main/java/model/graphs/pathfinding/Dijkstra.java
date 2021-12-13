@@ -103,6 +103,7 @@ public class Dijkstra {
 
 
         while (unsettledNodes.size() != 0 && globalSize != 0) {
+            System.out.println("Djikstra :"+unsettledNodes);
             String currentNodeId = getLowestDistanceNode(unsettledNodes);
             unsettledNodes.remove(currentNodeId);
             for (String adjacent : plan.getAdjacentsNodes(currentNodeId)) {

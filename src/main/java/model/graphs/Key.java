@@ -29,6 +29,11 @@ public class Key {
         this.y = y;
     }
 
+    public Key(Key keyCopy){
+        this.x = keyCopy.x;
+        this.y = keyCopy.y;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
