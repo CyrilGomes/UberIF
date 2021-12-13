@@ -23,7 +23,7 @@ public class Segment {
         this.name = name;
     }
 
-    public Segment(Segment segCopy){
+    public Segment(Segment segCopy) {
         this.origin = segCopy.origin;
         this.destination = segCopy.destination;
         this.length = segCopy.length;
