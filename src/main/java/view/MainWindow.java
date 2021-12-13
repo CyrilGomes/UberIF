@@ -87,7 +87,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         tfDeliveryTime = new javax.swing.JTextField();
         jPanel11 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
-        buttonAddRequest = new javax.swing.JButton();
+        btAddRequest = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         infoLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -246,13 +246,13 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         jPanel4.add(jPanel10);
 
-        buttonAddRequest.setText("Add request");
-        buttonAddRequest.addActionListener(new java.awt.event.ActionListener() {
+        btAddRequest.setText("Add request");
+        btAddRequest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAddRequestActionPerformed(evt);
             }
         });
-        jPanel4.add(buttonAddRequest);
+        jPanel4.add(btAddRequest);
 
         jPanel2.add(jPanel4);
 
@@ -363,7 +363,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_buttonAddRequestActionPerformed
 
     public void setModifyPlanData(final boolean state) {
-        btAddDelivery.setEnabled(state);
         btImportMap.setEnabled(state);
         btImportTour.setEnabled(state);
     }
@@ -652,7 +651,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btImportMap;
     private javax.swing.JMenuItem btImportTour;
-    private javax.swing.JButton buttonAddRequest;
+    private javax.swing.JButton btAddRequest;
     private javax.swing.JLabel infoLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
