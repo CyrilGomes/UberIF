@@ -91,7 +91,7 @@ public class SimulatedAnnealing extends TemplateTSP implements TSP {
         float curCost = randomPermutation(planningRequest.getStartId());
 
         bestSol = Arrays.copyOf(permutation, permutation.length);
-        bestSolCost = getPermutationCost();
+        bestSolCost = curCost;
 
 
         //heat();
