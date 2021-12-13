@@ -12,19 +12,26 @@ import java.util.List;
  * @see Segment
  */
 public class DeliveryTour extends Observable {
-    List<Segment> segmentList;
-    String lastIntersectionId;
+    /**
+     * the list of segments in order.
+     */
+    private List<Segment> segmentList;
 
-    float globalTime;
-    List<String> pointsOfInterest;
+    /**
+     * the last intersection of the tour.
+     */
+    private String lastIntersectionId;
+
+    private float globalTime;
+    private List<String> pointsOfInterest;
 
 
     public List<Segment> getSegmentList() {
         return segmentList;
     }
 
-    public void setSegmentList(List<Segment> segmentList) {
-        this.segmentList = segmentList;
+    public void setSegmentList(final List<Segment> segmentListInit) {
+        this.segmentList = segmentListInit;
     }
 
     public float getGlobalTime() {
@@ -34,14 +41,14 @@ public class DeliveryTour extends Observable {
     /**
      * Constructor of the delivery tour.
      *
-     * @param globalTime  the estimed time for the tour.
+     * @param globalTimeInit  the estimed time for the tour.
      * @param bestSol the best solution consisting of list of pointsOfInterest ids in order.
      */
-    public DeliveryTour(float globalTime, String[] bestSol) {
+    public DeliveryTour(final float globalTimeInit, final String[] bestSol) {
         this.segmentList = new ArrayList<>();
-        this.globalTime = globalTime;
+        this.globalTime = globalTimeInit;
         pointsOfInterest = new ArrayList<>();
-        for(int i=0; i<bestSol.length; i++){
+        for(int i = 0; i < bestSol.length; i++) {
             pointsOfInterest.add(bestSol[i]);
         }
         this.lastIntersectionId = bestSol[bestSol.length -1];
@@ -51,9 +58,9 @@ public class DeliveryTour extends Observable {
         return pointsOfInterest;
     }
 
-    public DeliveryTour(DeliveryTour deliverCopy){
+    public DeliveryTour(final DeliveryTour deliverCopy) {
         this.segmentList = new ArrayList<>();
-        for(Segment s : deliverCopy.getSegmentList()){
+        for (Segment s : deliverCopy.getSegmentList()) {
             this.segmentList.add(new Segment(s));
         }
         this.globalTime = deliverCopy.globalTime;
