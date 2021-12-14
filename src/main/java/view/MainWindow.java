@@ -356,8 +356,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      * @param evt the event caught.
      * @see ButtonListenerMainWindow
      */
-    private void jMenuItemActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_jMenuItemActionPerformed
-        System.out.println(evt.getActionCommand());
+    private void jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActionPerformed
         buttonListenerMainWindow.actionPerformed(evt);
 
     }//GEN-LAST:event_jMenuItemActionPerformed
@@ -668,7 +667,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             public void run() {
                 FlatLightLaf.setup();
                 new MainWindow().setVisible(true);
-                System.out.println("Hello world");
+                //System.out.println("Hello world");
             }
         });
     }

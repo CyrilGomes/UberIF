@@ -47,7 +47,7 @@ public class History {
         if (this.position > 0) {
             this.position--;
         }
-        System.out.println("get the element " + position + " : " + this.listPlan.get(position));
+        //System.out.println("get the element " + position + " : " + this.listPlan.get(position));
         return this.listPlan.get(this.position);
     }
 
