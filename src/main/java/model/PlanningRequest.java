@@ -10,10 +10,21 @@ import java.util.stream.Collectors;
  * @see Request
  */
 public class PlanningRequest {
+    /**
+     * The id of the starting point.
+     */
     private String startId;
+    /**
+     * The hour of departure.
+     */
     private String departureTime;
+    /**
+     * The list of requests of the complete tour.
+     */
     private List<Request> requests;
-    // Finish time calculated for the tour
+    /**
+     * The time after the end of the tour.
+     */
     private String finishTime;
     /**
      * the constructor of the object PlanningRequest.
@@ -26,6 +37,10 @@ public class PlanningRequest {
         requests = new ArrayList<>();
     }
 
+    /**
+     * the deep copy constructor of the object PlanningRequest.
+     * @param planningCopy the planning request to copy.
+     */
     public PlanningRequest(PlanningRequest planningCopy){
         this.startId = planningCopy.startId;
         this.departureTime = planningCopy.departureTime;

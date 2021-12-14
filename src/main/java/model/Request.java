@@ -10,16 +10,33 @@ import java.awt.Color;
  * @see Intersection
  */
 public class Request {
+    /**
+     * The intersection id of the pickup.
+     */
     private String pickupId;
+    /**
+     * The delivery id of the pickup.
+     */
     private String deliveryId;
+    /**
+     * The pickup duration.
+     */
     private int pickupDuration;
+    /**
+     * The delivery duration.
+     */
     private int deliveryDuration;
-    // The time the cyclist arrive to this pickup in the tour
+    /**
+     * The time passage at the pickup.
+     */
     private String pickupTimePassage;
-    // The time the cyclist arrive to this delivery in the tour
+    /**
+     * The time passage at the delivery.
+     */
     private String deliveryTimePassage;
-
-    // Color of the icons in the map
+    /**
+     * The graphic color associated to the request.
+     */
     private Color color;
 
 
@@ -38,6 +55,10 @@ public class Request {
         this.color = null;
     }
 
+    /**
+     * The Deep copy constructor of a request object.
+     * @param reqCopy the request to copy.
+     */
     public Request(Request reqCopy){
         this.pickupId = reqCopy.pickupId;
         this.deliveryId = reqCopy.deliveryId;

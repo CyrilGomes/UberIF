@@ -161,9 +161,10 @@ public class ControllerMainWindow extends Observable {
     }
 
     /**
+     * Return the intersection associated to the targeted id
      *
-     * @param id
-     * @return
+     * @param id    id of the searched intersection of the plan
+     * @return      the Intersection object that has the id
      */
     public Intersection getIntersectionFromId(final String id) {
         return planData.getIntersectionMap().get(id);

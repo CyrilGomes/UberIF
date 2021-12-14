@@ -4,9 +4,21 @@ package model;
  * Class representing a segment between two intersections.
  */
 public class Segment {
+    /**
+     * The origin of the segment.
+     */
     private String origin;
+    /**
+     * The destination of the segment.
+     */
     private String destination;
+    /**
+     * The length of the segment.
+     */
     private float length;
+    /**
+     * The name of the segment.
+     */
     private String name;
 
     /**
@@ -22,7 +34,10 @@ public class Segment {
         this.length = length;
         this.name = name;
     }
-
+    /**
+     * Deep copy constructor of the Segment object.
+     * @param segCopy the segment to copy.
+     */
     public Segment(Segment segCopy) {
         this.origin = segCopy.origin;
         this.destination = segCopy.destination;

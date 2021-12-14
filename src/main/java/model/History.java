@@ -6,26 +6,63 @@ import model.graphs.Plan;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class representing the history of the user's actions.
+ * @see Plan
+ * @see Graph
+ */
 public class History {
+
+    /**
+     * list of the different versions of the plan before each user action.
+     */
     private List<Plan> listPlan;
+
+    /**
+     * list of the different versions of the graph before each user action.
+     */
     private List<Graph> listGraph;
+
+    /**
+     * position in the history.
+     */
     private int position;
+
+    /**
+     * maximum length of the history.
+     */
     private final int MAX_LENGTH = 10;
 
-    public List<Plan> getListPlan() {
-        return listPlan;
-    }
 
-    public int getPosition() {
-        return position;
-    }
-
+    /**
+     * The constructor of the class.
+     */
     public History() {
         this.listPlan = new ArrayList<>();
         this.listGraph = new ArrayList<>();
         this.position = -1;
     }
 
+    /**
+     * The getter of listPlan.
+     */
+    public List<Plan> getListPlan() {
+        return listPlan;
+    }
+
+    /**
+     * The getter of position.
+     */
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * The constructor of the class.
+     *
+     * @param planData  the plan to register.
+     * @param graph     the graph to register.
+     */
     public void registerCurrentState(Plan planData, Graph graph) {
         Plan planNew = new Plan(planData);
         Graph graphNew = null;
@@ -43,6 +80,9 @@ public class History {
         this.position = this.listPlan.size() - 1;
     }
 
+    /**
+     * Return the plan from the previous registered action.
+     */
     public Plan undo() {
         if (this.position > 0) {
             this.position--;
@@ -51,6 +91,9 @@ public class History {
         return this.listPlan.get(this.position);
     }
 
+    /**
+     * Return the plan from the next registered action.
+     */
     public Plan redo() {
         if (this.position < this.listPlan.size() - 1) {
             this.position++;
@@ -58,6 +101,9 @@ public class History {
         return this.listPlan.get(this.position);
     }
 
+    /**
+     * Convert the history data to a string.
+     */
     @Override
     public String toString() {
         return "History{" +

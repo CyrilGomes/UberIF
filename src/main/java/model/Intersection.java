@@ -4,8 +4,17 @@ package model;
  * Class simulating an intersection.
  */
 public class Intersection {
+    /**
+     * The id of the intersection.
+     */
     private String id;
+    /**
+     * The latitude of the intersection.
+     */
     private float latitude;
+    /**
+     * The longitude of the intersection.
+     */
     private float longitude;
 
 
