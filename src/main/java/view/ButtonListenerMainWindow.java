@@ -29,12 +29,12 @@ public class ButtonListenerMainWindow implements ActionListener {
 
             //if the button to import a tour is pressed
             case "Import tour":
-                System.out.println("Importer un tour");
+                //System.out.println("Importer un tour");
                 chooser.setAcceptAllFileFilterUsed(false);
                 chooser.addChoosableFileFilter(new FileNameExtensionFilter("xml files (.xml)", "xml"));
                 returnVal = chooser.showOpenDialog(this.mainWindow);
                 if(returnVal == JFileChooser.APPROVE_OPTION){
-                    System.out.println("You chose to open this file: "+chooser.getSelectedFile());
+                    //System.out.println("You chose to open this file: "+chooser.getSelectedFile());
                     controllerMainWindow.importTour(chooser.getSelectedFile());
                 }
                 break;
@@ -48,7 +48,7 @@ public class ButtonListenerMainWindow implements ActionListener {
                 break;
 
             //If the button to add a request is pressed
-            case "Add request":System.out.println("Add a request : implemention in progress");
+            case "Add request"://System.out.println("Add a request : implemention in progress");
                 String deliveryId = mainWindow.getTfDeliveryID().getText();
                 String pickupId = mainWindow.getTfPickupID().getText();
                 String deliveryTime = mainWindow.getTfDeliveryTime().getText();
@@ -56,13 +56,13 @@ public class ButtonListenerMainWindow implements ActionListener {
                 controllerMainWindow.addNewRequest(pickupId, pickupTime, deliveryId, deliveryTime);
                 break;
             case "Redo":
-                System.out.println("redo : implementation in progress");
-                System.out.println("Go forward !");
+                //System.out.println("redo : implementation in progress");
+                //System.out.println("Go forward !");
                 controllerMainWindow.redo();
                 break;
             case "Undo":
-                System.out.println("undo : implementation in progress");
-                System.out.println("Go back !");
+                //System.out.println("undo : implementation in progress");
+                //System.out.println("Go back !");
                 controllerMainWindow.undo();
             //If an unpredictable or unimplemented event happen.
             default : System.out.println("Not Implemented");break;

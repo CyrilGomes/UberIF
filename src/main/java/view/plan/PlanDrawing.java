@@ -89,7 +89,7 @@ public class PlanDrawing {
                 .getLatitude());
 		int xDepot = planPanel.scaleXCoordinateToPlan(depot
                 .getLongitude());
-		System.out.println("xDepot: " + xDepot + " yDepot: " + yDepot);
+		//System.out.println("xDepot: " + xDepot + " yDepot: " + yDepot);
 		g.setColor(Color.BLACK);
         g.fillRect(xDepot, yDepot, 20, 20);
 
