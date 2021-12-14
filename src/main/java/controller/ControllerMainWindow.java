@@ -86,7 +86,7 @@ public class ControllerMainWindow extends Observable {
                 new Thread(() -> {
                     tsp.searchSolution(100000, graph, finalRequest);
                     history.registerCurrentState(planData, graph);
-                    System.out.println(history);
+                    //System.out.println(history);
                 }).start();
                 State readyState = new ReadyState();
                 readyState.execute(mainWindow);
@@ -94,7 +94,7 @@ public class ControllerMainWindow extends Observable {
             }
         } catch (Exception e) {
             String msg = "Error importing tour: " + e.getMessage();
-            System.out.println(msg);
+            //System.out.println(msg);
             showMessageDialog(mainWindow, msg);
             State readyState = new ReadyState();
             readyState.execute(mainWindow);
@@ -118,12 +118,12 @@ public class ControllerMainWindow extends Observable {
             mainWindow.setPlanData(plan);
             mainWindow.clearPanels();
             history.registerCurrentState(planData, graph);
-            System.out.println(history);
+            //System.out.println(history);
         }
 // Case where we fail to read the map
         catch (Exception e) {
             String msg = "Error importing map: " + e.getMessage();
-            System.out.println(msg);
+            //System.out.println(msg);
             showMessageDialog(mainWindow, msg);
         }
         State readyState = new ReadyState();
@@ -191,7 +191,7 @@ public class ControllerMainWindow extends Observable {
                 PlanningRequest planningRequest = planData.getPlanningRequest();
                 planningRequest.addRequest(newRequest);
                 planData.setPlanningRequest(planningRequest);
-                System.out.println("Planning :" + planningRequest);
+                //System.out.println("Planning :" + planningRequest);
                 DeliveryTour deliveryTour = planData.getDeliveryTour();
                 String lastIntersectionId = deliveryTour.getLastIntersectionId();
                 deliveryTour.addNextPoint(pickupId);
@@ -227,19 +227,19 @@ public class ControllerMainWindow extends Observable {
                 mainWindow.showDelivery(planData.getPlanningRequest());
                 deliveryTour.notifyObservers(deliveryTour);
                 history.registerCurrentState(planData, graph);
-                System.out.println(history);
+                //System.out.println(history);
 
             }
             if (pickupPlace == null) {
-                System.out.println("Pickup place not defined");
+                //System.out.println("Pickup place not defined");
             }
             if (deliveryPlace == null) {
-                System.out.println("Delivery place not defined");
+                //System.out.println("Delivery place not defined");
             }
 
         } catch (Exception e) {
             //TODO : manage different exceptions like conversion or not found id
-            System.out.println(e);
+            //System.out.println(e);
         }
     }
 
@@ -249,9 +249,9 @@ public class ControllerMainWindow extends Observable {
     public void undo() {
         Plan plan = history.undo();
         this.planData = plan;
-        System.out.println(planData);
-        System.out.println(plan);
-        System.out.println(history);
+        //System.out.println(planData);
+        //System.out.println(plan);
+        //System.out.println(history);
         mainWindow.setPlanData(plan);
         mainWindow.showSummary(plan.getPlanningRequest(), plan.getDeliveryTour());
         mainWindow.showDelivery(planData.getPlanningRequest());
@@ -267,9 +267,9 @@ public class ControllerMainWindow extends Observable {
     public void redo() {
         Plan plan = history.redo();
         this.planData = plan;
-        System.out.println(planData);
-        System.out.println(plan);
-        System.out.println(history);
+        //System.out.println(planData);
+        //System.out.println(plan);
+        //System.out.println(history);
         mainWindow.setPlanData(plan);
         mainWindow.showSummary(plan.getPlanningRequest(), plan.getDeliveryTour());
         mainWindow.showDelivery(plan.getPlanningRequest());

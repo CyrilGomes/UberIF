@@ -14,9 +14,9 @@ public class MouseListenerPlanPanel implements MouseListener, MouseWheelListener
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e){
-        System.out.println("mouse wheel used");
+        //System.out.println("mouse wheel used");
         int notches = e.getWheelRotation();
-        System.out.println("wheel moved "+notches+" bits!");
+        //System.out.println("wheel moved "+notches+" bits!");
         plan.onMouseWheel(notches);
 
     }
@@ -31,10 +31,10 @@ public class MouseListenerPlanPanel implements MouseListener, MouseWheelListener
 
     @Override
     public void mousePressed(MouseEvent e){
-        System.out.println("Mouse pressed!");
+        //System.out.println("Mouse pressed!");
         int yMove = (int) e.getPoint().getY();
         int xMove = (int) e.getPoint().getX();
-        System.out.println(" x : "+ xMove+" and y : "+yMove);
+        //System.out.println(" x : "+ xMove+" and y : "+yMove);
         plan.onMousePressed(xMove,yMove);
 
     }
@@ -55,10 +55,10 @@ public class MouseListenerPlanPanel implements MouseListener, MouseWheelListener
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        System.out.println("Mouse dragged!");
+        //System.out.println("Mouse dragged!");
         int yMove = (int) e.getPoint().getY();
         int xMove = (int) e.getPoint().getX();
-        System.out.println(" x : "+ xMove+" and y : "+yMove);
+        //System.out.println(" x : "+ xMove+" and y : "+yMove);
         plan.onMouseDragged(xMove,yMove);
     }
 

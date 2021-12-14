@@ -49,9 +49,9 @@ public class BranchAndBoundTest {
                 "0202");
 
         sa.searchSolution(20000, g, planningRequest);
-        System.out.println(Arrays.toString(sa.getSolution()));
+        //System.out.println(Arrays.toString(sa.getSolution()));
         String[] solution = {"1", "7", "6", "4", "2"};
         assert (Arrays.equals(sa.getSolution(), solution));
-        System.out.println(sa.getSolutionCost());
+        //System.out.println(sa.getSolutionCost());
     }
 }

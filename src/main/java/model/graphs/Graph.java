@@ -111,7 +111,7 @@ public class Graph {
     public float getCost(final String origin, final String destination) {
         Edge edge = edges.get(new Key(origin, destination));
         if (edge == null) {
-            System.out.println(origin + " " + destination);
+            //System.out.println(origin + " " + destination);
 
             return 0;
         }
