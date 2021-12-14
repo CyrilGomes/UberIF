@@ -106,6 +106,8 @@ public abstract class TemplateTSP extends Observable implements TSP {
     }
 
     /**
+     * get the cost of the computed tour
+     *
      * @return the cost of the computed tour
      */
     @Override

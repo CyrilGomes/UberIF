@@ -1,7 +1,9 @@
 package view.state;
 
 import view.MainWindow;
-
+/**
+ * State LoadingFile.
+ */
 public class LoadingFileState implements State {
     @Override
     public void execute(MainWindow context) {

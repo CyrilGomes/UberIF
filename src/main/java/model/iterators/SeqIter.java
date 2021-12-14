@@ -6,8 +6,17 @@ import model.graphs.Graph;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * Class of SeqIter, an iterator
+ */
 public class SeqIter implements Iterator<String> {
+    /**
+     * list of candidates.
+     */
     private String[] candidates;
+    /**
+     * number of candidates.
+     */
     private int nbCandidates;
 
     /**
@@ -15,9 +24,9 @@ public class SeqIter implements Iterator<String> {
      * <code>unvisited</code>
      * which are successors of <code>currentVertex</code> in <code>g</code>
      * Vertices are traversed in the same order as in <code>unvisited</code>.
-     * @param unvisited
-     * @param currentVertex
-     * @param g
+     * @param unvisited not visited intersections
+     * @param currentVertex current vertex
+     * @param g graph
      */
     public SeqIter(Collection<String> unvisited, String currentVertex, Graph g){
         this.candidates = new String[unvisited.size()];

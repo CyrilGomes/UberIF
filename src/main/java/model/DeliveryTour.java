@@ -40,7 +40,7 @@ public class DeliveryTour extends Observable {
 
     /**
      * the setter of segmentList.
-     * @param segmentListToSet
+     * @param segmentListToSet list of segments
      */
     public void setSegmentList(final List<Segment> segmentListToSet) {
         this.segmentList = segmentListToSet;
@@ -135,6 +135,7 @@ public class DeliveryTour extends Observable {
      * Remove request and updates the tour
      * @param request the request to be removed
      * @param graph the already calculated graph
+     * @return the new DeliveryTour
      */
     public DeliveryTour removeRequestAndChangeTour(final Request request, final Graph graph) {
         DeliveryTour newDeliveryTour = new DeliveryTour(this);

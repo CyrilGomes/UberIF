@@ -53,7 +53,7 @@ public class Edge {
         return duration;
     }
 
-    /**
+    /** Constructor of the Edge object
      * @param origin        the edge origin
      * @param destination   the edge destination
      * @param segmentList   the segments nested in the edge
@@ -70,6 +70,9 @@ public class Edge {
         this.duration = duration;
     }
 
+    /** Deep copy constructor of the Edge object
+     * @param edgeCopy  the Edge to copy
+     */
     public Edge(Edge edgeCopy){
         this.origin = edgeCopy.origin;
         this.destination = edgeCopy.destination;

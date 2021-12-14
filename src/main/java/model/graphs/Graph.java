@@ -90,6 +90,10 @@ public class Graph {
         edges = new HashMap<>();
         minSubgraphCost = new HashMap<>();
     }
+    /**
+     * graph deep copy constructor.
+     * @param graphCopy the graph to copy
+     */
     public Graph(Graph graphCopy){
         if(graphCopy.vertices != null){
             vertices = new HashSet<>(graphCopy.vertices);
@@ -103,7 +107,7 @@ public class Graph {
 
     }
 
-    /**
+    /** Get the cost of a edge.
      * @param origin        the source vertex
      * @param destination   the destination vertex
      * @return              the cost of the source -> destination edge
@@ -111,14 +115,13 @@ public class Graph {
     public float getCost(final String origin, final String destination) {
         Edge edge = edges.get(new Key(origin, destination));
         if (edge == null) {
-            //System.out.println(origin + " " + destination);
 
             return 0;
         }
         return edge.getDuration();
     }
 
-    /**
+    /** Get the minimum cost of an edge
      * @return the minimum edge cost of the graph
      */
     public float getMinCost() {
@@ -205,6 +208,8 @@ public class Graph {
     }
 
     /**
+     * Compute the neatest node from currentNode
+     *
      * @param node the current node to check neighbors of
      * @param currentVertices the vertices of the subgraph to check
      * @return the nearest node of the currentNode
@@ -229,6 +234,8 @@ public class Graph {
     }
 
     /**
+     * Check if the origin and the destination are an arc of the graph
+     *
      * @param origin        the source vertex
      * @param destination   the destination vertex
      * @return              true if we can go from

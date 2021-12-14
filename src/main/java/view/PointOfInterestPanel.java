@@ -7,9 +7,25 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class PointOfInterestPanel extends JPanel {
+
+    /**
+     * boolean to know if the point is a pickup.
+     */
     private boolean isPickUp;
+
+    /**
+     * time passage on the point.
+     */
     private String timePassage;
+
+    /**
+     * request associated to the point.
+     */
     private Request request;
+
+    /**
+     * number on the list of points of interest.
+     */
     private int i;
 
     /** Constructor

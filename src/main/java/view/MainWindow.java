@@ -31,9 +31,6 @@ import java.util.Map;
 
 /**
  * The main class, displaying the HMI and starting the application.
- *
- * @author Thibaud Martin
- * @author Aurelia Inard
  */
 public class MainWindow extends javax.swing.JFrame implements Observer {
 
@@ -397,7 +394,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
     /**
      * set the sate of the window.
-     * @param currentState
+     * @param currentStateInit
      */
     public void setCurrentState(final State currentStateInit) {
         this.currentState = currentStateInit;
@@ -639,11 +636,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -660,19 +652,17 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 FlatLightLaf.setup();
                 new MainWindow().setVisible(true);
-                //System.out.println("Hello world");
             }
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration
     private javax.swing.JMenuItem btImportMap;
     private javax.swing.JMenuItem btImportTour;
     private javax.swing.JButton btAddRequest;

@@ -82,6 +82,7 @@ public class History {
 
     /**
      * Return the plan from the previous registered action.
+     * @return Plan the plan from the previous registered action
      */
     public Plan undo() {
         if (this.position > 0) {
@@ -93,6 +94,7 @@ public class History {
 
     /**
      * Return the plan from the next registered action.
+     * @return Plan the plan from the next registered action
      */
     public Plan redo() {
         if (this.position < this.listPlan.size() - 1) {

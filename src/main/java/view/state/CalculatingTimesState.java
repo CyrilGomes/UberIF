@@ -1,7 +1,9 @@
 package view.state;
 
 import view.MainWindow;
-
+/**
+ * State CalculatingTimes.
+ */
 public class CalculatingTimesState implements State {
     @Override
     public void execute(MainWindow context) {

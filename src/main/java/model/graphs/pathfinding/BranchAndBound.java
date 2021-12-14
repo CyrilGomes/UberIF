@@ -52,7 +52,10 @@ public class BranchAndBound extends TemplateTSP {
         return Arrays.asList(permutation);
     }
 
-
+    /**
+     * Search for the best solution
+     * @param planningRequest the planning of the request
+     */
     @Override
     public void computeSolution(final PlanningRequest planningRequest) {
 

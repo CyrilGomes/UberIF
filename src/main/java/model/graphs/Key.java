@@ -29,11 +29,19 @@ public class Key {
         this.y = y;
     }
 
+    /**
+     * The deep copy constructor of the key class.
+     * @param keyCopy the key to copy
+     */
     public Key(Key keyCopy){
         this.x = keyCopy.x;
         this.y = keyCopy.y;
     }
 
+    /**
+     * Override of the equals method.
+     * @param o the object to compare tho the key
+     */
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
